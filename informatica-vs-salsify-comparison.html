@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatica vs Salsify - Product Data Management Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+
+        .slide-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .slide {
+            background: white;
+            width: 100%;
+            aspect-ratio: 16/9;
+            margin-bottom: 30px;
+            padding: 60px 80px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Informatica Orange Brand */
+        .infa-orange {
+            color: #FF6C0C;
+        }
+
+        .salsify-blue {
+            color: #0066CC;
+        }
+
+        /* Title Slide */
+        .slide.title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide.title-slide h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .slide.title-slide .subtitle {
+            font-size: 1.5em;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .slide.title-slide .vs {
+            font-size: 2em;
+            color: #999;
+            margin: 20px 0;
+        }
+
+        /* Standard Slide */
+        .slide h2 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #FF6C0C;
+            padding-bottom: 15px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th {
+            background: #f8f8f8;
+            padding: 20px;
+            text-align: left;
+            font-size: 1.1em;
+            border: 2px solid #ddd;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border: 2px solid #ddd;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        /* VS Comparison Boxes */
+        .vs-container {
+            display: flex;
+            gap: 40px;
+            align-items: stretch;
+            margin-top: 30px;
+            flex: 1;
+        }
+
+        .vs-box {
+            flex: 1;
+            border: 3px solid;
+            border-radius: 10px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vs-box.informatica {
+            border-color: #FF6C0C;
+            background: #FFF8F5;
+        }
+
+        .vs-box.salsify {
+            border-color: #0066CC;
+            background: #F0F7FF;
+        }
+
+        .vs-box h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .vs-box.informatica h3 {
+            color: #FF6C0C;
+        }
+
+        .vs-box.salsify h3 {
+            color: #0066CC;
+        }
+
+        .vs-box .icon {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .vs-box ul {
+            list-style: none;
+            flex: 1;
+        }
+
+        .vs-box ul li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .vs-box ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .vs-box.informatica ul li:before {
+            color: #FF6C0C;
+        }
+
+        .vs-box.salsify ul li:before {
+            color: #0066CC;
+        }
+
+        .vs-separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: #ccc;
+            font-weight: bold;
+        }
+
+        /* Diagram Styles */
+        .diagram {
+            margin: 30px 0;
+            padding: 30px;
+            background: #fafafa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .flow-box {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px 30px;
+            font-weight: bold;
+            font-size: 1em;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .flow-box.informatica {
+            border-color: #FF6C0C;
+            background: #FFF8F5;
+            color: #FF6C0C;
+        }
+
+        .flow-box.salsify {
+            border-color: #0066CC;
+            background: #F0F7FF;
+            color: #0066CC;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #999;
+        }
+
+        /* Key Differences Box */
+        .key-diff {
+            background: #FFF9E6;
+            border-left: 5px solid #FFB800;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .key-diff strong {
+            color: #CC8800;
+            font-size: 1.1em;
+        }
+
+        /* Summary boxes */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .summary-box {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+            background: #fafafa;
+        }
+
+        .summary-box h4 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .summary-box p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .slide {
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+
+        <!-- Slide 1: Title -->
+        <div class="slide title-slide">
+            <h1>
+                <span class="infa-orange">Informatica</span>
+                <span class="vs">vs</span>
+                <span class="salsify-blue">Salsify</span>
+            </h1>
+            <p class="subtitle">Product Data Management Comparison</p>
+            <p style="margin-top: 40px; font-size: 1.2em; color: #666;">
+                MDM System-of-Record vs PXM System-of-Experience
+            </p>
+        </div>
+
+        <!-- Slide 2: Executive Summary -->
+        <div class="slide">
+            <h2>Executive Summary</h2>
+            <div class="key-diff">
+                <strong>Core Distinction:</strong> Informatica provides probabilistic, rule-based backend data matching, while Salsify relies on deterministic, retail-readiness validation.
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th style="color: #FF6C0C;">Informatica IDMC / Product 360</th>
+                        <th style="color: #0066CC;">Salsify PXM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Matching Engine</strong></td>
+                        <td>Probabilistic, fuzzy logic, AI match/merge</td>
+                        <td>Deterministic, exact unique identifiers (SKU, UPC)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Product Mastering</strong></td>
+                        <td>Consolidates fragmented upstream ERP/PLM silos</td>
+                        <td>"Source of truth" for marketing and digital commerce</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quality Management</strong></td>
+                        <td>Systemic cleansing, structural rules, profiling</td>
+                        <td>Content completeness and validation scores for retailers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 3: Matching Capabilities -->
+        <div class="slide">
+            <h2>1. Matching Capabilities</h2>
+
+            <div class="vs-container">
+                <div class="vs-box informatica">
+                    <div class="icon">🧠</div>
+                    <h3>Informatica</h3>
+                    <p style="text-align: center; margin-bottom: 20px; font-weight: bold;">Probabilistic AI Matching</p>
+                    <ul>
+                        <li>Machine learning and fuzzy matching engine (CLAIRE)</li>
+                        <li>Recognizes "10-in Frying Pan - Blk" = "Pan Frying 10 inch Black"</li>
+                        <li>Automatic deduplication of mismatched data</li>
+                        <li>Complex string-similarity algorithms</li>
+                        <li>Handles dirty, unstructured supplier data</li>
+                    </ul>
+                </div>
+
+                <div class="vs-separator">vs</div>
+
+                <div class="vs-box salsify">
+                    <div class="icon">🔑</div>
+                    <h3>Salsify</h3>
+                    <p style="text-align: center; margin-bottom: 20px; font-weight: bold;">Deterministic Key Matching</p>
+                    <ul>
+                        <li>Relies on unique global identifiers</li>
+                        <li>Uses UPC, EAN, or manufacturer SKU</li>
+                        <li>Exact match required to link records</li>
+                        <li>No native fuzzy matching</li>
+                        <li>Assumes clean, pre-matched data</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="diagram">
+                <div class="flow-diagram">
+                    <div class="flow-box informatica">5 Dirty<br>Supplier Files</div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box informatica">AI Match/Merge</div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box informatica">1 Golden<br>Record</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Product Mastering -->
+        <div class="slide">
+            <h2>2. Product Mastering</h2>
+
+            <div class="vs-container">
+                <div class="vs-box informatica">
+                    <div class="icon">🏗️</div>
+                    <h3>Informatica</h3>
+                    <p style="text-align: center; margin-bottom: 20px; font-weight: bold;">System-of-Record (MDM)</p>
+                    <ul>
+                        <li>Master Data Management platform</li>
+                        <li>Consolidates ERP, PLM, WMS silos</li>
+                        <li>Synthesizes engineering, financial, logistical data</li>
+                        <li>Single gold-standard product backbone</li>
+                        <li>Upstream data orchestration</li>
+                    </ul>
+                </div>
+
+                <div class="vs-separator">vs</div>
+
+                <div class="vs-box salsify">
+                    <div class="icon">🎨</div>
+                    <h3>Salsify</h3>
+                    <p style="text-align: center; margin-bottom: 20px; font-weight: bold;">System-of-Experience (PXM)</p>
+                    <ul>
+                        <li>Product Experience Management platform</li>
+                        <li>Ingests pre-established product records</li>
+                        <li>Marketing team enrichment layer</li>
+                        <li>Consumer-facing copy, images, assets</li>
+                        <li>Downstream content optimization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="diagram">
+                <div class="flow-diagram">
+                    <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                        <div class="flow-box" style="background: #e3f2fd;">ERP</div>
+                        <div class="flow-box" style="background: #e3f2fd;">PLM</div>
+                        <div class="flow-box" style="background: #e3f2fd;">WMS</div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box informatica">Informatica<br>MDM Hub</div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box salsify">Salsify<br>PXM</div>
+                    <div class="arrow">→</div>
+                    <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                        <div class="flow-box" style="background: #e8f5e9;">Amazon</div>
+                        <div class="flow-box" style="background: #e8f5e9;">Walmart</div>
+                        <div class="flow-box" style="background: #e8f5e9;">Target</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Quality Management -->
+        <div class="slide">
+            <h2>3. Quality Management</h2>
+
+            <div class="vs-container">
+                <div class="vs-box informatica">
+                    <div class="icon">🔍</div>
+                    <h3>Informatica</h3>
+                    <p style="text-align: center; margin-bottom: 20px; font-weight: bold;">Structural Data Integrity</p>
+                    <ul>
+                        <li>Profiles incoming data pipelines</li>
+                        <li>Measures null values and compliance</li>
+                        <li>Cleanses text strings and formats</li>
+                        <li>Enterprise-wide quality scorecards</li>
+                        <li>Pre-catalog validation</li>
+                    </ul>
+                </div>
+
+                <div class="vs-separator">vs</div>
+
+                <div class="vs-box salsify">
+                    <div class="icon">✅</div>
+                    <h3>Salsify</h3>
+                    <p style="text-align: center; margin-bottom: 20px; font-weight: bold;">Retail Readiness Quality</p>
+                    <ul>
+                        <li>AI-driven content scoring</li>
+                        <li>Retailer-specific compliance standards</li>
+                        <li>Flags missing images or descriptions</li>
+                        <li>Character limit enforcement</li>
+                        <li>Retail portal schema validation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-diff" style="margin-top: 30px;">
+                <strong>Key Difference:</strong> Informatica focuses on data <em>correctness</em> before it enters systems. Salsify focuses on content <em>completeness</em> before it reaches retailers.
+            </div>
+        </div>
+
+        <!-- Slide 6: Use Case Scenarios -->
+        <div class="slide">
+            <h2>When to Use Each Platform</h2>
+
+            <div class="summary-grid">
+                <div class="summary-box" style="border-left: 5px solid #FF6C0C;">
+                    <h4 style="color: #FF6C0C;">Choose Informatica When:</h4>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Dealing with fragmented, dirty source data</li>
+                        <li>Multiple ERP/PLM systems need consolidation</li>
+                        <li>Complex supplier data requires deduplication</li>
+                        <li>Need enterprise-wide data governance</li>
+                        <li>Building a master data foundation</li>
+                    </ul>
+                </div>
+
+                <div class="summary-box" style="border-left: 5px solid #0066CC;">
+                    <h4 style="color: #0066CC;">Choose Salsify When:</h4>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Product data is already clean and matched</li>
+                        <li>Focus is on marketing content enrichment</li>
+                        <li>Need retail channel optimization</li>
+                        <li>Publishing to Amazon, Walmart, Target</li>
+                        <li>Marketing teams manage product content</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-diff" style="margin-top: 40px;">
+                <strong>Best Practice:</strong> Use Informatica as the upstream system-of-record to create clean, mastered product data, then feed that data into Salsify for downstream marketing enrichment and retail channel syndication.
+            </div>
+        </div>
+
+        <!-- Slide 7: Summary -->
+        <div class="slide">
+            <h2>Summary</h2>
+
+            <div style="display: flex; gap: 40px; margin-top: 40px;">
+                <div style="flex: 1; padding: 30px; background: #FFF8F5; border: 3px solid #FF6C0C; border-radius: 10px;">
+                    <h3 style="color: #FF6C0C; text-align: center; margin-bottom: 25px;">Informatica Product 360</h3>
+                    <p style="font-size: 1.1em; text-align: center; line-height: 1.8;">
+                        <strong>Upstream MDM</strong><br><br>
+                        Probabilistic matching<br>
+                        Data consolidation<br>
+                        Structural quality<br>
+                        Enterprise governance<br>
+                        System-of-Record
+                    </p>
+                </div>
+
+                <div style="flex: 1; padding: 30px; background: #F0F7FF; border: 3px solid #0066CC; border-radius: 10px;">
+                    <h3 style="color: #0066CC; text-align: center; margin-bottom: 25px;">Salsify PXM</h3>
+                    <p style="font-size: 1.1em; text-align: center; line-height: 1.8;">
+                        <strong>Downstream PXM</strong><br><br>
+                        Deterministic matching<br>
+                        Content enrichment<br>
+                        Retail readiness<br>
+                        Channel syndication<br>
+                        System-of-Experience
+                    </p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px; padding: 30px; background: #f8f8f8; border-radius: 8px;">
+                <p style="font-size: 1.3em; color: #333; font-weight: bold;">
+                    Complementary Technologies, Not Competitors
+                </p>
+                <p style="font-size: 1.1em; color: #666; margin-top: 15px;">
+                    Informatica builds the foundation | Salsify optimizes the experience
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Print to PDF functionality
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>
