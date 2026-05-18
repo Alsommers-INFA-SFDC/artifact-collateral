@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Customization and Informatica Master Data Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Informatica Branding Colors */
+        :root {
+            --infa-orange: #FF6C0C;
+            --infa-dark-blue: #001F5F;
+            --infa-light-blue: #00A1DF;
+            --infa-gray: #54565B;
+        }
+
+        /* Landing Page / Cover */
+        .cover-page {
+            background: linear-gradient(135deg, var(--infa-dark-blue) 0%, var(--infa-light-blue) 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .infa-logo {
+            background: white;
+            padding: 20px 40px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .infa-logo h2 {
+            color: var(--infa-orange);
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .infa-logo .tagline {
+            color: var(--infa-dark-blue);
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .cover-page h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            font-weight: 300;
+            max-width: 900px;
+            line-height: 1.2;
+        }
+
+        .cover-page .subtitle {
+            font-size: 1.3em;
+            margin-bottom: 50px;
+            opacity: 0.95;
+            max-width: 800px;
+        }
+
+        .executive-summary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 900px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .executive-summary h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--infa-orange);
+        }
+
+        .executive-summary p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .executive-summary ul {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .executive-summary li {
+            margin: 10px 0;
+            font-size: 1.05em;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            margin-top: 40px;
+            max-width: 900px;
+        }
+
+        .nav-menu h3 {
+            color: var(--infa-dark-blue);
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .nav-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .nav-link {
+            background: linear-gradient(135deg, var(--infa-orange) 0%, #ff8c3a 100%);
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: block;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 108, 12, 0.3);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Sticky Navigation Bar */
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            background: var(--infa-dark-blue);
+            color: white;
+            padding: 15px 40px;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sticky-nav .logo {
+            font-weight: 700;
+            font-size: 1.2em;
+            color: var(--infa-orange);
+        }
+
+        .sticky-nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .sticky-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.2s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .sticky-nav-links a:hover {
+            color: var(--infa-orange);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--infa-dark-blue) 0%, var(--infa-light-blue) 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content sections */
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            page-break-inside: avoid;
+            scroll-margin-top: 80px;
+        }
+
+        .section h2 {
+            font-size: 2em;
+            color: var(--infa-orange);
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--infa-orange);
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            font-size: 1.5em;
+            color: var(--infa-dark-blue);
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        /* Menu Item Comparison */
+        .menu-item {
+            background: #f9f9f9;
+            border-left: 4px solid var(--infa-orange);
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 5px;
+        }
+
+        .menu-item h3 {
+            margin-top: 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .platform-box {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .platform-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .platform-box.doordash {
+            border-color: #ff3008;
+        }
+
+        .platform-box.grubhub {
+            border-color: #f63440;
+        }
+
+        .platform-box.ubereats {
+            border-color: #06c167;
+        }
+
+        .platform-header {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+        }
+
+        .platform-box.doordash .platform-header {
+            color: #ff3008;
+            border-color: #ff3008;
+        }
+
+        .platform-box.grubhub .platform-header {
+            color: #f63440;
+            border-color: #f63440;
+        }
+
+        .platform-box.ubereats .platform-header {
+            color: #06c167;
+            border-color: #06c167;
+        }
+
+        .data-field {
+            background: #f5f5f5;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        .data-field strong {
+            color: #555;
+        }
+
+        /* Architecture Diagram */
+        .architecture-diagram {
+            background: #f9f9f9;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .flow-column {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .flow-box {
+            background: white;
+            border: 2px solid var(--infa-orange);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 600;
+            color: var(--infa-orange);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flow-box.source {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            color: #1976d2;
+        }
+
+        .flow-box.hub {
+            background: linear-gradient(135deg, var(--infa-dark-blue) 0%, var(--infa-light-blue) 100%);
+            color: white;
+            border: none;
+            font-size: 1.1em;
+            min-height: 300px;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .flow-box.target {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: var(--infa-orange);
+            text-align: center;
+        }
+
+        .hub-features {
+            font-size: 0.85em;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        .hub-features div {
+            background: rgba(255,255,255,0.2);
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+
+        /* Image placeholder */
+        .image-placeholder {
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Notes section */
+        .notes {
+            background: #fff9e6;
+            border-left: 4px solid var(--infa-orange);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .notes h4 {
+            color: var(--infa-orange);
+            margin-bottom: 10px;
+        }
+
+        /* Technical Comparison Table */
+        .tech-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tech-table thead {
+            background: linear-gradient(135deg, var(--infa-dark-blue) 0%, var(--infa-light-blue) 100%);
+            color: white;
+        }
+
+        .tech-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .tech-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        .tech-table tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        .tech-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tech-table .feature-col {
+            font-weight: 600;
+            color: #555;
+            width: 20%;
+        }
+
+        .tech-table .platform-col {
+            width: 26.66%;
+        }
+
+        .tech-highlight {
+            background: #e3f2fd;
+            border-left: 3px solid var(--infa-light-blue);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tech-highlight h4 {
+            color: var(--infa-dark-blue);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .architecture-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .architecture-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .architecture-card h4 {
+            color: var(--infa-orange);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .architecture-card.doordash {
+            border-left: 4px solid #ff3008;
+        }
+
+        .architecture-card.grubhub {
+            border-left: 4px solid #f63440;
+        }
+
+        .architecture-card.ubereats {
+            border-left: 4px solid #06c167;
+        }
+
+        .code-example {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .code-example .keyword {
+            color: #ff79c6;
+        }
+
+        .code-example .string {
+            color: #50fa7b;
+        }
+
+        .code-example .number {
+            color: #bd93f9;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+
+            .sticky-nav, .scroll-indicator {
+                display: none;
+            }
+        }
+
+        /* Editable content styles */
+        [contenteditable="true"] {
+            outline: none;
+            transition: background 0.2s;
+        }
+
+        [contenteditable="true"]:hover {
+            background: #fffef0;
+        }
+
+        [contenteditable="true"]:focus {
+            background: #fff9e6;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--infa-dark-blue);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .footer .infa-brand {
+            color: var(--infa-orange);
+            font-weight: 700;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover/Landing Page -->
+    <div class="cover-page">
+        <div class="infa-logo">
+            <h2 contenteditable="true">INFORMATICA</h2>
+            <div class="tagline" contenteditable="true">Intelligent Data Management Cloud</div>
+        </div>
+
+        <h1 contenteditable="true">Food Customization and Master Data Management</h1>
+        <p class="subtitle" contenteditable="true">Streamlining Multi-Platform Menu Data Delivery for Quick Service Restaurants</p>
+
+        <div class="executive-summary">
+            <h3>Executive Summary</h3>
+            <p contenteditable="true">
+                In the rapidly evolving digital food service landscape, Quick Service Restaurants (QSRs) face a critical
+                challenge: managing complex menu data across multiple delivery platforms—DoorDash, Grubhub, and Uber Eats—each
+                requiring fundamentally different data formats, structures, and standards.
+            </p>
+            <p contenteditable="true">
+                <strong>Informatica Master Data Management (MDM) Hub</strong> provides the solution by acting as a centralized
+                orchestration layer that ingests menu data from disparate source systems (ERP, PLM, Excel, QSR software),
+                standardizes it into a canonical model, and intelligently transforms it into platform-specific formats.
+            </p>
+            <ul contenteditable="true">
+                <li><strong>Single Source of Truth:</strong> Eliminate data inconsistencies across all delivery channels</li>
+                <li><strong>Intelligent Transformation:</strong> Automatically convert pricing (integer vs. decimal), structure (nested vs. flat), and localization formats</li>
+                <li><strong>Operational Efficiency:</strong> Update menu items once and propagate changes to all platforms</li>
+                <li><strong>Data Quality:</strong> Built-in validation rules ensure accurate menu data before publication</li>
+            </ul>
+        </div>
+
+        <div class="nav-menu">
+            <h3>Navigate This Document</h3>
+            <div class="nav-links">
+                <a href="#overview" class="nav-link">Overview</a>
+                <a href="#api-architecture" class="nav-link">API Architecture</a>
+                <a href="#menu-comparisons" class="nav-link">Menu Comparisons</a>
+                <a href="#mdm-architecture" class="nav-link">MDM Solution</a>
+                <a href="#benefits" class="nav-link">Key Benefits</a>
+                <a href="#summary" class="nav-link">Summary</a>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Sticky Navigation -->
+        <div class="sticky-nav">
+            <div class="logo">INFORMATICA</div>
+            <div class="sticky-nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#api-architecture">API Architecture</a>
+                <a href="#menu-comparisons">Menu Comparisons</a>
+                <a href="#mdm-architecture">MDM Solution</a>
+                <a href="#benefits">Benefits</a>
+                <a href="#summary">Summary</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Introduction -->
+            <div id="overview" class="section">
+                <h2 contenteditable="true">Overview</h2>
+                <p contenteditable="true">
+                    In today's digital food service landscape, Quick Service Restaurants (QSRs) must manage complex menu data
+                    across multiple delivery platforms including DoorDash, Grubhub, and Uber Eats. Each platform requires
+                    different data formats, structures, and standards for menu items, customizations, pricing, and availability.
+                    Informatica Master Data Management (MDM) Hub provides a centralized solution to manage this complexity,
+                    enabling consistent, accurate, and efficient menu data delivery across all channels.
+                </p>
+
+                <div class="tech-highlight">
+                    <h4>Key Challenge</h4>
+                    <p contenteditable="true">While DoorDash, Grubhub, and Uber Eats all ingest the same core menu items and food customizations from an upstream PIM system like Informatica P360, their API architectures organize this data in fundamentally different ways.</p>
+                </div>
+            </div>
+
+            <!-- API Architecture Differences -->
+            <div id="api-architecture" class="section">
+                <h2 contenteditable="true">API Architecture Differences</h2>
+                <p contenteditable="true">
+                    Understanding the fundamental architectural differences between delivery platforms is critical for successful
+                    data transformation. Each platform has evolved unique data structures, pricing models, and localization requirements
+                    that must be precisely accommodated during the data export process from Informatica MDM Hub.
+                </p>
+
+                <h3 contenteditable="true">1. Structural Design Models</h3>
+
+                <div class="architecture-card doordash">
+                    <h4>DoorDash: Hierarchically Nested Tree</h4>
+                    <p contenteditable="true">
+                        Data follows a strict parent-to-child lineage embedded directly inside a single object cascade.
+                        To find a modifier choice, the processing engine must drill deep into the specific menu, category,
+                        and item array where it resides. This deeply nested structure requires recursive traversal logic
+                        when building data exports from P360.
+                    </p>
+                    <div class="code-example">
+{
+  <span class="keyword">"menu"</span>: {
+    <span class="keyword">"categories"</span>: [{
+      <span class="keyword">"items"</span>: [{
+        <span class="keyword">"modifier_groups"</span>: [{
+          <span class="keyword">"modifiers"</span>: [...]
+        }]
+      }]
+    }]
+  }
+}
+                    </div>
+                </div>
+
+                <div class="architecture-card grubhub">
+                    <h4>Grubhub: Normalized Sibling Arrays</h4>
+                    <p contenteditable="true">
+                        Data is entirely flattened at the root level into discrete, independent tables. Entities are linked
+                        exclusively via a web of string reference IDs (<code>"items": ["ITEM_ID"]</code>). No item or modifier
+                        data is ever nested inside another. This approach requires careful relationship mapping and ID management
+                        during export from P360.
+                    </p>
+                    <div class="code-example">
+{
+  <span class="keyword">"menus"</span>: [{<span class="keyword">"id"</span>: <span class="string">"MENU_1"</span>, <span class="keyword">"category_ids"</span>: [<span class="string">"CAT_1"</span>]}],
+  <span class="keyword">"categories"</span>: [{<span class="keyword">"id"</span>: <span class="string">"CAT_1"</span>, <span class="keyword">"item_ids"</span>: [<span class="string">"ITEM_1"</span>]}],
+  <span class="keyword">"items"</span>: [{<span class="keyword">"id"</span>: <span class="string">"ITEM_1"</span>, <span class="keyword">"modifier_group_ids"</span>: [<span class="string">"MOD_1"</span>]}],
+  <span class="keyword">"modifier_groups"</span>: [{<span class="keyword">"id"</span>: <span class="string">"MOD_1"</span>}]
+}
+                    </div>
+                </div>
+
+                <div class="architecture-card ubereats">
+                    <h4>Uber Eats: Relational Entity Graph</h4>
+                    <p contenteditable="true">
+                        Data treats menus, categories, items, and modifier groups as modular, globally unique entities mapped
+                        inside their own explicit root arrays. Cross-references are explicitly declared at each level to map
+                        relationships. This hybrid approach combines elements of both nested and flat structures, requiring
+                        sophisticated entity resolution during P360 export.
+                    </p>
+                    <div class="code-example">
+{
+  <span class="keyword">"menus"</span>: [{<span class="keyword">"id"</span>: <span class="string">"menu-uuid"</span>, <span class="keyword">"category_ids"</span>: [...]}],
+  <span class="keyword">"categories"</span>: [{<span class="keyword">"id"</span>: <span class="string">"cat-uuid"</span>, <span class="keyword">"entities"</span>: [{<span class="keyword">"type"</span>: <span class="string">"ITEM"</span>}]}],
+  <span class="keyword">"items"</span>: [{<span class="keyword">"id"</span>: <span class="string">"item-uuid"</span>, <span class="keyword">"modifier_group_ids"</span>: {...}}]
+}
+                    </div>
+                </div>
+
+                <h3 contenteditable="true">2. Pricing and Float Notation</h3>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 25px 0;">
+                    <div style="background: #ffebee; padding: 20px; border-radius: 8px; border-left: 4px solid #ff3008;">
+                        <h4 style="color: #ff3008; margin-top: 0; font-size: 1em;">DoorDash</h4>
+                        <p contenteditable="true" style="font-size: 0.9em;"><strong>Integer Cents Only</strong><br>
+                        A price of $12.99 must be multiplied by 100 to map as an exact integer value (<code>1299</code>).
+                        Decimal floats are rejected by the API.</p>
+                        <div style="background: white; padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.8em;">
+                            "price": <span style="color: #bd93f9;">1299</span>
+                        </div>
+                    </div>
+
+                    <div style="background: #fce4ec; padding: 20px; border-radius: 8px; border-left: 4px solid #f63440;">
+                        <h4 style="color: #f63440; margin-top: 0; font-size: 1em;">Grubhub</h4>
+                        <p contenteditable="true" style="font-size: 0.9em;"><strong>Decimal Floats</strong><br>
+                        Prices are sent natively as standard currency values (e.g., <code>10.00</code> or <code>1.50</code>).
+                        No multiplication required.</p>
+                        <div style="background: white; padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.8em;">
+                            "price": <span style="color: #bd93f9;">12.99</span>
+                        </div>
+                    </div>
+
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; border-left: 4px solid #06c167;">
+                        <h4 style="color: #06c167; margin-top: 0; font-size: 1em;">Uber Eats</h4>
+                        <p contenteditable="true" style="font-size: 0.9em;"><strong>Integer Cents Only</strong><br>
+                        Same as DoorDash. Price of $12.99 must be sent as integer <code>1299</code>.
+                        Requires currency conversion logic in P360 export.</p>
+                        <div style="background: white; padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.8em;">
+                            "price": <span style="color: #bd93f9;">1299</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 contenteditable="true">3. Text and Localization Handling</h3>
+
+                <div class="comparison-grid" style="margin-top: 25px;">
+                    <div style="background: #ffebee; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #ff3008; margin-top: 0;">DoorDash</h4>
+                        <p contenteditable="true" style="font-size: 0.9em;"><strong>Direct Flat Strings</strong></p>
+                        <div style="background: white; padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.75em;">
+"name": "Classic Cheeseburger"
+                        </div>
+                    </div>
+
+                    <div style="background: #fce4ec; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #f63440; margin-top: 0;">Grubhub</h4>
+                        <p contenteditable="true" style="font-size: 0.9em;"><strong>Direct Flat Strings</strong></p>
+                        <div style="background: white; padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.75em;">
+"name": "Classic Cheeseburger"
+                        </div>
+                    </div>
+
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #06c167; margin-top: 0;">Uber Eats</h4>
+                        <p contenteditable="true" style="font-size: 0.9em;"><strong>Mandatory Localization Map</strong></p>
+                        <div style="background: white; padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.75em;">
+"title": {
+  "translations": {
+    "en_us": "Classic Cheeseburger"
+  }
+}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes" style="margin-top: 20px;">
+                    <h4>Uber Eats Localization Requirement</h4>
+                    <p contenteditable="true">Every single text field must be isolated inside a nested translations block mapped to an ISO language code. Plain text inputs fail validation. This requires P360 to wrap all consumer-facing text in translation objects during export.</p>
+                </div>
+
+                <h3 contenteditable="true">4. Selection Constraint Logic (Min / Max Choices)</h3>
+
+                <div style="background: #f9f9f9; border: 2px solid #e0e0e0; border-radius: 8px; padding: 30px; margin-top: 25px;">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div>
+                            <h4 style="color: #ff3008;">DoorDash</h4>
+                            <p contenteditable="true" style="font-size: 0.9em;">Governed by <code>min_selection</code> and <code>max_selection</code> integers nested within the modifier group schema.</p>
+                            <div class="code-example" style="font-size: 0.75em;">
+{
+  <span class="keyword">"min_selection"</span>: <span class="number">1</span>,
+  <span class="keyword">"max_selection"</span>: <span class="number">3</span>
+}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color: #f63440;">Grubhub</h4>
+                            <p contenteditable="true" style="font-size: 0.9em;">Does not handle complex selections in the core item payload directly; uses standalone, decoupled reference identifiers called <code>modifier_prompts</code>.</p>
+                            <div class="code-example" style="font-size: 0.75em;">
+{
+  <span class="keyword">"modifier_prompt_id"</span>:
+    <span class="string">"PROMPT_1"</span>
+}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color: #06c167;">Uber Eats</h4>
+                            <p contenteditable="true" style="font-size: 0.9em;">Governed by a <code>quantity_info</code> nested block using <code>min_permitted</code> and <code>max_permitted</code> variables.</p>
+                            <div class="code-example" style="font-size: 0.75em;">
+{
+  <span class="keyword">"quantity_info"</span>: {
+    <span class="keyword">"min_permitted"</span>: <span class="number">1</span>,
+    <span class="keyword">"max_permitted"</span>: <span class="number">3</span>
+  }
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 contenteditable="true">Architectural Divergence Summary</h3>
+
+                <table class="tech-table">
+                    <thead>
+                        <tr>
+                            <th class="feature-col">Specification Feature</th>
+                            <th class="platform-col">DoorDash</th>
+                            <th class="platform-col">Grubhub</th>
+                            <th class="platform-col">Uber Eats</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-col">API Architecture</td>
+                            <td contenteditable="true">Hierarchical Tree</td>
+                            <td contenteditable="true">Normalized / Flat Table</td>
+                            <td contenteditable="true">Relational Graph Map</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">Price Format</td>
+                            <td contenteditable="true">Integer Cents (1299)</td>
+                            <td contenteditable="true">Decimal Float (12.99)</td>
+                            <td contenteditable="true">Integer Cents (1299)</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">Text Structure</td>
+                            <td contenteditable="true">Plain String</td>
+                            <td contenteditable="true">Plain String</td>
+                            <td contenteditable="true">Nested Translation Map</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">P360 Mapping Method</td>
+                            <td contenteditable="true">Hierarchy Builder (Deep)</td>
+                            <td contenteditable="true">Row Flattener / Target Split</td>
+                            <td contenteditable="true">Component / Object Map</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">Primary HTTP Verb</td>
+                            <td contenteditable="true">POST</td>
+                            <td contenteditable="true">POST</td>
+                            <td contenteditable="true">PUT</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-col">Selection Constraints</td>
+                            <td contenteditable="true">min_selection / max_selection</td>
+                            <td contenteditable="true">modifier_prompts (ID ref)</td>
+                            <td contenteditable="true">quantity_info block</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="tech-highlight">
+                    <h4>P360 Integration Challenge</h4>
+                    <p contenteditable="true">
+                        These architectural differences require Informatica P360 (Product 360) to maintain three distinct export templates,
+                        each with custom transformation logic for structure (nesting vs. flattening), pricing (integer vs. decimal),
+                        localization (plain text vs. translation objects), and relationship mapping (embedded vs. ID references).
+                        The MDM Hub orchestrates these transformations to ensure accurate, platform-specific data delivery.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Menu Item Comparisons -->
+            <div id="menu-comparisons" class="section">
+                <h2 contenteditable="true">Menu Item Comparisons</h2>
+
+                <div class="menu-item">
+                    <h3 contenteditable="true">1. Customizable Burger</h3>
+                    <p contenteditable="true">A premium burger with multiple customization options including toppings, sauces, and cooking preferences.</p>
+
+                    <div class="comparison-grid">
+                        <div class="platform-box doordash">
+                            <div class="platform-header">DoorDash</div>
+                            <div class="data-field"><strong>Item Structure:</strong> <span contenteditable="true">Nested modifiers</span></div>
+                            <div class="data-field"><strong>Size Format:</strong> <span contenteditable="true">size_option_id</span></div>
+                            <div class="data-field"><strong>Price Model:</strong> <span contenteditable="true">Base + addons</span></div>
+                            <div class="data-field"><strong>Customization:</strong> <span contenteditable="true">modifier_groups[]</span></div>
+                        </div>
+
+                        <div class="platform-box grubhub">
+                            <div class="platform-header">Grubhub</div>
+                            <div class="data-field"><strong>Item Structure:</strong> <span contenteditable="true">Choice_groups</span></div>
+                            <div class="data-field"><strong>Size Format:</strong> <span contenteditable="true">variation_name</span></div>
+                            <div class="data-field"><strong>Price Model:</strong> <span contenteditable="true">SKU-based pricing</span></div>
+                            <div class="data-field"><strong>Customization:</strong> <span contenteditable="true">choice_option_ids[]</span></div>
+                        </div>
+
+                        <div class="platform-box ubereats">
+                            <div class="platform-header">Uber Eats</div>
+                            <div class="data-field"><strong>Item Structure:</strong> <span contenteditable="true">Modifier sets</span></div>
+                            <div class="data-field"><strong>Size Format:</strong> <span contenteditable="true">size_code</span></div>
+                            <div class="data-field"><strong>Price Model:</strong> <span contenteditable="true">Item + mod prices</span></div>
+                            <div class="data-field"><strong>Customization:</strong> <span contenteditable="true">modifier_set_ids[]</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <h3 contenteditable="true">2. Pizza with Toppings</h3>
+                    <p contenteditable="true">A classic pizza offering with customizable toppings, crust types, and size options.</p>
+
+                    <div class="comparison-grid">
+                        <div class="platform-box doordash">
+                            <div class="platform-header">DoorDash</div>
+                            <div class="data-field"><strong>Topping Logic:</strong> <span contenteditable="true">Add/remove arrays</span></div>
+                            <div class="data-field"><strong>Quantity:</strong> <span contenteditable="true">modifier.quantity</span></div>
+                            <div class="data-field"><strong>Half/Whole:</strong> <span contenteditable="true">placement_type</span></div>
+                            <div class="data-field"><strong>Crust:</strong> <span contenteditable="true">Special modifier</span></div>
+                        </div>
+
+                        <div class="platform-box grubhub">
+                            <div class="platform-header">Grubhub</div>
+                            <div class="data-field"><strong>Topping Logic:</strong> <span contenteditable="true">Choice selections</span></div>
+                            <div class="data-field"><strong>Quantity:</strong> <span contenteditable="true">portion_size</span></div>
+                            <div class="data-field"><strong>Half/Whole:</strong> <span contenteditable="true">choice_location</span></div>
+                            <div class="data-field"><strong>Crust:</strong> <span contenteditable="true">Base variation</span></div>
+                        </div>
+
+                        <div class="platform-box ubereats">
+                            <div class="platform-header">Uber Eats</div>
+                            <div class="data-field"><strong>Topping Logic:</strong> <span contenteditable="true">Item modifiers</span></div>
+                            <div class="data-field"><strong>Quantity:</strong> <span contenteditable="true">selected_count</span></div>
+                            <div class="data-field"><strong>Half/Whole:</strong> <span contenteditable="true">customization_flag</span></div>
+                            <div class="data-field"><strong>Crust:</strong> <span contenteditable="true">Item attribute</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <h3 contenteditable="true">3. Build-Your-Own Salad</h3>
+                    <p contenteditable="true">A fully customizable salad with base selection, protein choices, and unlimited toppings.</p>
+
+                    <div class="comparison-grid">
+                        <div class="platform-box doordash">
+                            <div class="platform-header">DoorDash</div>
+                            <div class="data-field"><strong>Base Selection:</strong> <span contenteditable="true">required_modifier</span></div>
+                            <div class="data-field"><strong>Protein:</strong> <span contenteditable="true">Single-select group</span></div>
+                            <div class="data-field"><strong>Toppings:</strong> <span contenteditable="true">Multi-select group</span></div>
+                            <div class="data-field"><strong>Dressing:</strong> <span contenteditable="true">Optional modifier</span></div>
+                        </div>
+
+                        <div class="platform-box grubhub">
+                            <div class="platform-header">Grubhub</div>
+                            <div class="data-field"><strong>Base Selection:</strong> <span contenteditable="true">Base SKU variant</span></div>
+                            <div class="data-field"><strong>Protein:</strong> <span contenteditable="true">choice_group (min:1)</span></div>
+                            <div class="data-field"><strong>Toppings:</strong> <span contenteditable="true">choice_group (max:10)</span></div>
+                            <div class="data-field"><strong>Dressing:</strong> <span contenteditable="true">separate_choice</span></div>
+                        </div>
+
+                        <div class="platform-box ubereats">
+                            <div class="platform-header">Uber Eats</div>
+                            <div class="data-field"><strong>Base Selection:</strong> <span contenteditable="true">Primary item type</span></div>
+                            <div class="data-field"><strong>Protein:</strong> <span contenteditable="true">modifier_set (1 req)</span></div>
+                            <div class="data-field"><strong>Toppings:</strong> <span contenteditable="true">modifier_set (0-10)</span></div>
+                            <div class="data-field"><strong>Dressing:</strong> <span contenteditable="true">modifier_set (opt)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <h3 contenteditable="true">4. Combo Meal Deal</h3>
+                    <p contenteditable="true">A value combo including main item, side, and drink with substitution options.</p>
+
+                    <div class="comparison-grid">
+                        <div class="platform-box doordash">
+                            <div class="platform-header">DoorDash</div>
+                            <div class="data-field"><strong>Bundle Type:</strong> <span contenteditable="true">item_pack</span></div>
+                            <div class="data-field"><strong>Components:</strong> <span contenteditable="true">included_items[]</span></div>
+                            <div class="data-field"><strong>Substitutions:</strong> <span contenteditable="true">swap_modifier</span></div>
+                            <div class="data-field"><strong>Upsells:</strong> <span contenteditable="true">premium_upgrade</span></div>
+                        </div>
+
+                        <div class="platform-box grubhub">
+                            <div class="platform-header">Grubhub</div>
+                            <div class="data-field"><strong>Bundle Type:</strong> <span contenteditable="true">combo_item</span></div>
+                            <div class="data-field"><strong>Components:</strong> <span contenteditable="true">bundle_choices[]</span></div>
+                            <div class="data-field"><strong>Substitutions:</strong> <span contenteditable="true">alternate_option</span></div>
+                            <div class="data-field"><strong>Upsells:</strong> <span contenteditable="true">upcharge_choice</span></div>
+                        </div>
+
+                        <div class="platform-box ubereats">
+                            <div class="platform-header">Uber Eats</div>
+                            <div class="data-field"><strong>Bundle Type:</strong> <span contenteditable="true">meal_set</span></div>
+                            <div class="data-field"><strong>Components:</strong> <span contenteditable="true">set_components[]</span></div>
+                            <div class="data-field"><strong>Substitutions:</strong> <span contenteditable="true">alternative_items</span></div>
+                            <div class="data-field"><strong>Upsells:</strong> <span contenteditable="true">extra_modifier</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MDM Solution Architecture -->
+            <div id="mdm-architecture" class="section">
+                <h2 contenteditable="true">Informatica MDM Hub Solution Architecture</h2>
+                <p contenteditable="true">
+                    The MDM Hub acts as a central orchestration layer, ingesting menu data from disparate source systems,
+                    standardizing it into a canonical model, enriching it through data stewardship workflows, and transforming
+                    it into platform-specific formats for delivery to DoorDash, Grubhub, and Uber Eats.
+                </p>
+
+                <div class="architecture-diagram">
+                    <div class="flow-container">
+                        <!-- Source Systems -->
+                        <div class="flow-column">
+                            <h3 style="text-align: center; color: #2196f3; margin-bottom: 20px;" contenteditable="true">Data Sources</h3>
+                            <div class="flow-box source" contenteditable="true">ERP Systems<br>(SAP, Oracle)</div>
+                            <div class="flow-box source" contenteditable="true">PLM Systems<br>(Product Data)</div>
+                            <div class="flow-box source" contenteditable="true">Excel / CSV<br>(Legacy Data)</div>
+                            <div class="flow-box source" contenteditable="true">QSR Systems<br>(POS, Kitchen)</div>
+                            <div class="flow-box source" contenteditable="true">Recipe Management<br>Systems</div>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div class="arrow">→</div>
+
+                        <!-- MDM Hub -->
+                        <div class="flow-column">
+                            <h3 style="text-align: center; color: var(--infa-orange); margin-bottom: 20px;" contenteditable="true">Informatica MDM Hub</h3>
+                            <div class="flow-box hub">
+                                <strong style="font-size: 1.2em;">Canonical Data Model</strong>
+                                <div class="hub-features">
+                                    <div contenteditable="true">✓ Standardized Brands</div>
+                                    <div contenteditable="true">✓ Normalized Sizes (SM/MD/LG)</div>
+                                    <div contenteditable="true">✓ Unified Addresses</div>
+                                    <div contenteditable="true">✓ Master Product Catalog</div>
+                                    <div contenteditable="true">✓ Data Quality Rules</div>
+                                    <div contenteditable="true">✓ Workflow Management</div>
+                                    <div contenteditable="true">✓ Data Stewardship</div>
+                                    <div contenteditable="true">✓ Hierarchy Management</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div class="arrow">→</div>
+
+                        <!-- Target Platforms -->
+                        <div class="flow-column">
+                            <h3 style="text-align: center; color: #4caf50; margin-bottom: 20px;" contenteditable="true">Delivery Platforms</h3>
+                            <div class="flow-box target" contenteditable="true">DoorDash API<br>(Custom Format)</div>
+                            <div class="flow-box target" contenteditable="true">Grubhub API<br>(Custom Format)</div>
+                            <div class="flow-box target" contenteditable="true">Uber Eats API<br>(Custom Format)</div>
+                            <div class="image-placeholder" contenteditable="true">
+                                [Add platform logos here]
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; text-align: center;">
+                        <p contenteditable="true" style="font-weight: 600; color: var(--infa-orange); font-size: 1.1em;">
+                            Informatica Data Integration & Application Integration
+                        </p>
+                        <p contenteditable="true" style="margin-top: 10px; color: #666;">
+                            Automated data transformation and API delivery for real-time menu synchronization
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Benefits -->
+            <div id="benefits" class="section">
+                <h2 contenteditable="true">Key Benefits</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 30px;">
+                    <div style="background: #e3f2fd; padding: 25px; border-radius: 8px; border-left: 4px solid var(--infa-light-blue);">
+                        <h3 style="color: var(--infa-dark-blue); margin-top: 0;" contenteditable="true">Data Consistency</h3>
+                        <p contenteditable="true">Single source of truth ensures menu data consistency across all delivery platforms, reducing errors and customer complaints.</p>
+                    </div>
+
+                    <div style="background: #fff3e0; padding: 25px; border-radius: 8px; border-left: 4px solid var(--infa-orange);">
+                        <h3 style="color: var(--infa-orange); margin-top: 0;" contenteditable="true">Operational Efficiency</h3>
+                        <p contenteditable="true">Update menu items once in MDM Hub and automatically propagate changes to all platforms, saving time and resources.</p>
+                    </div>
+
+                    <div style="background: #e8f5e9; padding: 25px; border-radius: 8px; border-left: 4px solid #4caf50;">
+                        <h3 style="color: #2e7d32; margin-top: 0;" contenteditable="true">Data Quality</h3>
+                        <p contenteditable="true">Built-in validation rules and stewardship workflows ensure high-quality, accurate menu data before publication.</p>
+                    </div>
+
+                    <div style="background: #f3e5f5; padding: 25px; border-radius: 8px; border-left: 4px solid #9c27b0;">
+                        <h3 style="color: #7b1fa2; margin-top: 0;" contenteditable="true">Scalability</h3>
+                        <p contenteditable="true">Easily add new delivery platforms or menu items without rebuilding integration pipelines or data structures.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div id="summary" class="section">
+                <h2 contenteditable="true">Summary</h2>
+                <p contenteditable="true">
+                    Informatica MDM Hub transforms the complex challenge of multi-platform menu data management into a
+                    streamlined, efficient process. By centralizing menu data from various source systems (ERP, PLM, Excel,
+                    QSR software), standardizing it into a canonical model with consistent terminology (brands, sizes, addresses),
+                    and leveraging intelligent data integration to produce platform-specific outputs, QSRs can maintain accurate,
+                    consistent menu information across DoorDash, Grubhub, and Uber Eats with minimal manual effort.
+                </p>
+
+                <div class="notes">
+                    <h4>Implementation Notes</h4>
+                    <ul contenteditable="true">
+                        <li>MDM Hub supports both real-time and batch synchronization</li>
+                        <li>Data stewardship workflows enable human review for critical changes</li>
+                        <li>Built-in audit trails track all menu data changes for compliance</li>
+                        <li>API integrations can be customized per platform requirements</li>
+                    </ul>
+                </div>
+
+                <div class="image-placeholder">
+                    [Add customer success story or ROI metrics graphic here]
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="infa-brand">INFORMATICA</div>
+            <p contenteditable="true" style="opacity: 0.9; margin-top: 10px;">
+                For more information about Informatica MDM solutions for the food service industry,<br>
+                contact your Informatica representative or visit informatica.com
+            </p>
+            <p style="opacity: 0.7; margin-top: 20px; font-size: 0.85em;">
+                © 2026 Informatica LLC. All rights reserved.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add visual feedback for editable content
+        document.addEventListener('DOMContentLoaded', function() {
+            const editableElements = document.querySelectorAll('[contenteditable="true"]');
+
+            editableElements.forEach(element => {
+                element.addEventListener('focus', function() {
+                    this.style.outline = '2px solid var(--infa-orange)';
+                    this.style.outlineOffset = '2px';
+                });
+
+                element.addEventListener('blur', function() {
+                    this.style.outline = 'none';
+                });
+            });
+
+            // Add edit indicator on hover
+            editableElements.forEach(element => {
+                element.title = 'Click to edit this content';
+            });
+        });
+
+        // Print functionality
+        function printDocument() {
+            window.print();
+        }
+
+        // Add keyboard shortcut for print (Ctrl/Cmd + P is already handled by browser)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                alert('Use File > Save As to save this HTML document');
+            }
+        });
+
+        // Highlight active section in nav
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.sticky-nav-links a');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.background = '';
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.background = 'rgba(255, 255, 255, 0.1)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
