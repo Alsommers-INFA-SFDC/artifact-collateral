@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QSR Master Data Model Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Neutrals with Sky Blue and Amber Accents -->
+    <!-- Application Structure Plan: The application is structured as a two-part dashboard to optimize understanding of a technical document. Section 1 is an interactive 'Syndication Strategy' diagram built with HTML/CSS to explain the *purpose* (the 'Why'). Section 2 is a 'Document Explorer' that allows users to toggle between the 4 core JSON documents, viewing an explanatory summary, a visual data representation (Chart.js), and the raw JSON. This side-by-side logical grouping makes abstract data structures tangible and explorable. -->
+    <!-- Visualization & Content Choices: 
+         - Syndication Strategy -> Goal: Inform/Flow -> Interactive HTML Cards -> Justification: Shows data movement without complex SVG diagrams.
+         - Item Master -> Goal: Inform/Proportions -> Chart.js Doughnut -> Justification: Visualizes the recipe composition.
+         - Modifier Groups -> Goal: Compare -> Chart.js Bar -> Justification: Compares price impacts of different modifiers.
+         - Location Profiles -> Goal: Compare -> Chart.js Bar -> Justification: Clearly contrasts Base MSRP vs. Franchise Override Pricing.
+         - Menu Catalogs -> Goal: Organize -> HTML Table/List -> Justification: Best for categorical, hierarchical data. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .json-viewer {
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .nav-button.active {
+            background-color: #0ea5e9;
+            color: white;
+            border-color: #0ea5e9;
+        }
+        .nav-button {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-slate-900 text-white py-6 shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <h1 class="text-3xl font-bold tracking-tight">QSR Master Data Document Model</h1>
+            <p class="text-slate-300 mt-2 text-lg">Informatica MDM Golden Record Architecture</p>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8 space-y-12">
+
+        <section id="syndication-strategy" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-slate-800 mb-3 border-b pb-2 border-slate-100">Syndication Strategy: The Golden Record Flow</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    This section illustrates the overarching purpose of the MDM repository. By managing data as highly structured documents, Informatica acts as the single source of truth. Click or hover over the downstream systems below to see how the single "Item Master" is dynamically flattened and customized for different operational needs like Point of Sale, Online Ordering, and Digital Menuboards.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-8 mt-8">
+                <div class="w-full lg:w-1/3 text-center">
+                    <div class="bg-sky-50 border-2 border-sky-500 rounded-xl p-6 shadow-md">
+                        <div class="text-4xl mb-2">&#128451;</div>
+                        <h3 class="text-xl font-bold text-sky-900">Informatica MDM</h3>
+                        <p class="text-sm text-sky-700 mt-2">Golden Record Repository<br>(JSON Documents)</p>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex flex-col items-center justify-center w-1/6 text-4xl text-slate-300 space-y-8">
+                    <div>&#10142;</div>
+                    <div>&#10142;</div>
+                    <div>&#10142;</div>
+                </div>
+
+                <div class="w-full lg:w-1/2 space-y-4">
+                    <button onclick="showSyndicationDetails('pos')" class="w-full text-left bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg p-4 transition duration-200 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                        <div class="flex items-center justify-between">
+                            <span class="font-semibold text-slate-800">&#128423; POS (Point of Sale)</span>
+                            <span class="text-sky-500 text-sm font-medium">View Data Map &rarr;</span>
+                        </div>
+                        <div id="syn-desc-pos" class="hidden mt-3 text-sm text-slate-600 border-t border-slate-200 pt-3">
+                            Flattens <strong>Item Master</strong>, extracting <code class="bg-slate-200 px-1 rounded">syndication_profiles.pos</code> (e.g., short names for kitchen tickets). Applies <strong>Location</strong> pricing overrides and creates a flat file for the store server.
+                        </div>
+                    </button>
+
+                    <button onclick="showSyndicationDetails('olo')" class="w-full text-left bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg p-4 transition duration-200 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                        <div class="flex items-center justify-between">
+                            <span class="font-semibold text-slate-800">&#128241; Online Ordering (OLO)</span>
+                            <span class="text-sky-500 text-sm font-medium">View Data Map &rarr;</span>
+                        </div>
+                        <div id="syn-desc-olo" class="hidden mt-3 text-sm text-slate-600 border-t border-slate-200 pt-3">
+                            Extracts <code class="bg-slate-200 px-1 rounded">syndication_profiles.online_ordering</code> (marketing descriptions, image URLs). Reads <strong>Modifier Group</strong> rules to generate UI (checkboxes/radios) and respects <strong>Location</strong> <code class="bg-slate-200 px-1 rounded">opt_out_items</code>.
+                        </div>
+                    </button>
+
+                    <button onclick="showSyndicationDetails('print')" class="w-full text-left bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg p-4 transition duration-200 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                        <div class="flex items-center justify-between">
+                            <span class="font-semibold text-slate-800">&#128250; Digital Menuboards</span>
+                            <span class="text-sky-500 text-sm font-medium">View Data Map &rarr;</span>
+                        </div>
+                        <div id="syn-desc-print" class="hidden mt-3 text-sm text-slate-600 border-t border-slate-200 pt-3">
+                            Consumes <strong>Menu</strong> document for categorization and display order. Combines with <strong>Location</strong> pricing and <code class="bg-slate-200 px-1 rounded">syndication_profiles.digital_menuboard</code> data (like calorie counts) for CMS ingestion.
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="erd" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:p-8">
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold text-slate-800 mb-3 border-b pb-2 border-slate-100">Data Model Architecture (Instance Example)</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    This diagram illustrates the relational hierarchy between the core MDM entities using the <strong>specific sample data</strong> from the Explorer below. Notice how the base pricing is established at the Menu level, while the Location can override specific Item prices and modifier availability.
+                </p>
+            </div>
+
+            <div class="relative w-full max-w-4xl mx-auto flex flex-col items-center py-4">
+                <!-- Level 1: Location -->
+                <div class="w-64 sm:w-72 bg-indigo-50 border-2 border-indigo-300 rounded-xl p-4 text-center shadow-sm relative z-10 hover:shadow-md transition-shadow">
+                    <div class="text-2xl mb-1">&#127980;</div>
+                    <h3 class="font-bold text-indigo-900">Location Profile</h3>
+                    <p class="text-xs text-indigo-700 mt-1 mb-3">Physical stores & overrides</p>
+                    <div class="bg-white rounded border border-indigo-100 p-2.5 text-left text-xs leading-relaxed shadow-inner">
+                        <div class="flex justify-between"><span class="text-slate-500 font-mono">ID:</span><span class="font-bold text-indigo-800">LOC-10452</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500 font-mono">Name:</span><span class="text-slate-700">Apex Mgmt (#10452)</span></div>
+                        <div class="flex justify-between mt-1 pt-1 border-t border-slate-100"><span class="text-slate-500 font-mono">Action:</span><span class="text-amber-600 font-semibold text-right">Overrides ITM-987654321<br>Price to $6.49</span></div>
+                    </div>
+                </div>
+
+                <!-- Connector Level 1 to 2 -->
+                <div class="w-[2px] h-6 bg-slate-300 z-0"></div>
+                <div class="flex justify-between w-full max-w-[18rem] sm:max-w-[28rem] z-0">
+                    <!-- Left branch (Menu) -->
+                    <div class="w-1/2 border-t-2 border-l-2 border-slate-300 rounded-tl-xl h-12 relative">
+                        <div class="absolute -bottom-3 -left-[9px] text-slate-300 text-xl leading-none">&darr;</div>
+                        <span class="absolute top-[-10px] left-2 sm:left-4 bg-white px-2 text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Subscribes To</span>
+                    </div>
+                    <!-- Right branch (Item Override) -->
+                    <div class="w-1/2 border-t-2 border-r-2 border-dashed border-amber-400 rounded-tr-xl h-12 relative">
+                        <div class="absolute -bottom-3 -right-[9px] text-amber-400 text-xl leading-none">&darr;</div>
+                        <span class="absolute top-[-10px] right-2 sm:right-4 bg-white px-2 text-[10px] font-semibold text-amber-600 uppercase tracking-wider">Overrides</span>
+                    </div>
+                </div>
+
+                <!-- Level 2: Menu & Item -->
+                <div class="flex justify-between items-center w-full max-w-[32rem] sm:max-w-[48rem] relative z-10">
+                    <!-- Menu -->
+                    <div class="w-44 sm:w-64 bg-emerald-50 border-2 border-emerald-300 rounded-xl p-3 sm:p-4 text-center shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-xl sm:text-2xl mb-1">&#128214;</div>
+                        <h3 class="font-bold text-emerald-900 text-sm sm:text-base">Menu Catalog</h3>
+                        <p class="text-[10px] sm:text-xs text-emerald-700 mt-1 mb-3">Categories & Base MSRP</p>
+                        <div class="hidden sm:block bg-white rounded border border-emerald-100 p-2.5 text-left text-xs leading-relaxed shadow-inner">
+                            <div class="flex justify-between"><span class="text-slate-500 font-mono">ID:</span><span class="font-bold text-emerald-800">MNU-NAT-2026</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500 font-mono">Type:</span><span class="text-slate-700">National Core</span></div>
+                            <div class="flex justify-between mt-1 pt-1 border-t border-slate-100"><span class="text-slate-500 font-mono">Rule:</span><span class="text-emerald-700 font-semibold text-right">Sets Base MSRP<br>to $5.99</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Horizontal Connector (Menu to Item) -->
+                    <div class="flex-grow flex flex-col justify-center items-center relative z-0 px-2 sm:px-4">
+                        <div class="w-full border-t-2 border-slate-300 absolute top-1/2"></div>
+                        <span class="bg-white px-2 py-1 border border-slate-200 rounded shadow-sm text-[10px] sm:text-xs font-semibold text-slate-600 relative z-10 text-center whitespace-nowrap">
+                            Contains &rarr;<br>
+                            <span class="text-slate-400 font-normal text-[9px]">(Cat: Burgers)</span>
+                        </span>
+                    </div>
+
+                    <!-- Item -->
+                    <div class="w-44 sm:w-64 bg-amber-50 border-2 border-amber-300 rounded-xl p-3 sm:p-4 text-center shadow-sm hover:shadow-md transition-shadow relative">
+                        <div class="text-xl sm:text-2xl mb-1">&#127828;</div>
+                        <h3 class="font-bold text-amber-900 text-sm sm:text-base">Item Master</h3>
+                        <p class="text-[10px] sm:text-xs text-amber-700 mt-1 mb-3">Products & Recipes</p>
+                        <div class="hidden sm:block bg-white rounded border border-amber-100 p-2.5 text-left text-xs leading-relaxed shadow-inner">
+                            <div class="flex justify-between"><span class="text-slate-500 font-mono">ID:</span><span class="font-bold text-amber-800">ITM-987654321</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500 font-mono">Name:</span><span class="text-slate-700 truncate w-24 text-right" title="Classic Cheeseburger">Cheeseburger</span></div>
+                            <div class="flex justify-between mt-1 pt-1 border-t border-slate-100"><span class="text-slate-500 font-mono">Links:</span><span class="text-amber-700 font-semibold text-right">Requires Meat<br>Temp Modifier</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connector Level 2 to 3 -->
+                <div class="flex justify-end w-full max-w-[32rem] sm:max-w-[48rem] z-0">
+                    <div class="w-44 sm:w-64 flex flex-col items-center">
+                        <div class="w-[2px] h-12 border-l-2 border-slate-300 relative">
+                            <div class="absolute -bottom-3 -left-[9px] text-slate-300 text-xl leading-none">&darr;</div>
+                            <span class="absolute top-3 left-1 bg-white px-2 py-0.5 border border-slate-200 rounded shadow-sm text-[10px] font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap z-10">Customized By</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 3: Modifier -->
+                <div class="flex justify-end w-full max-w-[32rem] sm:max-w-[48rem] relative z-10 mt-1">
+                    <div class="w-44 sm:w-64 bg-rose-50 border-2 border-rose-300 rounded-xl p-3 sm:p-4 text-center shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-xl sm:text-2xl mb-1">&#10133;</div>
+                        <h3 class="font-bold text-rose-900 text-sm sm:text-base">Modifier Group</h3>
+                        <p class="text-[10px] sm:text-xs text-rose-700 mt-1 mb-3">Logic & Add-ons</p>
+                        <div class="hidden sm:block bg-white rounded border border-rose-100 p-2.5 text-left text-xs leading-relaxed shadow-inner">
+                            <div class="flex justify-between"><span class="text-slate-500 font-mono">ID:</span><span class="font-bold text-rose-800">MOD-GRP-003</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500 font-mono">Name:</span><span class="text-slate-700 truncate w-24 text-right" title="Meat Temperature">Meat Temp</span></div>
+                            <div class="flex justify-between mt-1 pt-1 border-t border-slate-100"><span class="text-slate-500 font-mono">Rules:</span><span class="text-rose-700 font-semibold text-right">Min: 1 / Max: 1<br>(Radio Select)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="data-explorer" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 lg:p-8 border-b border-slate-200 bg-slate-50">
+                <h2 class="text-2xl font-semibold text-slate-800 mb-2">Interactive Document Explorer</h2>
+                <p class="text-slate-600">
+                    This section allows you to drill down into the four primary document collections that make up the QSR data model. Select a document type below to explore its structure, understand its business context, and view a visual representation of its key metrics alongside the raw JSON payload.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row">
+                <div class="w-full lg:w-1/4 bg-slate-50 border-r border-slate-200 p-4 lg:p-6 space-y-2">
+                    <button onclick="loadDocumentView('item')" id="btn-item" class="nav-button active w-full text-left px-4 py-3 rounded-md font-medium border border-slate-300 hover:border-sky-400">1. Item Master</button>
+                    <button onclick="loadDocumentView('modifier')" id="btn-modifier" class="nav-button w-full text-left px-4 py-3 rounded-md font-medium border border-slate-300 hover:border-sky-400 text-slate-700 bg-white">2. Modifier Groups</button>
+                    <button onclick="loadDocumentView('menu')" id="btn-menu" class="nav-button w-full text-left px-4 py-3 rounded-md font-medium border border-slate-300 hover:border-sky-400 text-slate-700 bg-white">3. Menu Catalogs</button>
+                    <button onclick="loadDocumentView('location')" id="btn-location" class="nav-button w-full text-left px-4 py-3 rounded-md font-medium border border-slate-300 hover:border-sky-400 text-slate-700 bg-white">4. Location Profiles</button>
+                </div>
+
+                <div class="w-full lg:w-3/4 p-6 lg:p-8">
+                    <div class="mb-8">
+                        <h3 id="doc-title" class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                            <span class="bg-amber-100 text-amber-800 px-2 py-1 rounded text-sm uppercase tracking-wide">Document</span>
+                            Item Master
+                        </h3>
+                        <p id="doc-desc" class="text-slate-600 mt-2 text-lg">The core entity representing anything sold, consumed, or used. Contains syndication aliases, recipes, and nutritional info.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                        <div class="flex flex-col h-full">
+                            <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4 border-b pb-2">Visual Analysis</h4>
+                            <div class="bg-slate-50 rounded-xl border border-slate-200 p-4 flex-grow flex items-center justify-center">
+                                <div id="viz-container" class="w-full w-full">
+                                    <div class="chart-container">
+                                        <canvas id="mainChart"></canvas>
+                                    </div>
+                                    <div id="html-viz" class="hidden w-full h-full p-4 overflow-y-auto"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col h-full">
+                            <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4 border-b pb-2">JSON Golden Record</h4>
+                            <div class="bg-slate-900 rounded-xl p-4 shadow-inner flex-grow overflow-y-auto max-h-[400px]">
+                                <pre><code id="json-display" class="json-viewer text-sky-300 text-xs sm:text-sm"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-sm border-t border-slate-800">
+        <p>QSR MDM Data Model &copy; 2026. Designed for Informatica Architecture.</p>
+    </footer>
+
+    <script>
+        const mdmData = {
+            item: {
+                "_mdm_id": "ITM-987654321",
+                "enterprise_item_code": "100-BEEF-BRG",
+                "status": "ACTIVE",
+                "item_type": "SELLABLE_PRODUCT",
+                "core_attributes": {
+                    "name": "Classic Cheeseburger",
+                    "description": "1/4 lb beef patty with cheese, lettuce, and tomato.",
+                    "is_combo_meal": false,
+                    "tax_category": "PREPARED_FOOD"
+                },
+                "syndication_profiles": {
+                    "pos": { "system_id": "POS-8821", "short_name": "CLS CHSBRG", "routing_group": "GRILL_STATION" },
+                    "online_ordering": { "system_id": "OLO-CHB-001", "display_name": "The Classic Cheeseburger", "marketing_description": "Our signature flame-grilled 1/4 lb beef patty..." },
+                    "digital_menuboard": { "display_name": "Classic Cheeseburger", "calorie_display": "540 cal" }
+                },
+                "recipe": {
+                    "yield_amount": 1,
+                    "yield_uom": "EACH",
+                    "ingredients": [
+                        { "mdm_item_id": "ING-101", "name": "Brioche Bun", "quantity": 1, "uom": "EACH" },
+                        { "mdm_item_id": "ING-202", "name": "Beef Patty 4oz", "quantity": 1, "uom": "EACH" },
+                        { "mdm_item_id": "ING-303", "name": "Cheddar Slice", "quantity": 1, "uom": "SLICE" }
+                    ]
+                },
+                "nutritional_info": { "calories": 540, "allergens": ["DAIRY", "WHEAT", "SOY"] },
+                "customization_rules": [ 
+                    { "modifier_group_mdm_id": "MOD-GRP-003", "display_order": 1, "required": true },
+                    { "modifier_group_mdm_id": "MOD-GRP-001", "display_order": 2, "required": false },
+                    { "modifier_group_mdm_id": "MOD-GRP-002", "display_order": 3, "required": false }
+                ]
+            },
+            modifier: [
+                {
+                    "_mdm_id": "MOD-GRP-003",
+                    "name": "Meat Temperature",
+                    "internal_description": "Required cooking temperature for burgers/steaks",
+                    "ui_presentation": "RADIO_BUTTONS",
+                    "rules": { "min_selections": 1, "max_selections": 1, "free_selections_allowed": 1 },
+                    "options": [
+                        { "mdm_item_id": "ITM-MOD-TEMP-MR", "name": "Medium Rare", "is_default": false, "price_delta": 0.00, "action_allowed": ["SELECT"] },
+                        { "mdm_item_id": "ITM-MOD-TEMP-M", "name": "Medium", "is_default": true, "price_delta": 0.00, "action_allowed": ["SELECT"] },
+                        { "mdm_item_id": "ITM-MOD-TEMP-MW", "name": "Medium Well", "is_default": false, "price_delta": 0.00, "action_allowed": ["SELECT"] }
+                    ]
+                },
+                {
+                    "_mdm_id": "MOD-GRP-001",
+                    "name": "Standard Burger Toppings",
+                    "internal_description": "Standard included veggies and sauces for burgers",
+                    "ui_presentation": "CHECKBOX_GRID",
+                    "rules": { "min_selections": 0, "max_selections": 10, "free_selections_allowed": 10 },
+                    "options": [
+                        { "mdm_item_id": "ITM-MOD-LETTUCE", "name": "Lettuce", "is_default": true, "price_delta": 0.00, "action_allowed": ["ADD", "NO", "EXTRA", "LITE"] },
+                        { "mdm_item_id": "ITM-MOD-TOMATO", "name": "Tomato", "is_default": true, "price_delta": 0.00, "action_allowed": ["ADD", "NO", "EXTRA"] },
+                        { "mdm_item_id": "ITM-MOD-ONION", "name": "Onion", "is_default": true, "price_delta": 0.00, "action_allowed": ["ADD", "NO", "EXTRA"] }
+                    ]
+                },
+                {
+                    "_mdm_id": "MOD-GRP-002",
+                    "name": "Premium Add-ons",
+                    "internal_description": "Upsell ingredients with upcharges",
+                    "ui_presentation": "CHECKBOX_GRID",
+                    "rules": { "min_selections": 0, "max_selections": 3, "free_selections_allowed": 0 },
+                    "options": [
+                        { "mdm_item_id": "ITM-MOD-BACON", "name": "Applewood Bacon", "is_default": false, "price_delta": 1.50, "action_allowed": ["ADD", "EXTRA"] },
+                        { "mdm_item_id": "ITM-MOD-AVO", "name": "Sliced Avocado", "is_default": false, "price_delta": 1.25, "action_allowed": ["ADD", "EXTRA"] }
+                    ]
+                }
+            ],
+            menu: [
+                {
+                    "_mdm_id": "MNU-NAT-2026",
+                    "menu_name": "2026 National Core Menu",
+                    "menu_type": "CORE",
+                    "status": "PUBLISHED",
+                    "daypart_availability": { "is_all_day": true },
+                    "categories": [
+                        {
+                            "category_id": "CAT-BURGERS",
+                            "display_name": "Burgers & Sandwiches",
+                            "display_order": 1,
+                            "items": [ { "mdm_item_id": "ITM-987654321", "item_name": "Classic Cheeseburger", "base_price": 5.99, "tax_inclusive": false } ]
+                        },
+                        {
+                            "category_id": "CAT-SIDES",
+                            "display_name": "Sides & Shareables",
+                            "display_order": 2,
+                            "items": [
+                                { "mdm_item_id": "ITM-111222333", "item_name": "Medium Fries", "base_price": 2.49, "tax_inclusive": false },
+                                { "mdm_item_id": "ITM-444555666", "item_name": "Onion Rings", "base_price": 3.29, "tax_inclusive": false }
+                            ]
+                        },
+                        {
+                            "category_id": "CAT-BEV",
+                            "display_name": "Beverages",
+                            "display_order": 3,
+                            "items": [
+                                { "mdm_item_id": "ITM-BEV-COLA-M", "item_name": "Medium Fountain Drink", "base_price": 1.99, "tax_inclusive": false }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "_mdm_id": "MNU-LTO-SUMMER-26",
+                    "menu_name": "Summer BBQ Special (LTO)",
+                    "menu_type": "LTO",
+                    "status": "PUBLISHED",
+                    "daypart_availability": { "is_all_day": true, "start_date": "2026-06-01", "end_date": "2026-08-31" },
+                    "categories": [
+                        {
+                            "category_id": "CAT-BBQ",
+                            "display_name": "Summer BBQ Highlights",
+                            "display_order": 1,
+                            "items": [
+                                { "mdm_item_id": "ITM-BBQ-BRISKET", "item_name": "Smoked Brisket Sandwich", "base_price": 8.99, "tax_inclusive": false },
+                                { "mdm_item_id": "ITM-BBQ-BEANS", "item_name": "Side of Baked Beans", "base_price": 2.99, "tax_inclusive": false }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "_mdm_id": "MNU-DEL-UBER-26",
+                    "menu_name": "UberEats Delivery Menu",
+                    "menu_type": "DELIVERY_CHANNEL",
+                    "status": "PUBLISHED",
+                    "markup_percentage": 15.0,
+                    "daypart_availability": { "is_all_day": true },
+                    "categories": [
+                        {
+                            "category_id": "CAT-BURGERS",
+                            "display_name": "Burgers & Sandwiches",
+                            "display_order": 1,
+                            "items": [
+                                { "mdm_item_id": "ITM-987654321", "item_name": "Classic Cheeseburger", "base_price": 6.89, "tax_inclusive": false } // $5.99 + 15% Markup
+                            ]
+                        },
+                        {
+                            "category_id": "CAT-SIDES",
+                            "display_name": "Sides & Shareables",
+                            "display_order": 2,
+                            "items": [
+                                { "mdm_item_id": "ITM-111222333", "item_name": "Medium Fries", "base_price": 2.89, "tax_inclusive": false } // Marked up
+                            ]
+                        }
+                    ]
+                }
+            ],
+            location: {
+                "_mdm_id": "LOC-10452",
+                "store_number": "10452",
+                "franchise_group": "Apex Restaurant Management LLC",
+                "status": "OPEN",
+                "metadata": {
+                    "location_type": "FREESTANDING_DRIVE_THRU",
+                    "features": ["DRIVE_THRU", "MOBILE_PICKUP_WINDOW", "DINE_IN"]
+                },
+                "menu_subscriptions": [
+                    {
+                        "mdm_menu_id": "MNU-NAT-2026",
+                        "subscription_status": "ACTIVE",
+                        "franchise_overrides": {
+                            "opt_out_items": [
+                                "ITM-999888777", // Opting out of a full sandwich
+                                "ITM-MOD-BACON"  // Franchise ran out of bacon; opting out of a specific modifier item!
+                            ],
+                            "pricing_overrides": [
+                                { "mdm_item_id": "ITM-987654321", "override_price": 6.49, "reason": "HIGH_RENT_MARKET" }, // Override full item price
+                                { "mdm_item_id": "ITM-MOD-AVO", "override_price": 1.75, "reason": "LOCAL_PRODUCE_COST" }  // Override specific premium add-on price
+                            ]
+                        }
+                    }
+                ]
+            }
+        };
+
+        const viewConfig = {
+            item: {
+                title: "Item Master",
+                desc: "The core entity representing anything sold, consumed, or used. Contains syndication aliases, recipes, and nutritional info.",
+                renderViz: () => {
+                    const ctx = document.getElementById('mainChart').getContext('2d');
+                    document.getElementById('mainChart').style.display = 'block';
+                    document.getElementById('html-viz').classList.add('hidden');
+                    
+                    const labels = mdmData.item.recipe.ingredients.map(i => i.name);
+                    const data = mdmData.item.recipe.ingredients.map(i => i.quantity);
+                    
+                    return new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Recipe Quantity',
+                                data: data,
+                                backgroundColor: ['#fbbf24', '#ef4444', '#f59e0b'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'bottom' },
+                                title: { display: true, text: 'Recipe Composition (Yield: 1 EACH)', font: { size: 14 } }
+                            }
+                        }
+                    });
+                }
+            },
+            modifier: {
+                title: "Modifier Groups",
+                desc: "Manages complex relationships between items for customization. Allows central governance of logic (e.g., Min/Max selections, Price Deltas) without hardcoding POS buttons.",
+                renderViz: () => {
+                    document.getElementById('mainChart').style.display = 'none';
+                    const htmlViz = document.getElementById('html-viz');
+                    htmlViz.classList.remove('hidden');
+
+                    let htmlContent = '<h5 class="font-bold text-slate-700 mb-4 text-center">Customization Logic Model</h5><div class="space-y-4">';
+
+                    mdmData.modifier.forEach(mod => {
+                        let uiBadge = mod.ui_presentation === 'RADIO_BUTTONS' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800';
+
+                        htmlContent += `<div class="bg-white rounded-lg border border-slate-200 shadow-sm p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h6 class="font-bold text-slate-800">${mod.name}</h6>
+                                <span class="text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider ${uiBadge}">${mod.ui_presentation}</span>
+                            </div>
+                            <div class="text-[11px] text-slate-500 mb-3 bg-slate-50 p-2 rounded border border-slate-100 flex gap-4">
+                                <span><strong>Min:</strong> ${mod.rules.min_selections}</span>
+                                <span><strong>Max:</strong> ${mod.rules.max_selections}</span>
+                                <span><strong>Free Allow:</strong> ${mod.rules.free_selections_allowed}</span>
+                            </div>
+                            <div class="space-y-1">`;
+
+                        mod.options.forEach(opt => {
+                            let priceStr = opt.price_delta > 0 ? `<span class="text-emerald-600 font-semibold text-xs">+$${opt.price_delta.toFixed(2)}</span>` : `<span class="text-slate-400 text-xs italic">Included</span>`;
+                            let defaultBadge = opt.is_default ? `<span class="ml-2 text-[9px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded uppercase font-semibold">Default</span>` : '';
+                            
+                            htmlContent += `<div class="flex justify-between items-center text-sm border-b border-slate-50 pb-1.5">
+                                <span class="text-slate-700">${opt.name} ${defaultBadge}</span>
+                                ${priceStr}
+                            </div>`;
+                        });
+
+                        htmlContent += `</div></div>`;
+                    });
+
+                    htmlContent += '</div>';
+                    htmlViz.innerHTML = htmlContent;
+                    return null;
+                }
+            },
+            menu: {
+                title: "Menu Catalogs",
+                desc: "Groups items together and establishes Base Corporate Pricing (MSRP). Allows for regional/tiered pricing strategies (e.g., Urban vs. Suburban) disconnected from the raw item.",
+                renderViz: () => {
+                    document.getElementById('mainChart').style.display = 'none';
+                    const htmlViz = document.getElementById('html-viz');
+                    htmlViz.classList.remove('hidden');
+                    
+                    let htmlContent = '<h5 class="font-bold text-slate-700 mb-4 text-center">Menu Collections (MDM)</h5><div class="space-y-4">';
+                    
+                    const themes = {
+                        'CORE': { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-900', badge: 'bg-indigo-200' },
+                        'LTO': { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-900', badge: 'bg-rose-200' },
+                        'DELIVERY_CHANNEL': { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-900', badge: 'bg-emerald-200' }
+                    };
+
+                    mdmData.menu.forEach(menuDoc => {
+                        const theme = themes[menuDoc.menu_type] || themes['CORE'];
+
+                        htmlContent += `<div class="bg-white rounded-lg border border-slate-200 shadow-sm p-3">`;
+                        htmlContent += `<div class="${theme.bg} ${theme.border} border p-2 rounded ${theme.text} font-semibold mb-3 flex justify-between items-center">
+                            <span class="text-sm">${menuDoc.menu_name}</span>
+                            <span class="text-[10px] px-2 py-1 ${theme.badge} rounded-full font-bold uppercase tracking-wider">${menuDoc.menu_type}</span>
+                        </div>`;
+                        
+                        htmlContent += `<div class="space-y-2 pl-2">`;
+                        menuDoc.categories.forEach(cat => {
+                            let firstItemName = cat.items && cat.items.length > 0 ? cat.items[0].item_name : "Item";
+                            let firstItemPrice = cat.items && cat.items.length > 0 ? cat.items[0].base_price.toFixed(2) : "0.00";
+
+                            htmlContent += `<div class="border-l-2 border-slate-200 pl-3 relative">
+                                <div class="text-sm font-semibold text-slate-700">${cat.display_name} <span class="text-xs text-slate-400 font-normal">(${cat.items.length} items)</span></div>
+                                <div class="text-xs text-slate-500">e.g., ${firstItemName} ($${firstItemPrice})</div>
+                            </div>`;
+                        });
+                        htmlContent += `</div></div>`;
+                    });
+                    
+                    htmlContent += '</div>';
+                    htmlViz.innerHTML = htmlContent;
+                    return null;
+                }
+            },
+            location: {
+                title: "Location Profiles",
+                desc: "Represents physical franchises. Subscribes to corporate menus but maintains metadata and handles opt-outs or localized pricing overrides per franchise agreements.",
+                renderViz: () => {
+                    const ctx = document.getElementById('mainChart').getContext('2d');
+                    document.getElementById('mainChart').style.display = 'block';
+                    document.getElementById('html-viz').classList.add('hidden');
+
+                    // Access the first menu in the array (CORE) for the baseline comparison
+                    const basePrice = mdmData.menu[0].categories[0].items[0].base_price;
+                    const overridePrice = mdmData.location.menu_subscriptions[0].franchise_overrides.pricing_overrides[0].override_price;
+
+                    return new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Classic Cheeseburger'],
+                            datasets: [
+                                {
+                                    label: 'Corporate MSRP',
+                                    data: [basePrice],
+                                    backgroundColor: '#94a3b8',
+                                    borderRadius: 4
+                                },
+                                {
+                                    label: 'Franchise Override (Loc: 10452)',
+                                    data: [overridePrice],
+                                    backgroundColor: '#f59e0b',
+                                    borderRadius: 4
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: { y: { beginAtZero: true, title: { display: true, text: 'Price ($)' } } },
+                            plugins: {
+                                legend: { position: 'bottom' },
+                                title: { display: true, text: 'Pricing Conflict Resolution (Survivorship)', font: { size: 14 } },
+                                tooltip: { callbacks: { label: function(context) { return '$' + context.raw.toFixed(2); } } }
+                            }
+                        }
+                    });
+                }
+            }
+        };
+
+        let currentChart = null;
+
+        function syntaxHighlight(json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'text-amber-400'; 
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'text-sky-300 font-semibold'; 
+                    } else {
+                        cls = 'text-emerald-400'; 
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'text-pink-400'; 
+                } else if (/null/.test(match)) {
+                    cls = 'text-slate-500'; 
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        function loadDocumentView(type) {
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active', 'bg-sky-500', 'text-white');
+                btn.classList.add('bg-white', 'text-slate-700');
+            });
+            const activeBtn = document.getElementById(`btn-${type}`);
+            activeBtn.classList.remove('bg-white', 'text-slate-700');
+            activeBtn.classList.add('active', 'bg-sky-500', 'text-white');
+
+            const config = viewConfig[type];
+            document.getElementById('doc-title').innerHTML = `<span class="bg-amber-100 text-amber-800 px-2 py-1 rounded text-sm uppercase tracking-wide">Document</span> ${config.title}`;
+            document.getElementById('doc-desc').textContent = config.desc;
+
+            const jsonDisplay = document.getElementById('json-display');
+            jsonDisplay.innerHTML = syntaxHighlight(mdmData[type]);
+
+            if (currentChart) {
+                currentChart.destroy();
+            }
+            currentChart = config.renderViz();
+        }
+
+        function showSyndicationDetails(system) {
+            ['pos', 'olo', 'print'].forEach(sys => {
+                document.getElementById(`syn-desc-${sys}`).classList.add('hidden');
+            });
+            const descEl = document.getElementById(`syn-desc-${system}`);
+            if(descEl.classList.contains('hidden')) {
+                descEl.classList.remove('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDocumentView('item');
+        });
+    </script>
+</body>
+</html>
