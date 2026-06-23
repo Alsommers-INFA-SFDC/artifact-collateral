@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Types: B2B, B2C, B2B2C | Technical Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* === CSS CUSTOM PROPERTIES — SALESFORCE BRAND === */
+:root {
+    --sf-navy: #032D60;
+    --sf-blue: #0176D3;
+    --sf-blue-light: #1B96FF;
+    --sf-blue-pale: #EBF5FE;
+    --sf-cloud: #FFFFFF;
+    --sf-gray-100: #F3F3F3;
+    --sf-gray-200: #E5E5E5;
+    --sf-gray-600: #706E6B;
+    --sf-gray-800: #3E3E3C;
+    --sf-success: #2E844A;
+    --sf-warning: #FE9339;
+    --sf-error: #EA001E;
+    --sf-purple: #9050E9;
+
+    --font-display: 'Figtree', sans-serif;
+    --font-body: 'Nunito Sans', sans-serif;
+    --title-size: clamp(2rem, 5.5vw, 4.2rem);
+    --h2-size: clamp(1.4rem, 3.5vw, 2.6rem);
+    --h3-size: clamp(1rem, 2vw, 1.4rem);
+    --body-size: clamp(0.75rem, 1.4vw, 1.05rem);
+    --small-size: clamp(0.65rem, 1vw, 0.85rem);
+    --label-size: clamp(0.6rem, 0.9vw, 0.75rem);
+
+    --slide-padding: clamp(1.5rem, 5vw, 5rem);
+    --content-gap: clamp(0.75rem, 2vw, 2rem);
+    --element-gap: clamp(0.25rem, 1vw, 1rem);
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-normal: 0.6s;
+}
+
+/* === RESET === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* === VIEWPORT FITTING === */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
+    padding: var(--slide-padding);
+}
+
+.card, .container, .content-box {
+    max-width: min(90vw, 1000px);
+    max-height: min(80vh, 700px);
+}
+
+.feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+.feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+img, .image-container {
+    max-width: 100%;
+    max-height: min(50vh, 400px);
+    object-fit: contain;
+}
+
+/* === RESPONSIVE BREAKPOINTS === */
+@media (max-height: 700px) {
+    :root {
+        --slide-padding: clamp(0.75rem, 3vw, 2rem);
+        --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+        --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+        --h2-size: clamp(1rem, 3vw, 1.75rem);
+    }
+}
+@media (max-height: 600px) {
+    :root {
+        --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+        --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+        --title-size: clamp(1.1rem, 4vw, 2rem);
+        --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+    }
+    .nav-dots, .keyboard-hint, .decorative { display: none; }
+}
+@media (max-height: 500px) {
+    :root {
+        --slide-padding: clamp(0.4rem, 2vw, 1rem);
+        --title-size: clamp(1rem, 3.5vw, 1.5rem);
+        --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+        --body-size: clamp(0.65rem, 1vw, 0.85rem);
+    }
+}
+@media (max-width: 600px) {
+    :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+    .grid { grid-template-columns: 1fr; }
+    .comparison-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+    html { scroll-behavior: auto; }
+}
+
+/* === GLOBAL === */
+body {
+    font-family: var(--font-body);
+    background: var(--sf-cloud);
+    color: var(--sf-gray-800);
+}
+
+/* === PROGRESS BAR === */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--sf-blue);
+    z-index: 1000;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* === NAV DOTS === */
+.nav-dots {
+    position: fixed;
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 1vh, 10px);
+    z-index: 100;
+}
+.nav-dot {
+    width: clamp(8px, 1vw, 10px);
+    height: clamp(8px, 1vw, 10px);
+    border-radius: 50%;
+    background: var(--sf-gray-200);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+.nav-dot.active {
+    background: var(--sf-blue);
+    transform: scale(1.3);
+}
+
+/* === ANIMATIONS === */
+.reveal {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity var(--duration-normal) var(--ease-out-expo),
+                transform var(--duration-normal) var(--ease-out-expo);
+}
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.reveal:nth-child(1) { transition-delay: 0.1s; }
+.reveal:nth-child(2) { transition-delay: 0.2s; }
+.reveal:nth-child(3) { transition-delay: 0.3s; }
+.reveal:nth-child(4) { transition-delay: 0.4s; }
+.reveal:nth-child(5) { transition-delay: 0.5s; }
+.reveal:nth-child(6) { transition-delay: 0.6s; }
+
+/* === CLOUD DECORATION === */
+.cloud-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.08;
+    pointer-events: none;
+}
+
+/* === TITLE SLIDE === */
+.title-slide {
+    background: linear-gradient(160deg, var(--sf-navy) 0%, #04427A 50%, var(--sf-blue) 100%);
+    color: white;
+    align-items: center;
+    justify-content: center;
+}
+.title-slide .slide-content {
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+.title-slide .cloud-shape-1 {
+    width: clamp(200px, 40vw, 500px);
+    height: clamp(200px, 40vw, 500px);
+    background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+    top: -10%;
+    right: -10%;
+}
+.title-slide .cloud-shape-2 {
+    width: clamp(150px, 30vw, 400px);
+    height: clamp(150px, 30vw, 400px);
+    background: radial-gradient(circle, rgba(27,150,255,0.2) 0%, transparent 70%);
+    bottom: -5%;
+    left: -5%;
+}
+.sf-logo-text {
+    font-family: var(--font-display);
+    font-size: var(--small-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: clamp(1rem, 3vh, 2rem);
+}
+.title-slide h1 {
+    font-family: var(--font-display);
+    font-size: var(--title-size);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
+}
+.title-slide h1 span { color: var(--sf-blue-light); }
+.title-subtitle {
+    font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+    color: rgba(255,255,255,0.75);
+    font-weight: 400;
+    max-width: min(80vw, 550px);
+    line-height: 1.5;
+}
+.title-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: clamp(1.5rem, 3vh, 2.5rem);
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 24px;
+    padding: clamp(0.3rem, 0.6vw, 0.5rem) clamp(0.8rem, 1.5vw, 1.2rem);
+    font-size: var(--small-size);
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+}
+.title-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--sf-success);
+    border-radius: 50%;
+}
+
+/* === PROBLEM SLIDE === */
+.problem-slide { background: var(--sf-gray-100); }
+.problem-slide .slide-content {
+    max-width: min(90vw, 950px);
+    margin: 0 auto;
+}
+.section-label {
+    font-family: var(--font-display);
+    font-size: var(--label-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--sf-blue);
+    margin-bottom: clamp(0.3rem, 1vh, 0.6rem);
+}
+.slide h2 {
+    font-family: var(--font-display);
+    font-size: var(--h2-size);
+    font-weight: 800;
+    color: var(--sf-navy);
+    line-height: 1.15;
+    margin-bottom: clamp(0.75rem, 2vh, 1.5rem);
+}
+.pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+.pain-card {
+    background: white;
+    border-radius: 12px;
+    padding: clamp(0.8rem, 1.5vw, 1.2rem);
+    border-left: 3px solid var(--sf-error);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.pain-card .pain-icon {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    margin-bottom: clamp(0.3rem, 0.6vh, 0.5rem);
+}
+.pain-card h3 {
+    font-family: var(--font-display);
+    font-size: var(--h3-size);
+    font-weight: 700;
+    color: var(--sf-navy);
+    margin-bottom: clamp(0.2rem, 0.5vh, 0.4rem);
+}
+.pain-card p {
+    font-size: var(--small-size);
+    color: var(--sf-gray-600);
+    line-height: 1.45;
+}
+
+/* === COMPARISON SLIDES === */
+.comparison-slide { background: white; }
+.comparison-slide .slide-content {
+    max-width: min(90vw, 1000px);
+    margin: 0 auto;
+}
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: clamp(0.5rem, 1vw, 1rem);
+    align-items: stretch;
+}
+.state-card {
+    border-radius: 12px;
+    padding: clamp(1rem, 2vw, 1.8rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.4rem, 1vh, 0.8rem);
+}
+.state-card.current {
+    background: #FEF3F2;
+    border: 1px solid #FECDCA;
+}
+.state-card.future {
+    background: var(--sf-blue-pale);
+    border: 1px solid #B9D6F2;
+}
+.state-label {
+    font-family: var(--font-display);
+    font-size: var(--label-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+.state-card.current .state-label { color: var(--sf-error); }
+.state-card.future .state-label { color: var(--sf-blue); }
+.state-card h3 {
+    font-family: var(--font-display);
+    font-size: clamp(0.95rem, 1.8vw, 1.3rem);
+    font-weight: 700;
+    color: var(--sf-navy);
+    line-height: 1.2;
+}
+.state-card p {
+    font-size: var(--body-size);
+    color: var(--sf-gray-800);
+    line-height: 1.5;
+}
+.state-card .sf-example {
+    background: rgba(0,0,0,0.04);
+    border-radius: 8px;
+    padding: clamp(0.4rem, 0.8vw, 0.6rem) clamp(0.6rem, 1vw, 0.8rem);
+    font-size: var(--small-size);
+    color: var(--sf-gray-600);
+    font-style: italic;
+    border-left: 2px solid currentColor;
+}
+.state-card.current .sf-example { border-left-color: var(--sf-warning); }
+.state-card.future .sf-example { border-left-color: var(--sf-success); }
+
+.arrow-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.arrow-circle {
+    width: clamp(36px, 5vw, 50px);
+    height: clamp(36px, 5vw, 50px);
+    border-radius: 50%;
+    background: var(--sf-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(1,118,211,0.3);
+}
+
+.slide-number {
+    position: absolute;
+    bottom: clamp(0.75rem, 2vh, 1.5rem);
+    right: clamp(1rem, 3vw, 2rem);
+    font-family: var(--font-display);
+    font-size: var(--small-size);
+    color: var(--sf-gray-600);
+    font-weight: 600;
+}
+
+.comparison-slide:nth-of-type(even) { background: var(--sf-gray-100); }
+
+/* === JOURNEY SLIDE === */
+.journey-slide {
+    background: linear-gradient(160deg, var(--sf-navy) 0%, #04427A 100%);
+    color: white;
+}
+.journey-slide .slide-content {
+    max-width: min(90vw, 900px);
+    margin: 0 auto;
+    align-items: center;
+    text-align: center;
+}
+.journey-slide h2 { color: white; }
+.journey-steps {
+    display: flex;
+    gap: clamp(0.3rem, 1vw, 0.8rem);
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: clamp(0.5rem, 2vh, 1.5rem);
+}
+.journey-step {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: clamp(0.6rem, 1.2vw, 1rem) clamp(0.8rem, 1.5vw, 1.4rem);
+    text-align: center;
+    min-width: clamp(100px, 15vw, 160px);
+    backdrop-filter: blur(6px);
+}
+.journey-step .step-num {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    font-weight: 800;
+    color: var(--sf-blue-light);
+    line-height: 1;
+}
+.journey-step .step-label {
+    font-size: var(--small-size);
+    color: rgba(255,255,255,0.75);
+    margin-top: clamp(0.15rem, 0.3vh, 0.3rem);
+    font-weight: 600;
+}
+.journey-connector {
+    font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+    color: rgba(255,255,255,0.3);
+}
+.journey-tagline {
+    font-size: var(--body-size);
+    color: rgba(255,255,255,0.6);
+    margin-top: clamp(1rem, 2.5vh, 2rem);
+    max-width: min(80vw, 500px);
+    line-height: 1.6;
+}
+
+/* === CTA SLIDE === */
+.cta-slide { background: white; }
+.cta-slide .slide-content {
+    max-width: min(90vw, 800px);
+    margin: 0 auto;
+}
+.cta-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 1.2vh, 0.8rem);
+    margin-top: clamp(0.5rem, 1.5vh, 1rem);
+}
+.cta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(0.5rem, 1vw, 0.8rem);
+    background: var(--sf-gray-100);
+    border-radius: 10px;
+    padding: clamp(0.6rem, 1.2vw, 1rem) clamp(0.8rem, 1.5vw, 1.2rem);
+}
+.cta-num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--h3-size);
+    color: var(--sf-blue);
+    flex-shrink: 0;
+    line-height: 1.3;
+}
+.cta-text h3 {
+    font-family: var(--font-display);
+    font-size: var(--h3-size);
+    font-weight: 700;
+    color: var(--sf-navy);
+    line-height: 1.3;
+}
+.cta-text p {
+    font-size: var(--small-size);
+    color: var(--sf-gray-600);
+    line-height: 1.4;
+    margin-top: 0.15em;
+}
+.cta-footer {
+    margin-top: clamp(1rem, 3vh, 2rem);
+    text-align: center;
+    font-size: var(--body-size);
+    color: var(--sf-gray-600);
+}
+.cta-footer strong { color: var(--sf-blue); }
+
+/* === INLINE EDITING === */
+.edit-hotzone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    z-index: 10000;
+    cursor: pointer;
+}
+.edit-toggle {
+    position: fixed;
+    top: clamp(0.5rem, 1.5vh, 1rem);
+    left: clamp(0.5rem, 1.5vw, 1rem);
+    background: var(--sf-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: clamp(0.3rem, 0.6vw, 0.5rem) clamp(0.6rem, 1vw, 0.8rem);
+    font-family: var(--font-display);
+    font-size: var(--small-size);
+    font-weight: 700;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10001;
+}
+.edit-toggle.show,
+.edit-toggle.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.edit-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--sf-success);
+    color: white;
+    text-align: center;
+    padding: clamp(0.3rem, 0.5vh, 0.4rem);
+    font-family: var(--font-display);
+    font-size: var(--small-size);
+    font-weight: 700;
+    z-index: 9999;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+.edit-banner.active { transform: translateY(0); }
+
+body.edit-active [contenteditable] {
+    outline: 1px dashed rgba(1,118,211,0.4);
+    outline-offset: 2px;
+    border-radius: 4px;
+    min-height: 1em;
+}
+body.edit-active [contenteditable]:focus {
+    outline: 2px solid var(--sf-blue);
+    background: rgba(1,118,211,0.03);
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Nav Dots -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- Edit Mode -->
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle">Edit Mode</button>
+<div class="edit-banner" id="editBanner">Editing — Click any text to change it &middot; Ctrl+S to save file</div>
+
+<!-- SLIDE 1: TITLE -->
+<section class="slide title-slide">
+    <div class="cloud-shape cloud-shape-1"></div>
+    <div class="cloud-shape cloud-shape-2"></div>
+    <div class="slide-content">
+        <div class="sf-logo-text reveal">Master Data Management · Data Architecture</div>
+        <h1 class="reveal">Customer Entity<br>Resolution:<br><span>B2B, B2C, and B2B2C</span></h1>
+        <p class="title-subtitle reveal">How unified data models unlock analytics, operational efficiency, and business value</p>
+        <div class="title-badge reveal">
+            <span class="dot"></span>
+            Technical Edition &middot; 2026
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 2: B2B DEFINITION -->
+<section class="slide problem-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">Entity Type 1</div>
+        <h2 class="reveal">B2B: Organization-to-Organization Data Model</h2>
+        <div class="pain-grid">
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🗂️</div>
+                <h3>Data Structure</h3>
+                <p>Hierarchical entity model. Organizations contain contacts, locations, and buying units. Relationships map to org charts and procurement chains.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🔑</div>
+                <h3>Key Identifiers</h3>
+                <p>DUNS number, Tax ID, domain names, parent/subsidiary relationships. Multi-level hierarchies with geographic and functional dimensions.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">📊</div>
+                <h3>Analytics Focus</h3>
+                <p>Account-level aggregation, penetration metrics, wallet share analysis, buying committee mapping, and multi-touch attribution across long cycles.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🔗</div>
+                <h3>Data Relationships</h3>
+                <p>Complex M:N relationships. One contact maps to multiple accounts, accounts have parent/child hierarchies, and buying groups span organizations.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">2</div>
+</section>
+
+<!-- SLIDE 3: B2B WITHOUT ENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2B Data Challenge</div>
+        <h2 class="reveal">Fragmented Account Hierarchies</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Unresolved — Duplicate Entities</div>
+                <h3>Data Fragmentation</h3>
+                <p>Same organization exists as 15+ records with inconsistent naming, hierarchy conflicts, and unmapped relationships. CRM, ERP, and marketing systems hold conflicting versions of truth.</p>
+                <div class="sf-example">e.g., "IBM", "International Business Machines Corp", "IBM - North America", "IBM Corporation" all treated as separate entities with different hierarchies</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">Business Impact</div>
+                <h3>Analytics Failure</h3>
+                <p>Inaccurate account-level metrics, broken hierarchical roll-ups, incomplete touchpoint attribution, and inability to calculate true account lifetime value or penetration.</p>
+                <div class="sf-example">Impact: Reporting errors, missed expansion signals, territory conflicts, and strategic decisions based on incomplete data</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">3</div>
+</section>
+
+<!-- SLIDE 4: B2B WITH ENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2B Solution Architecture</div>
+        <h2 class="reveal">Unified Account Graph</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Before — Siloed Data</div>
+                <h3>System Fragmentation</h3>
+                <p>Each system maintains its own account master. No global identifier, no hierarchy governance, no cross-system reconciliation. Manual matching attempts fail at scale.</p>
+                <div class="sf-example">Pattern: CRM account "IBM-001" ≠ ERP customer "12345" ≠ Marketing account "org-ibm-na" — three disconnected records for one entity</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">After — MDM Implementation</div>
+                <h3>Golden Record System</h3>
+                <p>Single authoritative account entity per organization. Probabilistic and deterministic matching rules, survivorship logic, hierarchy governance, and propagated golden keys across all systems.</p>
+                <div class="sf-example">Value: Complete 360° view, accurate roll-ups, multi-touch attribution across all channels, predictive account scoring, and data-driven territory optimization</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">4</div>
+</section>
+
+<!-- SLIDE 5: B2C DEFINITION -->
+<section class="slide problem-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">Entity Type 2</div>
+        <h2 class="reveal">B2C: Individual-to-Individual Data Model</h2>
+        <div class="pain-grid">
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">👥</div>
+                <h3>Data Structure</h3>
+                <p>Person-centric entity model. Individual profiles linked to households, devices, and interaction histories across digital and physical channels.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🔐</div>
+                <h3>Key Identifiers</h3>
+                <p>Email, phone, device IDs, cookie IDs, loyalty numbers, and hashed PII. Probabilistic matching required due to identifier variability and privacy constraints.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">📈</div>
+                <h3>Analytics Focus</h3>
+                <p>Individual-level behavior tracking, customer lifetime value, segmentation, personalization models, churn prediction, and cross-channel attribution.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🌐</div>
+                <h3>Data Scale</h3>
+                <p>High-volume, high-velocity data. Millions of individual profiles with real-time interaction streams from web, mobile, store, and service touchpoints.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">5</div>
+</section>
+
+<!-- SLIDE 6: B2C WITHOUT ENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2C Data Challenge</div>
+        <h2 class="reveal">Disconnected Identity Graph</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Unresolved — Multi-Profile Chaos</div>
+                <h3>Identity Fragmentation</h3>
+                <p>Single individual exists as 5+ profiles across channels. Email subscriber, mobile app user, in-store loyalty member, web visitor — all treated as separate entities with no unification layer.</p>
+                <div class="sf-example">e.g., sarah@email.com (web), +1-555-0123 (mobile), loyalty ID 87654 (store), device IDFA xyz123 (app) — four disconnected identities for one customer</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">Analytics Impact</div>
+                <h3>Model Degradation</h3>
+                <p>Inaccurate LTV calculation, failed personalization, broken attribution, wasted marketing spend on duplicate profiles, and inability to measure true cross-channel behavior.</p>
+                <div class="sf-example">Impact: Segmentation models trained on fragmented data, recommendation engines miss preferences, and marketing ROI calculations are 30-40% understated</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">6</div>
+</section>
+
+<!-- SLIDE 7: B2C WITH ENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2C Solution Architecture</div>
+        <h2 class="reveal">Unified Identity Graph</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Before — Channel Silos</div>
+                <h3>Unlinked Identifiers</h3>
+                <p>Each channel system maintains its own customer ID namespace. No cross-channel stitching, no identity persistence across devices, no household-level aggregation.</p>
+                <div class="sf-example">Pattern: Web analytics tracks anonymous sessions, mobile app has user IDs, CRM has contact records, loyalty system has member IDs — no graph connecting them</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">After — Identity Resolution</div>
+                <h3>Persistent Customer ID</h3>
+                <p>Deterministic and probabilistic matching creates unified identity graph. Single persistent ID per individual, linked profiles across all channels, household clustering, and real-time identity updates.</p>
+                <div class="sf-example">Value: Accurate 360° customer profile, precise segmentation, effective personalization, cross-channel attribution, predictive LTV models, and optimized marketing spend</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">7</div>
+</section>
+
+<!-- SLIDE 8: B2B2C DEFINITION -->
+<section class="slide problem-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">Entity Type 3</div>
+        <h2 class="reveal">B2B2C: Hybrid Partner-Consumer Data Model</h2>
+        <div class="pain-grid">
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🔀</div>
+                <h3>Data Structure</h3>
+                <p>Dual-entity model linking organizations (partners) to individuals (end consumers). Requires both hierarchical account data and individual identity graphs.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🎯</div>
+                <h3>Key Identifiers</h3>
+                <p>Partner org IDs, consumer PII, product serial numbers, warranty registrations, and channel attribution codes. Junction tables link partners to consumers via transactions.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">📉</div>
+                <h3>Analytics Complexity</h3>
+                <p>Multi-level attribution: partner effectiveness metrics, consumer behavior patterns, product journey tracking, and channel conflict detection across the partner ecosystem.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🔄</div>
+                <h3>Data Flow</h3>
+                <p>Bi-directional data sync between manufacturer, partner systems, and consumer touchpoints. POS data, warranty claims, support cases, and direct consumer interactions.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">8</div>
+</section>
+
+<!-- SLIDE 9: B2B2C WITHOUT ENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2B2C Data Challenge</div>
+        <h2 class="reveal">Disconnected Value Chain</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Unresolved — Data Opacity</div>
+                <h3>Missing Consumer Link</h3>
+                <p>Partner transaction data contains consumer PII but no unified identity. Manufacturer sees partner orders but not end-consumer behavior, product usage, or satisfaction signals.</p>
+                <div class="sf-example">e.g., Partner system shows "iPhone sold to John Smith 555-0123" but manufacturer has no identity link to track John's device usage, service claims, or future purchase intent</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">Analytics Blind Spot</div>
+                <h3>Broken Attribution</h3>
+                <p>Cannot attribute consumer outcomes to partner performance. Warranty claims disconnected from sale channel. Support interactions lack purchase context. Brand loyalty invisible at consumer level.</p>
+                <div class="sf-example">Impact: Partner incentives misaligned with consumer satisfaction, warranty fraud undetected, support quality degraded, and brand loyalty unmeasured</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">9</div>
+</section>
+
+<!-- SLIDE 10: B2B2C WITH ENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2B2C Solution Architecture</div>
+        <h2 class="reveal">Unified Partner-Consumer Graph</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Before — Disconnected Systems</div>
+                <h3>Data Handoff Failure</h3>
+                <p>Partner systems pass transactional data without identity keys. Manufacturer creates separate consumer records for direct interactions. No linking layer between partner-originated and direct-originated consumer data.</p>
+                <div class="sf-example">Pattern: Partner sale creates consumer record A, direct support interaction creates record B — same consumer, two unlinked entities across the value chain</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">After — Value Chain MDM</div>
+                <h3>End-to-End Entity Graph</h3>
+                <p>Unified entity model links partners, consumers, products, and transactions. Partner-to-consumer attribution, product journey tracking, warranty lifecycle management, and cross-channel support context.</p>
+                <div class="sf-example">Value: Partner performance measured by consumer outcomes, support quality improved via full context, warranty fraud detection, and brand loyalty tracked across all channels</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">10</div>
+</section>
+
+<!-- SLIDE 11: CTA -->
+<section class="slide cta-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">Implementation Value</div>
+        <h2 class="reveal">Entity Resolution = Data-Driven Transformation</h2>
+        <ul class="cta-list">
+            <li class="cta-item reveal">
+                <span class="cta-num">1</span>
+                <div class="cta-text">
+                    <h3>Without It: Fragmented Data, Broken Analytics</h3>
+                    <p>Duplicate entities, inaccurate metrics, failed models, and strategic decisions based on incomplete or conflicting data across all entity types.</p>
+                </div>
+            </li>
+            <li class="cta-item reveal">
+                <span class="cta-num">2</span>
+                <div class="cta-text">
+                    <h3>With It: Unified Data Foundation</h3>
+                    <p>Golden record systems, accurate 360° views, reliable analytics, effective ML models, and operational efficiency across B2B, B2C, and B2B2C domains.</p>
+                </div>
+            </li>
+            <li class="cta-item reveal">
+                <span class="cta-num">3</span>
+                <div class="cta-text">
+                    <h3>Business Impact: Measurable Value Across Functions</h3>
+                    <p>15-25% analytics accuracy improvement, 30-40% reduction in duplicate processing, 20%+ lift in model performance, and operational cost savings through automation.</p>
+                </div>
+            </li>
+            <li class="cta-item reveal">
+                <span class="cta-num">4</span>
+                <div class="cta-text">
+                    <h3>Implementation Path: Data Architecture Assessment</h3>
+                    <p>Entity model design, matching rule configuration, survivorship logic, MDM platform selection, and phased rollout across customer entity types.</p>
+                </div>
+            </li>
+        </ul>
+        <div class="cta-footer reveal">
+            Ready to architect a unified data foundation? <strong>Let's design your entity resolution strategy.</strong>
+        </div>
+    </div>
+    <div class="slide-number">11</div>
+</section>
+
+<script>
+/* === SLIDE PRESENTATION CONTROLLER === */
+class SlidePresentation {
+    constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.currentSlide = 0;
+        this.isScrolling = false;
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupProgressBar();
+        this.setupNavDots();
+    }
+
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    const index = Array.from(this.slides).indexOf(entry.target);
+                    if (index !== -1) {
+                        this.currentSlide = index;
+                        this.updateProgressBar();
+                        this.updateNavDots();
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        this.slides.forEach(slide => observer.observe(slide));
+    }
+
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            if (e.target.getAttribute('contenteditable')) return;
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                this.goToSlide(this.currentSlide + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                this.goToSlide(this.currentSlide - 1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                this.goToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                this.goToSlide(this.slides.length - 1);
+            }
+        });
+    }
+
+    setupTouchNav() {
+        let startY = 0;
+        document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            const deltaY = startY - e.changedTouches[0].clientY;
+            if (Math.abs(deltaY) > 50) {
+                this.goToSlide(this.currentSlide + (deltaY > 0 ? 1 : -1));
+            }
+        }, { passive: true });
+    }
+
+    setupWheelNav() {
+        let lastWheel = 0;
+        document.addEventListener('wheel', (e) => {
+            const now = Date.now();
+            if (now - lastWheel < 800) return;
+            if (Math.abs(e.deltaY) > 30) {
+                lastWheel = now;
+                this.goToSlide(this.currentSlide + (e.deltaY > 0 ? 1 : -1));
+            }
+        }, { passive: true });
+    }
+
+    goToSlide(index) {
+        if (index < 0 || index >= this.slides.length) return;
+        this.currentSlide = index;
+        this.slides[index].scrollIntoView({ behavior: 'smooth' });
+    }
+
+    setupProgressBar() {
+        this.progressBar = document.getElementById('progressBar');
+        this.updateProgressBar();
+    }
+
+    updateProgressBar() {
+        if (!this.progressBar) return;
+        const progress = ((this.currentSlide + 1) / this.slides.length) * 100;
+        this.progressBar.style.width = progress + '%';
+    }
+
+    setupNavDots() {
+        const container = document.getElementById('navDots');
+        if (!container) return;
+        container.innerHTML = '';
+        this.slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+            dot.addEventListener('click', () => this.goToSlide(i));
+            container.appendChild(dot);
+        });
+    }
+
+    updateNavDots() {
+        const dots = document.querySelectorAll('.nav-dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === this.currentSlide);
+        });
+    }
+}
+
+/* === INLINE EDITOR === */
+class InlineEditor {
+    constructor(storageKey) {
+        this.isActive = false;
+        this.storageKey = storageKey || 'deck-edits';
+        this.loadEdits();
+    }
+
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('edit-active', this.isActive);
+
+        const toggle = document.getElementById('editToggle');
+        const banner = document.getElementById('editBanner');
+        toggle.textContent = this.isActive ? 'Done' : 'Edit Mode';
+        toggle.classList.toggle('active', this.isActive);
+        banner.classList.toggle('active', this.isActive);
+
+        const editableSelectors = 'h1, h2, h3, p, .state-label, .section-label, .sf-example, .step-label, .cta-text h3, .cta-text p, .cta-footer, .title-subtitle, .sf-logo-text, .title-badge, .pain-card p, .pain-card h3';
+        document.querySelectorAll(editableSelectors).forEach(el => {
+            if (this.isActive) {
+                el.setAttribute('contenteditable', 'true');
+            } else {
+                el.removeAttribute('contenteditable');
+                this.saveEdits();
+            }
+        });
+    }
+
+    saveEdits() {
+        const data = {};
+        document.querySelectorAll('[data-edit-id]').forEach(el => {
+            data[el.dataset.editId] = el.innerHTML;
+        });
+        try { localStorage.setItem(this.storageKey, JSON.stringify(data)); } catch(e) {}
+    }
+
+    loadEdits() {
+        try {
+            const data = JSON.parse(localStorage.getItem(this.storageKey));
+            if (!data) return;
+            Object.entries(data).forEach(([id, html]) => {
+                const el = document.querySelector(`[data-edit-id="${id}"]`);
+                if (el) el.innerHTML = html;
+            });
+        } catch(e) {}
+    }
+
+    exportFile() {
+        const editableEls = Array.from(document.querySelectorAll('[contenteditable]'));
+        editableEls.forEach(el => el.removeAttribute('contenteditable'));
+        document.body.classList.remove('edit-active');
+
+        const editToggle = document.getElementById('editToggle');
+        const editBanner = document.getElementById('editBanner');
+        editToggle?.classList.remove('active', 'show');
+        editBanner?.classList.remove('active', 'show');
+
+        const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+        document.body.classList.add('edit-active');
+        editableEls.forEach(el => el.setAttribute('contenteditable', 'true'));
+        editToggle?.classList.add('active');
+        editBanner?.classList.add('active');
+
+        const blob = new Blob([html], { type: 'text/html' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = document.title.replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.html';
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
+}
+
+/* Initialize */
+const presentation = new SlidePresentation();
+const editor = new InlineEditor('customer-types-technical-edits');
+
+/* Edit mode controls */
+const editToggle = document.getElementById('editToggle');
+const editHotzone = document.getElementById('editHotzone');
+let hideTimeout = null;
+
+editToggle.addEventListener('click', () => editor.toggleEditMode());
+
+editHotzone.addEventListener('mouseenter', () => {
+    clearTimeout(hideTimeout);
+    editToggle.classList.add('show');
+});
+editHotzone.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => {
+        if (!editor.isActive) editToggle.classList.remove('show');
+    }, 400);
+});
+editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+editToggle.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => {
+        if (!editor.isActive) editToggle.classList.remove('show');
+    }, 400);
+});
+editHotzone.addEventListener('click', () => editor.toggleEditMode());
+
+document.addEventListener('keydown', (e) => {
+    if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+        editor.toggleEditMode();
+    }
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        if (editor.isActive) editor.exportFile();
+    }
+});
+</script>
+</body>
+</html>

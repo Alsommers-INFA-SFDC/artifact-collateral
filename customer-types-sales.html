@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Types: B2B, B2C, B2B2C | Sales Executive Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* === CSS CUSTOM PROPERTIES — SALESFORCE BRAND === */
+:root {
+    --sf-navy: #032D60;
+    --sf-blue: #0176D3;
+    --sf-blue-light: #1B96FF;
+    --sf-blue-pale: #EBF5FE;
+    --sf-cloud: #FFFFFF;
+    --sf-gray-100: #F3F3F3;
+    --sf-gray-200: #E5E5E5;
+    --sf-gray-600: #706E6B;
+    --sf-gray-800: #3E3E3C;
+    --sf-success: #2E844A;
+    --sf-warning: #FE9339;
+    --sf-error: #EA001E;
+    --sf-purple: #9050E9;
+
+    --font-display: 'Figtree', sans-serif;
+    --font-body: 'Nunito Sans', sans-serif;
+    --title-size: clamp(2rem, 5.5vw, 4.2rem);
+    --h2-size: clamp(1.4rem, 3.5vw, 2.6rem);
+    --h3-size: clamp(1rem, 2vw, 1.4rem);
+    --body-size: clamp(0.75rem, 1.4vw, 1.05rem);
+    --small-size: clamp(0.65rem, 1vw, 0.85rem);
+    --label-size: clamp(0.6rem, 0.9vw, 0.75rem);
+
+    --slide-padding: clamp(1.5rem, 5vw, 5rem);
+    --content-gap: clamp(0.75rem, 2vw, 2rem);
+    --element-gap: clamp(0.25rem, 1vw, 1rem);
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-normal: 0.6s;
+}
+
+/* === RESET === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* === VIEWPORT FITTING === */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
+    padding: var(--slide-padding);
+}
+
+.card, .container, .content-box {
+    max-width: min(90vw, 1000px);
+    max-height: min(80vh, 700px);
+}
+
+.feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+.feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+img, .image-container {
+    max-width: 100%;
+    max-height: min(50vh, 400px);
+    object-fit: contain;
+}
+
+/* === RESPONSIVE BREAKPOINTS === */
+@media (max-height: 700px) {
+    :root {
+        --slide-padding: clamp(0.75rem, 3vw, 2rem);
+        --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+        --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+        --h2-size: clamp(1rem, 3vw, 1.75rem);
+    }
+}
+@media (max-height: 600px) {
+    :root {
+        --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+        --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+        --title-size: clamp(1.1rem, 4vw, 2rem);
+        --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+    }
+    .nav-dots, .keyboard-hint, .decorative { display: none; }
+}
+@media (max-height: 500px) {
+    :root {
+        --slide-padding: clamp(0.4rem, 2vw, 1rem);
+        --title-size: clamp(1rem, 3.5vw, 1.5rem);
+        --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+        --body-size: clamp(0.65rem, 1vw, 0.85rem);
+    }
+}
+@media (max-width: 600px) {
+    :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+    .grid { grid-template-columns: 1fr; }
+    .comparison-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+    html { scroll-behavior: auto; }
+}
+
+/* === GLOBAL === */
+body {
+    font-family: var(--font-body);
+    background: var(--sf-cloud);
+    color: var(--sf-gray-800);
+}
+
+/* === PROGRESS BAR === */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--sf-blue);
+    z-index: 1000;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* === NAV DOTS === */
+.nav-dots {
+    position: fixed;
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 1vh, 10px);
+    z-index: 100;
+}
+.nav-dot {
+    width: clamp(8px, 1vw, 10px);
+    height: clamp(8px, 1vw, 10px);
+    border-radius: 50%;
+    background: var(--sf-gray-200);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+.nav-dot.active {
+    background: var(--sf-blue);
+    transform: scale(1.3);
+}
+
+/* === ANIMATIONS === */
+.reveal {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity var(--duration-normal) var(--ease-out-expo),
+                transform var(--duration-normal) var(--ease-out-expo);
+}
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.reveal:nth-child(1) { transition-delay: 0.1s; }
+.reveal:nth-child(2) { transition-delay: 0.2s; }
+.reveal:nth-child(3) { transition-delay: 0.3s; }
+.reveal:nth-child(4) { transition-delay: 0.4s; }
+.reveal:nth-child(5) { transition-delay: 0.5s; }
+.reveal:nth-child(6) { transition-delay: 0.6s; }
+
+/* === CLOUD DECORATION === */
+.cloud-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.08;
+    pointer-events: none;
+}
+
+/* === TITLE SLIDE === */
+.title-slide {
+    background: linear-gradient(160deg, var(--sf-navy) 0%, #04427A 50%, var(--sf-blue) 100%);
+    color: white;
+    align-items: center;
+    justify-content: center;
+}
+.title-slide .slide-content {
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+.title-slide .cloud-shape-1 {
+    width: clamp(200px, 40vw, 500px);
+    height: clamp(200px, 40vw, 500px);
+    background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+    top: -10%;
+    right: -10%;
+}
+.title-slide .cloud-shape-2 {
+    width: clamp(150px, 30vw, 400px);
+    height: clamp(150px, 30vw, 400px);
+    background: radial-gradient(circle, rgba(27,150,255,0.2) 0%, transparent 70%);
+    bottom: -5%;
+    left: -5%;
+}
+.sf-logo-text {
+    font-family: var(--font-display);
+    font-size: var(--small-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: clamp(1rem, 3vh, 2rem);
+}
+.title-slide h1 {
+    font-family: var(--font-display);
+    font-size: var(--title-size);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
+}
+.title-slide h1 span { color: var(--sf-blue-light); }
+.title-subtitle {
+    font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+    color: rgba(255,255,255,0.75);
+    font-weight: 400;
+    max-width: min(80vw, 550px);
+    line-height: 1.5;
+}
+.title-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: clamp(1.5rem, 3vh, 2.5rem);
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 24px;
+    padding: clamp(0.3rem, 0.6vw, 0.5rem) clamp(0.8rem, 1.5vw, 1.2rem);
+    font-size: var(--small-size);
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+}
+.title-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--sf-success);
+    border-radius: 50%;
+}
+
+/* === PROBLEM SLIDE === */
+.problem-slide { background: var(--sf-gray-100); }
+.problem-slide .slide-content {
+    max-width: min(90vw, 950px);
+    margin: 0 auto;
+}
+.section-label {
+    font-family: var(--font-display);
+    font-size: var(--label-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--sf-blue);
+    margin-bottom: clamp(0.3rem, 1vh, 0.6rem);
+}
+.slide h2 {
+    font-family: var(--font-display);
+    font-size: var(--h2-size);
+    font-weight: 800;
+    color: var(--sf-navy);
+    line-height: 1.15;
+    margin-bottom: clamp(0.75rem, 2vh, 1.5rem);
+}
+.pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+.pain-card {
+    background: white;
+    border-radius: 12px;
+    padding: clamp(0.8rem, 1.5vw, 1.2rem);
+    border-left: 3px solid var(--sf-error);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.pain-card .pain-icon {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    margin-bottom: clamp(0.3rem, 0.6vh, 0.5rem);
+}
+.pain-card h3 {
+    font-family: var(--font-display);
+    font-size: var(--h3-size);
+    font-weight: 700;
+    color: var(--sf-navy);
+    margin-bottom: clamp(0.2rem, 0.5vh, 0.4rem);
+}
+.pain-card p {
+    font-size: var(--small-size);
+    color: var(--sf-gray-600);
+    line-height: 1.45;
+}
+
+/* === COMPARISON SLIDES === */
+.comparison-slide { background: white; }
+.comparison-slide .slide-content {
+    max-width: min(90vw, 1000px);
+    margin: 0 auto;
+}
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: clamp(0.5rem, 1vw, 1rem);
+    align-items: stretch;
+}
+.state-card {
+    border-radius: 12px;
+    padding: clamp(1rem, 2vw, 1.8rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.4rem, 1vh, 0.8rem);
+}
+.state-card.current {
+    background: #FEF3F2;
+    border: 1px solid #FECDCA;
+}
+.state-card.future {
+    background: var(--sf-blue-pale);
+    border: 1px solid #B9D6F2;
+}
+.state-label {
+    font-family: var(--font-display);
+    font-size: var(--label-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+.state-card.current .state-label { color: var(--sf-error); }
+.state-card.future .state-label { color: var(--sf-blue); }
+.state-card h3 {
+    font-family: var(--font-display);
+    font-size: clamp(0.95rem, 1.8vw, 1.3rem);
+    font-weight: 700;
+    color: var(--sf-navy);
+    line-height: 1.2;
+}
+.state-card p {
+    font-size: var(--body-size);
+    color: var(--sf-gray-800);
+    line-height: 1.5;
+}
+.state-card .sf-example {
+    background: rgba(0,0,0,0.04);
+    border-radius: 8px;
+    padding: clamp(0.4rem, 0.8vw, 0.6rem) clamp(0.6rem, 1vw, 0.8rem);
+    font-size: var(--small-size);
+    color: var(--sf-gray-600);
+    font-style: italic;
+    border-left: 2px solid currentColor;
+}
+.state-card.current .sf-example { border-left-color: var(--sf-warning); }
+.state-card.future .sf-example { border-left-color: var(--sf-success); }
+
+.arrow-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.arrow-circle {
+    width: clamp(36px, 5vw, 50px);
+    height: clamp(36px, 5vw, 50px);
+    border-radius: 50%;
+    background: var(--sf-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(1,118,211,0.3);
+}
+
+.slide-number {
+    position: absolute;
+    bottom: clamp(0.75rem, 2vh, 1.5rem);
+    right: clamp(1rem, 3vw, 2rem);
+    font-family: var(--font-display);
+    font-size: var(--small-size);
+    color: var(--sf-gray-600);
+    font-weight: 600;
+}
+
+.comparison-slide:nth-of-type(even) { background: var(--sf-gray-100); }
+
+/* === JOURNEY SLIDE === */
+.journey-slide {
+    background: linear-gradient(160deg, var(--sf-navy) 0%, #04427A 100%);
+    color: white;
+}
+.journey-slide .slide-content {
+    max-width: min(90vw, 900px);
+    margin: 0 auto;
+    align-items: center;
+    text-align: center;
+}
+.journey-slide h2 { color: white; }
+.journey-steps {
+    display: flex;
+    gap: clamp(0.3rem, 1vw, 0.8rem);
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: clamp(0.5rem, 2vh, 1.5rem);
+}
+.journey-step {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: clamp(0.6rem, 1.2vw, 1rem) clamp(0.8rem, 1.5vw, 1.4rem);
+    text-align: center;
+    min-width: clamp(100px, 15vw, 160px);
+    backdrop-filter: blur(6px);
+}
+.journey-step .step-num {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    font-weight: 800;
+    color: var(--sf-blue-light);
+    line-height: 1;
+}
+.journey-step .step-label {
+    font-size: var(--small-size);
+    color: rgba(255,255,255,0.75);
+    margin-top: clamp(0.15rem, 0.3vh, 0.3rem);
+    font-weight: 600;
+}
+.journey-connector {
+    font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+    color: rgba(255,255,255,0.3);
+}
+.journey-tagline {
+    font-size: var(--body-size);
+    color: rgba(255,255,255,0.6);
+    margin-top: clamp(1rem, 2.5vh, 2rem);
+    max-width: min(80vw, 500px);
+    line-height: 1.6;
+}
+
+/* === CTA SLIDE === */
+.cta-slide { background: white; }
+.cta-slide .slide-content {
+    max-width: min(90vw, 800px);
+    margin: 0 auto;
+}
+.cta-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 1.2vh, 0.8rem);
+    margin-top: clamp(0.5rem, 1.5vh, 1rem);
+}
+.cta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(0.5rem, 1vw, 0.8rem);
+    background: var(--sf-gray-100);
+    border-radius: 10px;
+    padding: clamp(0.6rem, 1.2vw, 1rem) clamp(0.8rem, 1.5vw, 1.2rem);
+}
+.cta-num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--h3-size);
+    color: var(--sf-blue);
+    flex-shrink: 0;
+    line-height: 1.3;
+}
+.cta-text h3 {
+    font-family: var(--font-display);
+    font-size: var(--h3-size);
+    font-weight: 700;
+    color: var(--sf-navy);
+    line-height: 1.3;
+}
+.cta-text p {
+    font-size: var(--small-size);
+    color: var(--sf-gray-600);
+    line-height: 1.4;
+    margin-top: 0.15em;
+}
+.cta-footer {
+    margin-top: clamp(1rem, 3vh, 2rem);
+    text-align: center;
+    font-size: var(--body-size);
+    color: var(--sf-gray-600);
+}
+.cta-footer strong { color: var(--sf-blue); }
+
+/* === INLINE EDITING === */
+.edit-hotzone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    z-index: 10000;
+    cursor: pointer;
+}
+.edit-toggle {
+    position: fixed;
+    top: clamp(0.5rem, 1.5vh, 1rem);
+    left: clamp(0.5rem, 1.5vw, 1rem);
+    background: var(--sf-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: clamp(0.3rem, 0.6vw, 0.5rem) clamp(0.6rem, 1vw, 0.8rem);
+    font-family: var(--font-display);
+    font-size: var(--small-size);
+    font-weight: 700;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10001;
+}
+.edit-toggle.show,
+.edit-toggle.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.edit-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--sf-success);
+    color: white;
+    text-align: center;
+    padding: clamp(0.3rem, 0.5vh, 0.4rem);
+    font-family: var(--font-display);
+    font-size: var(--small-size);
+    font-weight: 700;
+    z-index: 9999;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+.edit-banner.active { transform: translateY(0); }
+
+body.edit-active [contenteditable] {
+    outline: 1px dashed rgba(1,118,211,0.4);
+    outline-offset: 2px;
+    border-radius: 4px;
+    min-height: 1em;
+}
+body.edit-active [contenteditable]:focus {
+    outline: 2px solid var(--sf-blue);
+    background: rgba(1,118,211,0.03);
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Nav Dots -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- Edit Mode -->
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle">Edit Mode</button>
+<div class="edit-banner" id="editBanner">Editing — Click any text to change it &middot; Ctrl+S to save file</div>
+
+<!-- SLIDE 1: TITLE -->
+<section class="slide title-slide">
+    <div class="cloud-shape cloud-shape-1"></div>
+    <div class="cloud-shape cloud-shape-2"></div>
+    <div class="slide-content">
+        <div class="sf-logo-text reveal">Data Strategy · Identity Resolution</div>
+        <h1 class="reveal">Understanding<br>Customer Types:<br><span>B2B, B2C, and B2B2C</span></h1>
+        <p class="title-subtitle reveal">How identity resolution drives revenue growth across every customer relationship</p>
+        <div class="title-badge reveal">
+            <span class="dot"></span>
+            Sales Executive Edition &middot; 2026
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 2: B2B DEFINITION -->
+<section class="slide problem-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">Customer Type 1</div>
+        <h2 class="reveal">B2B: Selling to Other Businesses</h2>
+        <div class="pain-grid">
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🏢</div>
+                <h3>What It Is</h3>
+                <p>Your customer is another company. You're selling products or services that help them run their business.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">💼</div>
+                <h3>Example</h3>
+                <p>Salesforce selling CRM software to IBM. Enterprise deals with multiple stakeholders and formal procurement.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">⏱️</div>
+                <h3>Sales Cycles</h3>
+                <p>Longer decision timelines with multiple touchpoints. Relationship-driven with high deal values.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🤝</div>
+                <h3>Buying Process</h3>
+                <p>Complex buying committees, formal RFPs, negotiated contracts, and multi-year commitments.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">2</div>
+</section>
+
+<!-- SLIDE 3: B2B WITHOUT IDENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2B Challenge</div>
+        <h2 class="reveal">The Revenue Leak in B2B Sales</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Today — Fragmented Accounts</div>
+                <h3>Chaos Costs You Deals</h3>
+                <p>Without identity resolution, the same enterprise account appears 15 different ways. Sales reps duplicate effort, fight over territories, and miss the complete picture of account value and engagement.</p>
+                <div class="sf-example">e.g., IBM shows up as "IBM", "International Business Machines", "IBM Corp", "IBM - IT Dept", creating confusion across your entire sales org</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">The Impact</div>
+                <h3>Lost Revenue</h3>
+                <p>30-40% of opportunities lost due to poor account visibility. Reps can't see total spend, miss upsell signals, and waste time on internal conflicts instead of selling.</p>
+                <div class="sf-example">Result: Longer sales cycles, lower win rates, frustrated sales teams, and millions in uncaptured revenue</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">3</div>
+</section>
+
+<!-- SLIDE 4: B2B WITH IDENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2B Solution</div>
+        <h2 class="reveal">One Customer, One View, More Revenue</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Before — Blind Spots</div>
+                <h3>Flying Blind</h3>
+                <p>Sales teams operate with incomplete account information. Can't coordinate across buying committee, miss cross-sell opportunities, and struggle with accurate forecasting.</p>
+                <div class="sf-example">e.g., Marketing engages procurement, Sales talks to IT, Customer Success owns finance — no one sees the full picture</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">After — Unified Mastery</div>
+                <h3>Complete Account Control</h3>
+                <p>Single golden record per account. See every touchpoint, identify the full buying committee, coordinate your team, and spot white space opportunities instantly.</p>
+                <div class="sf-example">Result: 23% increase in account penetration, faster deal cycles, happier sales teams, and predictable pipeline growth</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">4</div>
+</section>
+
+<!-- SLIDE 5: B2C DEFINITION -->
+<section class="slide problem-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">Customer Type 2</div>
+        <h2 class="reveal">B2C: Selling Directly to People</h2>
+        <div class="pain-grid">
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">👤</div>
+                <h3>What It Is</h3>
+                <p>Your customer is an individual person buying for themselves or their household. Direct consumer relationships.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">👟</div>
+                <h3>Example</h3>
+                <p>Nike selling shoes directly to consumers on Nike.com. Fast transactions, brand-driven purchases.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">📊</div>
+                <h3>Transaction Volume</h3>
+                <p>High volume of smaller transactions. Quick purchase decisions driven by brand, convenience, and personalization.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">❤️</div>
+                <h3>Relationship Model</h3>
+                <p>Brand loyalty matters. Experience-driven with multiple touchpoints across web, mobile, store, and social channels.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">5</div>
+</section>
+
+<!-- SLIDE 6: B2C WITHOUT IDENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2C Challenge</div>
+        <h2 class="reveal">The Personalization Paradox</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Today — Disconnected Channels</div>
+                <h3>Generic = Ignored</h3>
+                <p>Without identity resolution, the same customer appears as 5 different people across email, mobile app, website, and store. You can't personalize, can't calculate true lifetime value, and waste ad dollars.</p>
+                <div class="sf-example">e.g., Sarah buys in-store, browses on mobile, subscribes via email — you treat her like 3 strangers and blast her with irrelevant offers</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">The Impact</div>
+                <h3>Lost Customers</h3>
+                <p>60% of customers expect personalization but don't get it. Result: Low conversion, high churn, wasted marketing spend, and zero competitive advantage.</p>
+                <div class="sf-example">Result: Customers leave for brands that "get them" — you're left competing only on price</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">6</div>
+</section>
+
+<!-- SLIDE 7: B2C WITH IDENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2C Solution</div>
+        <h2 class="reveal">Know Your Customer, Grow Your Customer</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Before — Spray and Pray</div>
+                <h3>Mass Marketing Misses</h3>
+                <p>Generic campaigns yield low conversion. You retarget existing customers, send irrelevant offers, and can't measure what actually drives loyalty.</p>
+                <div class="sf-example">e.g., Promoting running shoes to someone who just bought running shoes — annoying them instead of delighting them</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">After — Personal at Scale</div>
+                <h3>Precision Engagement</h3>
+                <p>Unified profile across all channels. Personalized recommendations, accurate lifetime value, intelligent retargeting, and loyalty built through relevance.</p>
+                <div class="sf-example">Result: 15-20% lift in conversion, 25% reduction in churn, higher customer satisfaction, and measurable ROAS</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">7</div>
+</section>
+
+<!-- SLIDE 8: B2B2C DEFINITION -->
+<section class="slide problem-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">Customer Type 3</div>
+        <h2 class="reveal">B2B2C: Selling Through Partners to End Users</h2>
+        <div class="pain-grid">
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🔗</div>
+                <h3>What It Is</h3>
+                <p>You sell to a business partner who then sells to the end consumer. You care about both relationships.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">📱</div>
+                <h3>Example</h3>
+                <p>Apple selling iPhones to Verizon, who sells to consumers. You need visibility into partner AND consumer behavior.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">🎯</div>
+                <h3>Data Complexity</h3>
+                <p>Shared data needs, complex attribution, two customer types to track. Channel dynamics add layers of coordination challenges.</p>
+            </div>
+            <div class="pain-card reveal" style="border-left-color: var(--sf-blue);">
+                <div class="pain-icon">⚖️</div>
+                <h3>Dual Relationships</h3>
+                <p>Balance partner enablement with consumer experience. Need to support partners while building brand loyalty with end users.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">8</div>
+</section>
+
+<!-- SLIDE 9: B2B2C WITHOUT IDENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2B2C Challenge</div>
+        <h2 class="reveal">The Broken Telephone Game</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Today — Data Disconnect</div>
+                <h3>Lost in Translation</h3>
+                <p>Without identity resolution, you can't connect partner sales to end consumers. No visibility into consumer experience, partner conflicts over territories, and zero understanding of true brand reach.</p>
+                <div class="sf-example">e.g., You see Verizon's order volume but have no idea which consumers bought, what they think, or why they churn — partners guard that data jealously</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">The Impact</div>
+                <h3>Millions Lost</h3>
+                <p>Brand loyalty evaporates because you can't see or support the consumer. Partner incentives misalign. Warranty and support become chaos. You're flying blind on both sides.</p>
+                <div class="sf-example">Result: Partners frustrated, consumers abandoned, and you lose market share to competitors who control the full value chain</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">9</div>
+</section>
+
+<!-- SLIDE 10: B2B2C WITH IDENTITY RESOLUTION -->
+<section class="slide comparison-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">B2B2C Solution</div>
+        <h2 class="reveal">Master Both Sides of the Equation</h2>
+        <div class="comparison-grid">
+            <div class="state-card current reveal">
+                <div class="state-label">Before — Partner Black Box</div>
+                <h3>Invisible End Customer</h3>
+                <p>Partners own the consumer relationship. You can't track product journeys, optimize partner performance based on consumer outcomes, or provide direct support when needed.</p>
+                <div class="sf-example">e.g., Consumer calls you for support — you have no idea what they bought, where, or from which partner — poor experience for everyone</div>
+            </div>
+            <div class="arrow-col reveal">
+                <div class="arrow-circle">→</div>
+            </div>
+            <div class="state-card future reveal">
+                <div class="state-label">After — Full Visibility</div>
+                <h3>Connected Value Chain</h3>
+                <p>Link partner accounts to end consumers. Track product journey from warehouse to living room. Support consumers directly when needed while honoring the channel. Optimize partner incentives based on consumer satisfaction.</p>
+                <div class="sf-example">Result: Higher partner satisfaction, stronger consumer loyalty, predictable warranty management, and you win on both fronts</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">10</div>
+</section>
+
+<!-- SLIDE 11: CTA -->
+<section class="slide cta-slide">
+    <div class="slide-content">
+        <div class="section-label reveal">The Bottom Line</div>
+        <h2 class="reveal">Identity Resolution = Revenue Resolution</h2>
+        <ul class="cta-list">
+            <li class="cta-item reveal">
+                <span class="cta-num">1</span>
+                <div class="cta-text">
+                    <h3>Without It: Money Left on the Table</h3>
+                    <p>Duplicate work, lost deals, frustrated customers, and invisible revenue leaks across every customer type.</p>
+                </div>
+            </li>
+            <li class="cta-item reveal">
+                <span class="cta-num">2</span>
+                <div class="cta-text">
+                    <h3>With It: Complete View, Targeted Actions</h3>
+                    <p>See the full picture, coordinate your teams, personalize at scale, and measure what matters across B2B, B2C, and B2B2C.</p>
+                </div>
+            </li>
+            <li class="cta-item reveal">
+                <span class="cta-num">3</span>
+                <div class="cta-text">
+                    <h3>ROI: 5-10x Return in First Year</h3>
+                    <p>Proven revenue lift across all customer types. Faster deal cycles, higher conversion, lower churn, and measurable growth.</p>
+                </div>
+            </li>
+            <li class="cta-item reveal">
+                <span class="cta-num">4</span>
+                <div class="cta-text">
+                    <h3>Next Step: See It In Action</h3>
+                    <p>Let's show you what identity resolution can unlock in YOUR business with a personalized demo of your data.</p>
+                </div>
+            </li>
+        </ul>
+        <div class="cta-footer reveal">
+            Ready to turn customer data chaos into revenue clarity? <strong>Let's talk.</strong>
+        </div>
+    </div>
+    <div class="slide-number">11</div>
+</section>
+
+<script>
+/* === SLIDE PRESENTATION CONTROLLER === */
+class SlidePresentation {
+    constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.currentSlide = 0;
+        this.isScrolling = false;
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupProgressBar();
+        this.setupNavDots();
+    }
+
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    const index = Array.from(this.slides).indexOf(entry.target);
+                    if (index !== -1) {
+                        this.currentSlide = index;
+                        this.updateProgressBar();
+                        this.updateNavDots();
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        this.slides.forEach(slide => observer.observe(slide));
+    }
+
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            if (e.target.getAttribute('contenteditable')) return;
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                this.goToSlide(this.currentSlide + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                this.goToSlide(this.currentSlide - 1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                this.goToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                this.goToSlide(this.slides.length - 1);
+            }
+        });
+    }
+
+    setupTouchNav() {
+        let startY = 0;
+        document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            const deltaY = startY - e.changedTouches[0].clientY;
+            if (Math.abs(deltaY) > 50) {
+                this.goToSlide(this.currentSlide + (deltaY > 0 ? 1 : -1));
+            }
+        }, { passive: true });
+    }
+
+    setupWheelNav() {
+        let lastWheel = 0;
+        document.addEventListener('wheel', (e) => {
+            const now = Date.now();
+            if (now - lastWheel < 800) return;
+            if (Math.abs(e.deltaY) > 30) {
+                lastWheel = now;
+                this.goToSlide(this.currentSlide + (e.deltaY > 0 ? 1 : -1));
+            }
+        }, { passive: true });
+    }
+
+    goToSlide(index) {
+        if (index < 0 || index >= this.slides.length) return;
+        this.currentSlide = index;
+        this.slides[index].scrollIntoView({ behavior: 'smooth' });
+    }
+
+    setupProgressBar() {
+        this.progressBar = document.getElementById('progressBar');
+        this.updateProgressBar();
+    }
+
+    updateProgressBar() {
+        if (!this.progressBar) return;
+        const progress = ((this.currentSlide + 1) / this.slides.length) * 100;
+        this.progressBar.style.width = progress + '%';
+    }
+
+    setupNavDots() {
+        const container = document.getElementById('navDots');
+        if (!container) return;
+        container.innerHTML = '';
+        this.slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+            dot.addEventListener('click', () => this.goToSlide(i));
+            container.appendChild(dot);
+        });
+    }
+
+    updateNavDots() {
+        const dots = document.querySelectorAll('.nav-dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === this.currentSlide);
+        });
+    }
+}
+
+/* === INLINE EDITOR === */
+class InlineEditor {
+    constructor(storageKey) {
+        this.isActive = false;
+        this.storageKey = storageKey || 'deck-edits';
+        this.loadEdits();
+    }
+
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('edit-active', this.isActive);
+
+        const toggle = document.getElementById('editToggle');
+        const banner = document.getElementById('editBanner');
+        toggle.textContent = this.isActive ? 'Done' : 'Edit Mode';
+        toggle.classList.toggle('active', this.isActive);
+        banner.classList.toggle('active', this.isActive);
+
+        const editableSelectors = 'h1, h2, h3, p, .state-label, .section-label, .sf-example, .step-label, .cta-text h3, .cta-text p, .cta-footer, .title-subtitle, .sf-logo-text, .title-badge, .pain-card p, .pain-card h3';
+        document.querySelectorAll(editableSelectors).forEach(el => {
+            if (this.isActive) {
+                el.setAttribute('contenteditable', 'true');
+            } else {
+                el.removeAttribute('contenteditable');
+                this.saveEdits();
+            }
+        });
+    }
+
+    saveEdits() {
+        const data = {};
+        document.querySelectorAll('[data-edit-id]').forEach(el => {
+            data[el.dataset.editId] = el.innerHTML;
+        });
+        try { localStorage.setItem(this.storageKey, JSON.stringify(data)); } catch(e) {}
+    }
+
+    loadEdits() {
+        try {
+            const data = JSON.parse(localStorage.getItem(this.storageKey));
+            if (!data) return;
+            Object.entries(data).forEach(([id, html]) => {
+                const el = document.querySelector(`[data-edit-id="${id}"]`);
+                if (el) el.innerHTML = html;
+            });
+        } catch(e) {}
+    }
+
+    exportFile() {
+        const editableEls = Array.from(document.querySelectorAll('[contenteditable]'));
+        editableEls.forEach(el => el.removeAttribute('contenteditable'));
+        document.body.classList.remove('edit-active');
+
+        const editToggle = document.getElementById('editToggle');
+        const editBanner = document.getElementById('editBanner');
+        editToggle?.classList.remove('active', 'show');
+        editBanner?.classList.remove('active', 'show');
+
+        const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+        document.body.classList.add('edit-active');
+        editableEls.forEach(el => el.setAttribute('contenteditable', 'true'));
+        editToggle?.classList.add('active');
+        editBanner?.classList.add('active');
+
+        const blob = new Blob([html], { type: 'text/html' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = document.title.replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.html';
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
+}
+
+/* Initialize */
+const presentation = new SlidePresentation();
+const editor = new InlineEditor('customer-types-sales-edits');
+
+/* Edit mode controls */
+const editToggle = document.getElementById('editToggle');
+const editHotzone = document.getElementById('editHotzone');
+let hideTimeout = null;
+
+editToggle.addEventListener('click', () => editor.toggleEditMode());
+
+editHotzone.addEventListener('mouseenter', () => {
+    clearTimeout(hideTimeout);
+    editToggle.classList.add('show');
+});
+editHotzone.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => {
+        if (!editor.isActive) editToggle.classList.remove('show');
+    }, 400);
+});
+editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+editToggle.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => {
+        if (!editor.isActive) editToggle.classList.remove('show');
+    }, 400);
+});
+editHotzone.addEventListener('click', () => editor.toggleEditMode());
+
+document.addEventListener('keydown', (e) => {
+    if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+        editor.toggleEditMode();
+    }
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        if (editor.isActive) editor.exportFile();
+    }
+});
+</script>
+</body>
+</html>
