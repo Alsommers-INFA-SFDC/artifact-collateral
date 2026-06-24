@@ -1,1 +1,209 @@
-webpage hosting for collateral
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDM Artifacts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .topic-section {
+            margin-bottom: 3rem;
+        }
+
+        .topic-header {
+            color: #764ba2;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .artifacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .artifact-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .artifact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .artifact-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 0.75rem;
+        }
+
+        .artifact-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #999;
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Instructions comment section (hidden) */
+        .edit-instructions {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MDM Artifacts</h1>
+        <p class="subtitle">Informatica Master Data Management Resources & Documentation</p>
+
+        <!--
+        ========================================
+        HOW TO ADD NEW CONTENT:
+        ========================================
+
+        1. TO ADD A NEW TOPIC SECTION:
+           Copy the entire <section class="topic-section"> block below and paste it.
+           Update the <h2 class="topic-header"> with your new topic name.
+
+        2. TO ADD A NEW ARTIFACT BOX:
+           Copy any <a class="artifact-card"> block and paste it within the artifacts-grid.
+           Update:
+           - href="YOUR_LINK_HERE" (the URL to your artifact)
+           - <div class="artifact-name"> (the title of your artifact)
+           - <div class="artifact-description"> (describe what it is)
+
+        3. TO UPDATE THE DATE:
+           Change the date in the "last-updated" section at the bottom.
+
+        ========================================
+        -->
+
+        <!-- TOPIC SECTION 1: Data Models -->
+        <section class="topic-section">
+            <h2 class="topic-header">Data Models & Architecture</h2>
+            <div class="artifacts-grid">
+
+                <a href="pim-complex-relationships-model.md" class="artifact-card" target="_blank">
+                    <div class="artifact-name">PIM Complex Relationships Model</div>
+                    <div class="artifact-description">
+                        Comprehensive data model documentation for Product Information Management complex relationships, including entity structures and relationship mappings.
+                    </div>
+                </a>
+
+                <!-- TO ADD MORE ARTIFACTS IN THIS SECTION: Copy the <a> block above and paste here -->
+
+            </div>
+        </section>
+
+        <!-- TOPIC SECTION 2: API Documentation -->
+        <section class="topic-section">
+            <h2 class="topic-header">API Documentation</h2>
+            <div class="artifacts-grid">
+
+                <a href="#" class="artifact-card" target="_blank">
+                    <div class="artifact-name">Sample API Guide</div>
+                    <div class="artifact-description">
+                        Example artifact box - replace this with your actual API documentation link and description.
+                    </div>
+                </a>
+
+                <!-- TO ADD MORE ARTIFACTS IN THIS SECTION: Copy the <a> block above and paste here -->
+
+            </div>
+        </section>
+
+        <!-- TOPIC SECTION 3: Implementation Guides -->
+        <section class="topic-section">
+            <h2 class="topic-header">Implementation Guides</h2>
+            <div class="artifacts-grid">
+
+                <a href="#" class="artifact-card" target="_blank">
+                    <div class="artifact-name">Sample Implementation Guide</div>
+                    <div class="artifact-description">
+                        Example artifact box - replace this with your actual implementation guide link and description.
+                    </div>
+                </a>
+
+                <!-- TO ADD MORE ARTIFACTS IN THIS SECTION: Copy the <a> block above and paste here -->
+
+            </div>
+        </section>
+
+        <!-- TO ADD A NEW TOPIC SECTION: Copy from here... -->
+        <section class="topic-section">
+            <h2 class="topic-header">Your New Topic Here</h2>
+            <div class="artifacts-grid">
+
+                <a href="#" class="artifact-card" target="_blank">
+                    <div class="artifact-name">Example Artifact</div>
+                    <div class="artifact-description">
+                        Replace this section with your own topic and artifacts.
+                    </div>
+                </a>
+
+            </div>
+        </section>
+        <!-- ...to here, and paste below -->
+
+        <div class="last-updated">
+            Last updated: June 24, 2026
+        </div>
+    </div>
+</body>
+</html>
