@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complex Product Relationship Model - PIM System</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            color: #1e3a8a;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.5rem;
+        }
+
+        .section h3 {
+            color: #3b82f6;
+            font-size: 1.4rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .diagram-container {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border: 2px solid #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .relationship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .relationship-card {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .relationship-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+        }
+
+        .relationship-card h4 {
+            color: #1e3a8a;
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .relationship-card .icon {
+            font-size: 1.5rem;
+        }
+
+        .relationship-card p {
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .badge.sellable {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .badge.non-sellable {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .badge.cost-agg {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .badge.qty-agg {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: #1e3a8a;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box h4 {
+            color: #1e3a8a;
+            margin-bottom: 0.75rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #be185d;
+        }
+
+        footer {
+            background: #f8fafc;
+            padding: 2rem;
+            text-align: center;
+            color: #64748b;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .diagram-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
+        }
+
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .tab-button:hover {
+            background: #f8fafc;
+            border-color: #3b82f6;
+            color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        .tab-button.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .diagram-view {
+            display: none;
+        }
+
+        .diagram-view.active {
+            display: block;
+        }
+
+        .diagram-description {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .diagram-description h3 {
+            color: #1e3a8a;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.3rem;
+        }
+
+        .diagram-description p {
+            margin: 0.5rem 0;
+            color: #334155;
+        }
+
+        .diagram-description .example {
+            background: white;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 6px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .diagram-description .example strong {
+            color: #1e3a8a;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 1.5rem 1rem;
+            }
+
+            .relationship-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .diagram-tabs {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏗️ Complex Product Relationship Model</h1>
+            <p>Managing Complex Customer Relationships Between Items Without Workarounds</p>
+        </header>
+
+        <div class="content">
+            <!-- Introduction Section -->
+            <section class="section">
+                <h2>Overview</h2>
+                <p>This data model represents the complex product relationship types supported by our Product Information Management (PIM) system. The system natively handles seven distinct relationship paradigms without requiring workarounds or custom development.</p>
+
+                <div class="highlight-box">
+                    <h4>RFP Question 125</h4>
+                    <p><strong>Question:</strong> Does your system support managing complex customer relationships between items without requiring workarounds?</p>
+                    <p><strong>Answer:</strong> Yes. Our system natively supports all seven complex relationship types shown below, including Super SKUs, Combos, Multibox, VAS, Prepacks, Packaging Hierarchies, and Bundles.</p>
+                </div>
+            </section>
+
+            <!-- Visual Data Model Section -->
+            <section class="section">
+                <h2>Visual Data Model</h2>
+
+                <!-- Diagram Navigation Tabs -->
+                <div class="diagram-tabs">
+                    <button class="tab-button active" onclick="showDiagram('all')">🗂️ All Relationships</button>
+                    <button class="tab-button" onclick="showDiagram('ssku')">1️⃣ Super SKU</button>
+                    <button class="tab-button" onclick="showDiagram('combo')">2️⃣ Combo</button>
+                    <button class="tab-button" onclick="showDiagram('multibox')">3️⃣ Multibox</button>
+                    <button class="tab-button" onclick="showDiagram('vas')">4️⃣ VAS</button>
+                    <button class="tab-button" onclick="showDiagram('prepack')">5️⃣ Prepack</button>
+                    <button class="tab-button" onclick="showDiagram('packaging')">6️⃣ Packaging Hierarchy</button>
+                    <button class="tab-button" onclick="showDiagram('bundle')">7️⃣ Bundle</button>
+                </div>
+
+                <!-- All Relationships View -->
+                <div id="diagram-all" class="diagram-view active">
+                    <div class="diagram-description">
+                        <h3>Complete Relationship Model</h3>
+                        <p>This comprehensive view shows all seven complex product relationship types supported natively by the PIM system. Each relationship type addresses specific business requirements without requiring custom workarounds.</p>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 80, "rankSpacing": 70}} }%%
+flowchart TB
+    subgraph legend["LEGEND"]
+        direction LR
+        L_SELL["🟢 Sellable"]
+        L_NONSELL["🔴 Non-Sellable"]
+        L_COST["💰 Cost Aggregation"]
+        L_QTY["📦 Quantity Aggregation"]
+
+        style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+        style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+        style L_COST fill:#fde68a,stroke:#b45309,color:#1f2937
+        style L_QTY fill:#bfdbfe,stroke:#1d4ed8,color:#1f2937
+    end
+
+    subgraph ssku["1️⃣ SUPER SKU (SSKU)"]
+        direction TB
+        SSKU_Parent["Super SKU Parent<br/>🔴 Non-Sellable<br/>Ghost Item"]
+        SSKU_V1["Pillow - Blue - Small<br/>🟢 Sellable"]
+        SSKU_V2["Pillow - Blue - Medium<br/>🟢 Sellable"]
+        SSKU_V3["Pillow - Blue - Large<br/>🟢 Sellable"]
+        SSKU_V4["Pillow - Yellow - Small<br/>🟢 Sellable"]
+        SSKU_V5["Pillow - Red - Medium<br/>🟢 Sellable"]
+
+        SSKU_Parent -->|"groups variants"| SSKU_V1
+        SSKU_Parent -->|"groups variants"| SSKU_V2
+        SSKU_Parent -->|"groups variants"| SSKU_V3
+        SSKU_Parent -->|"groups variants"| SSKU_V4
+        SSKU_Parent -->|"groups variants"| SSKU_V5
+    end
+
+    subgraph combo["2️⃣ COMBO"]
+        direction TB
+        COMBO_Parent["Combo Parent<br/>🟢 Sellable<br/>💰 Aggregated Cost"]
+        COMBO_C1["Component 1<br/>🟢 Sellable<br/>Cost: $10"]
+        COMBO_C2["Component 2<br/>🟢 Sellable<br/>Cost: $15"]
+        COMBO_C3["Component 3<br/>🟢 Sellable<br/>Cost: $8"]
+
+        COMBO_Parent ==>|"aggregates cost<br/>Parent = Σ(child costs × qty)"| COMBO_C1
+        COMBO_Parent ==>|"aggregates cost"| COMBO_C2
+        COMBO_Parent ==>|"aggregates cost"| COMBO_C3
+    end
+
+    subgraph multibox["3️⃣ MULTIBOX"]
+        direction TB
+        MB_Parent["Single Product<br/>🟢 Sellable<br/>Total Cost: $299"]
+        MB_Box1["Box 1 of 3<br/>🔴 Non-Sellable<br/>Cost: $100"]
+        MB_Box2["Box 2 of 3<br/>🔴 Non-Sellable<br/>Cost: $100"]
+        MB_Box3["Box 3 of 3<br/>🔴 Non-Sellable<br/>Cost: $99"]
+
+        MB_Parent ==>|"ships in"| MB_Box1
+        MB_Parent ==>|"ships in"| MB_Box2
+        MB_Parent ==>|"ships in"| MB_Box3
+    end
+
+    subgraph vas["4️⃣ VAS (VALUE-ADDED SERVICE)"]
+        direction TB
+        VAS_Parent["Default Blind Size<br/>🔴 Non-Sellable<br/>💰 Cost from children"]
+        VAS_C1["36in × 48in Cut<br/>🟢 Sellable<br/>Cost: $45"]
+        VAS_C2["24in × 36in Cut<br/>🟢 Sellable<br/>Cost: $30"]
+        VAS_C3["48in × 72in Cut<br/>🟢 Sellable<br/>Cost: $75"]
+
+        VAS_Parent -->|"child cost copies to<br/>parent base cost"| VAS_C1
+        VAS_Parent -->|"child cost copies to<br/>parent base cost"| VAS_C2
+        VAS_Parent -->|"child cost copies to<br/>parent base cost"| VAS_C3
+    end
+
+    subgraph prepack["5️⃣ PREPACK"]
+        direction TB
+        PP_Display["Cardboard Display<br/>🔴 Non-Sellable<br/>Store Concept Only"]
+        PP_Item1["Item A<br/>🟢 Sellable"]
+        PP_Item2["Item B<br/>🟢 Sellable"]
+        PP_Item3["Item C<br/>🟢 Sellable"]
+
+        PP_Display ==>|"contains"| PP_Item1
+        PP_Display ==>|"contains"| PP_Item2
+        PP_Display ==>|"contains"| PP_Item3
+    end
+
+    subgraph packaging["6️⃣ PACKAGING HIERARCHY"]
+        direction TB
+        PKG_Each["Each (1 unit)<br/>🟢 Sellable<br/>UPC/GTIN"]
+        PKG_Box["Box (10 Each)<br/>🔴 Non-Sellable<br/>GTIN"]
+        PKG_Case["Case (100 Each)<br/>🔴 Non-Sellable<br/>GTIN"]
+        PKG_Pallet["Pallet (1000 Each)<br/>🔴 Non-Sellable<br/>GTIN"]
+
+        PKG_Each -->|"📦 Qty: 10"| PKG_Box
+        PKG_Box -->|"📦 Qty: 10 boxes<br/>(100 Each total)"| PKG_Case
+        PKG_Case -->|"📦 Qty: 10 cases<br/>(1000 Each total)"| PKG_Pallet
+    end
+
+    subgraph bundle["7️⃣ BUNDLE"]
+        direction TB
+        BUNDLE_Parent["Bundle Parent<br/>🟢 Sellable<br/>Components not in IDM"]
+        BUNDLE_C1["Component Item 1<br/>External/Not Linked"]
+        BUNDLE_C2["Component Item 2<br/>External/Not Linked"]
+        BUNDLE_C3["Component Item 3<br/>External/Not Linked"]
+
+        BUNDLE_Parent -.->|"references but<br/>not related in IDM"| BUNDLE_C1
+        BUNDLE_Parent -.->|"references but<br/>not related in IDM"| BUNDLE_C2
+        BUNDLE_Parent -.->|"references but<br/>not related in IDM"| BUNDLE_C3
+    end
+
+    %% Legend Styling
+    style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style L_COST fill:#fde68a,stroke:#b45309,color:#1f2937
+    style L_QTY fill:#bfdbfe,stroke:#1d4ed8,color:#1f2937
+
+    %% Super SKU Styling
+    style SSKU_Parent fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style SSKU_V1 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style SSKU_V2 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style SSKU_V3 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style SSKU_V4 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style SSKU_V5 fill:#a7f3d0,stroke:#047857,color:#1f2937
+
+    %% Combo Styling
+    style COMBO_Parent fill:#fde68a,stroke:#b45309,color:#1f2937
+    style COMBO_C1 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style COMBO_C2 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style COMBO_C3 fill:#a7f3d0,stroke:#047857,color:#1f2937
+
+    %% Multibox Styling
+    style MB_Parent fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style MB_Box1 fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style MB_Box2 fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style MB_Box3 fill:#fecaca,stroke:#b91c1c,color:#1f2937
+
+    %% VAS Styling
+    style VAS_Parent fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style VAS_C1 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style VAS_C2 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style VAS_C3 fill:#a7f3d0,stroke:#047857,color:#1f2937
+
+    %% Prepack Styling
+    style PP_Display fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style PP_Item1 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style PP_Item2 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style PP_Item3 fill:#a7f3d0,stroke:#047857,color:#1f2937
+
+    %% Packaging Hierarchy Styling
+    style PKG_Each fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style PKG_Box fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style PKG_Case fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style PKG_Pallet fill:#fecaca,stroke:#b91c1c,color:#1f2937
+
+    %% Bundle Styling
+    style BUNDLE_Parent fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style BUNDLE_C1 fill:#e2e8f0,stroke:#334155,color:#1f2937
+    style BUNDLE_C2 fill:#e2e8f0,stroke:#334155,color:#1f2937
+    style BUNDLE_C3 fill:#e2e8f0,stroke:#334155,color:#1f2937
+
+    %% Subgraph Styling
+    style legend fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+    style ssku fill:#fdf2f8,stroke:#be185d,stroke-dasharray:5
+    style combo fill:#fff7ed,stroke:#c2410c,stroke-dasharray:5
+    style multibox fill:#f0f9ff,stroke:#0369a1,stroke-dasharray:5
+    style vas fill:#f5f3ff,stroke:#6d28d9,stroke-dasharray:5
+    style prepack fill:#ecfeff,stroke:#0e7490,stroke-dasharray:5
+    style packaging fill:#ecfdf5,stroke:#047857,stroke-dasharray:5
+    style bundle fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Super SKU Individual View -->
+                <div id="diagram-ssku" class="diagram-view">
+                    <div class="diagram-description">
+                        <h3>1️⃣ Super SKU (SSKU) / Super Duper Items</h3>
+                        <p>Non-sellable ghost parent items that group multiple sellable variants. The parent exists only for organizational purposes and cannot be purchased directly.</p>
+                        <div class="example">
+                            <strong>Real-World Example:</strong> A pillow product available in multiple colors (blue, yellow, red) and sizes (small, medium, large). The "Pillow" Super SKU itself is non-sellable, but each color-size combination is a sellable variant.
+                        </div>
+                        <p><strong>Key Characteristics:</strong></p>
+                        <ul>
+                            <li>🔴 Parent: Non-Sellable (Ghost/Virtual Item)</li>
+                            <li>🟢 Children: Sellable Variants</li>
+                            <li>Groups by attributes: color, size, material, style</li>
+                            <li>Simplifies product browsing and merchandising</li>
+                        </ul>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 80, "rankSpacing": 70}} }%%
+flowchart TB
+    subgraph legend["LEGEND"]
+        direction LR
+        L_SELL["🟢 Sellable"]
+        L_NONSELL["🔴 Non-Sellable"]
+
+        style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+        style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    end
+
+    subgraph ssku["SUPER SKU (SSKU) - Ghost Parent Groups Sellable Variants"]
+        direction TB
+        SSKU_Parent["Super SKU Parent<br/>Product: Decorative Pillow<br/>🔴 Non-Sellable<br/>Ghost/Virtual Item"]
+        SSKU_V1["SKU: PIL-BLU-SM<br/>Pillow - Blue - Small<br/>16in × 16in<br/>🟢 Sellable - $24.99"]
+        SSKU_V2["SKU: PIL-BLU-MD<br/>Pillow - Blue - Medium<br/>20in × 20in<br/>🟢 Sellable - $34.99"]
+        SSKU_V3["SKU: PIL-BLU-LG<br/>Pillow - Blue - Large<br/>24in × 24in<br/>🟢 Sellable - $44.99"]
+        SSKU_V4["SKU: PIL-YEL-SM<br/>Pillow - Yellow - Small<br/>16in × 16in<br/>🟢 Sellable - $24.99"]
+        SSKU_V5["SKU: PIL-RED-MD<br/>Pillow - Red - Medium<br/>20in × 20in<br/>🟢 Sellable - $34.99"]
+        SSKU_V6["SKU: PIL-RED-LG<br/>Pillow - Red - Large<br/>24in × 24in<br/>🟢 Sellable - $44.99"]
+
+        SSKU_Parent -->|"groups variants"| SSKU_V1
+        SSKU_Parent -->|"groups variants"| SSKU_V2
+        SSKU_Parent -->|"groups variants"| SSKU_V3
+        SSKU_Parent -->|"groups variants"| SSKU_V4
+        SSKU_Parent -->|"groups variants"| SSKU_V5
+        SSKU_Parent -->|"groups variants"| SSKU_V6
+    end
+
+    style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style SSKU_Parent fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style SSKU_V1 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style SSKU_V2 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style SSKU_V3 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style SSKU_V4 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style SSKU_V5 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style SSKU_V6 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style legend fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+    style ssku fill:#fdf2f8,stroke:#be185d,stroke-dasharray:5
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combo Individual View -->
+                <div id="diagram-combo" class="diagram-view">
+                    <div class="diagram-description">
+                        <h3>2️⃣ Combo - Aggregated Cost with Both Parent and Children Sellable</h3>
+                        <p>Parent/child grouping where the parent cost is automatically aggregated from component costs and quantities. Both the combo package and individual components can be sold separately.</p>
+                        <div class="example">
+                            <strong>Real-World Example:</strong> A tool kit containing a drill ($50), drill bits set ($15), and carrying case ($20). The kit can be sold as a combo for $85, or customers can buy each component individually.
+                        </div>
+                        <p><strong>Key Characteristics:</strong></p>
+                        <ul>
+                            <li>🟢 Parent: Sellable</li>
+                            <li>🟢 Children: Sellable</li>
+                            <li>💰 Cost Aggregation: Parent Cost = Σ(child costs × quantities)</li>
+                            <li>Automatic recalculation when component costs change</li>
+                            <li>Flexible quantity multipliers per component</li>
+                        </ul>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 80, "rankSpacing": 70}} }%%
+flowchart TB
+    subgraph legend["LEGEND"]
+        direction LR
+        L_SELL["🟢 Sellable"]
+        L_COST["💰 Cost Aggregation"]
+
+        style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+        style L_COST fill:#fde68a,stroke:#b45309,color:#1f2937
+    end
+
+    subgraph combo["COMBO - Parent Cost Aggregated from Components"]
+        direction TB
+        COMBO_Parent["SKU: TOOLKIT-001<br/>Starter Tool Kit<br/>🟢 Sellable<br/>💰 Cost = $50 + $15 + $20 = $85<br/>Package Price: $85"]
+        COMBO_C1["SKU: DRILL-200<br/>Cordless Drill<br/>🟢 Sellable (Standalone)<br/>Component Cost: $50<br/>Quantity in Kit: 1"]
+        COMBO_C2["SKU: BITS-SET-10<br/>Drill Bits Set (10pc)<br/>🟢 Sellable (Standalone)<br/>Component Cost: $15<br/>Quantity in Kit: 1"]
+        COMBO_C3["SKU: CASE-HARD<br/>Hard Carrying Case<br/>🟢 Sellable (Standalone)<br/>Component Cost: $20<br/>Quantity in Kit: 1"]
+
+        COMBO_Parent ==>|"contains 1×<br/>cost: $50"| COMBO_C1
+        COMBO_Parent ==>|"contains 1×<br/>cost: $15"| COMBO_C2
+        COMBO_Parent ==>|"contains 1×<br/>cost: $20"| COMBO_C3
+    end
+
+    style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style L_COST fill:#fde68a,stroke:#b45309,color:#1f2937
+    style COMBO_Parent fill:#fde68a,stroke:#b45309,color:#1f2937
+    style COMBO_C1 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style COMBO_C2 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style COMBO_C3 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style legend fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+    style combo fill:#fff7ed,stroke:#c2410c,stroke-dasharray:5
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multibox Individual View -->
+                <div id="diagram-multibox" class="diagram-view">
+                    <div class="diagram-description">
+                        <h3>3️⃣ Multibox - Single Product Shipped in Multiple Boxes</h3>
+                        <p>A single sellable product that ships across multiple non-sellable boxes, each with its own cost allocation. Used for oversized items that cannot fit in a single shipping container.</p>
+                        <div class="example">
+                            <strong>Real-World Example:</strong> A large sectional sofa ($1,299) that ships in 4 separate boxes: Box 1 (sofa base - $400), Box 2 (cushions - $300), Box 3 (back panels - $400), Box 4 (legs & hardware - $199).
+                        </div>
+                        <p><strong>Key Characteristics:</strong></p>
+                        <ul>
+                            <li>🟢 Parent: Sellable (the complete product)</li>
+                            <li>🔴 Children: Non-Sellable (shipping boxes)</li>
+                            <li>Each box has individual cost and weight</li>
+                            <li>Logistics tracking per box</li>
+                            <li>Total product cost = sum of all box costs</li>
+                        </ul>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 80, "rankSpacing": 70}} }%%
+flowchart TB
+    subgraph legend["LEGEND"]
+        direction LR
+        L_SELL["🟢 Sellable"]
+        L_NONSELL["🔴 Non-Sellable"]
+
+        style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+        style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    end
+
+    subgraph multibox["MULTIBOX - Single Product, Multiple Shipping Boxes"]
+        direction TB
+        MB_Parent["SKU: SOFA-SECT-001<br/>Modern Sectional Sofa<br/>🟢 Sellable<br/>Total Product Cost: $1,299<br/>Customer sees 1 product"]
+        MB_Box1["Box 1 of 4<br/>Sofa Base Section<br/>🔴 Non-Sellable<br/>Box Cost: $400<br/>Weight: 85 lbs<br/>Dims: 60×30×24 in"]
+        MB_Box2["Box 2 of 4<br/>Cushions & Pillows<br/>🔴 Non-Sellable<br/>Box Cost: $300<br/>Weight: 45 lbs<br/>Dims: 48×24×20 in"]
+        MB_Box3["Box 3 of 4<br/>Back Panels<br/>🔴 Non-Sellable<br/>Box Cost: $400<br/>Weight: 70 lbs<br/>Dims: 55×28×18 in"]
+        MB_Box4["Box 4 of 4<br/>Legs & Hardware<br/>🔴 Non-Sellable<br/>Box Cost: $199<br/>Weight: 25 lbs<br/>Dims: 36×18×12 in"]
+
+        MB_Parent ==>|"ships in"| MB_Box1
+        MB_Parent ==>|"ships in"| MB_Box2
+        MB_Parent ==>|"ships in"| MB_Box3
+        MB_Parent ==>|"ships in"| MB_Box4
+    end
+
+    style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style MB_Parent fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style MB_Box1 fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style MB_Box2 fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style MB_Box3 fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style MB_Box4 fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style legend fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+    style multibox fill:#f0f9ff,stroke:#0369a1,stroke-dasharray:5
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VAS Individual View -->
+                <div id="diagram-vas" class="diagram-view">
+                    <div class="diagram-description">
+                        <h3>4️⃣ VAS (Value-Added Service) - Custom-Cut or Custom-Mixed Products</h3>
+                        <p>Non-sellable parent representing a base product where child cost copies to the parent base cost. Used for products that require customization or value-added services like cutting, mixing, or custom sizing.</p>
+                        <div class="example">
+                            <strong>Real-World Example:</strong> Window blinds that come in a default size but can be cut to custom dimensions. The default 72"×48" blind size is non-sellable, but customers can purchase custom cuts like 36"×48" ($45), 24"×36" ($30), or 60"×72" ($85).
+                        </div>
+                        <p><strong>Key Characteristics:</strong></p>
+                        <ul>
+                            <li>🔴 Parent: Non-Sellable (base/default size)</li>
+                            <li>🟢 Children: Sellable (custom cuts/sizes)</li>
+                            <li>💰 Child cost copies to parent base cost</li>
+                            <li>Common for blinds, paint, lumber, fabric</li>
+                            <li>Supports custom dimension entry</li>
+                        </ul>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 80, "rankSpacing": 70}} }%%
+flowchart TB
+    subgraph legend["LEGEND"]
+        direction LR
+        L_SELL["🟢 Sellable"]
+        L_NONSELL["🔴 Non-Sellable"]
+        L_COST["💰 Cost Copy"]
+
+        style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+        style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+        style L_COST fill:#fde68a,stroke:#b45309,color:#1f2937
+    end
+
+    subgraph vas["VAS (VALUE-ADDED SERVICE) - Custom Cut Products"]
+        direction TB
+        VAS_Parent["SKU: BLIND-BASE<br/>Default Blind Size<br/>72in × 48in<br/>🔴 Non-Sellable<br/>💰 Base cost from children<br/>Material: Faux Wood"]
+        VAS_C1["SKU: BLIND-3648<br/>Custom Cut: 36in × 48in<br/>🟢 Sellable<br/>Price: $45.00<br/>Cut from default size"]
+        VAS_C2["SKU: BLIND-2436<br/>Custom Cut: 24in × 36in<br/>🟢 Sellable<br/>Price: $30.00<br/>Cut from default size"]
+        VAS_C3["SKU: BLIND-6072<br/>Custom Cut: 60in × 72in<br/>🟢 Sellable<br/>Price: $85.00<br/>Larger than default"]
+        VAS_C4["SKU: BLIND-CUSTOM<br/>Custom Cut: Any Size<br/>🟢 Sellable<br/>Price: Calculated<br/>Enter custom dimensions"]
+
+        VAS_Parent -->|"child cost copies to<br/>parent base cost"| VAS_C1
+        VAS_Parent -->|"child cost copies to<br/>parent base cost"| VAS_C2
+        VAS_Parent -->|"child cost copies to<br/>parent base cost"| VAS_C3
+        VAS_Parent -->|"child cost copies to<br/>parent base cost"| VAS_C4
+    end
+
+    style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style L_COST fill:#fde68a,stroke:#b45309,color:#1f2937
+    style VAS_Parent fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style VAS_C1 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style VAS_C2 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style VAS_C3 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style VAS_C4 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style legend fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+    style vas fill:#f5f3ff,stroke:#6d28d9,stroke-dasharray:5
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prepack Individual View -->
+                <div id="diagram-prepack" class="diagram-view">
+                    <div class="diagram-description">
+                        <h3>5️⃣ Prepack - Non-Sellable Display Contains Sellable Items</h3>
+                        <p>Non-sellable cardboard display or merchandising fixture that contains sellable component items. This is a store concept only, used for impulse purchases, seasonal displays, or checkout merchandising.</p>
+                        <div class="example">
+                            <strong>Real-World Example:</strong> A checkout display containing candy bars, gum, and batteries. The display itself (cardboard fixture) is not sold, but customers can pick individual items from it. Common at checkout lanes for impulse purchases.
+                        </div>
+                        <p><strong>Key Characteristics:</strong></p>
+                        <ul>
+                            <li>🔴 Parent: Non-Sellable (display fixture)</li>
+                            <li>🟢 Children: Sellable (individual items)</li>
+                            <li>Store concept only (not for e-commerce)</li>
+                            <li>Merchandising and planogram planning</li>
+                            <li>Inventory tracked at item level, not display level</li>
+                        </ul>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 80, "rankSpacing": 70}} }%%
+flowchart TB
+    subgraph legend["LEGEND"]
+        direction LR
+        L_SELL["🟢 Sellable"]
+        L_NONSELL["🔴 Non-Sellable"]
+
+        style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+        style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    end
+
+    subgraph prepack["PREPACK - Merchandising Display with Sellable Components"]
+        direction TB
+        PP_Display["DISPLAY: CHECKOUT-01<br/>Checkout Impulse Display<br/>🔴 Non-Sellable<br/>Cardboard Floor Display<br/>Location: Checkout Lane 1-8<br/>Store Concept Only"]
+        PP_Item1["SKU: CANDY-CHOC-01<br/>Chocolate Bar<br/>🟢 Sellable<br/>Price: $1.99<br/>Qty in Display: 24"]
+        PP_Item2["SKU: GUM-MINT-05<br/>Mint Gum Pack<br/>🟢 Sellable<br/>Price: $1.49<br/>Qty in Display: 30"]
+        PP_Item3["SKU: BATT-AA-12<br/>AA Batteries (12pk)<br/>🟢 Sellable<br/>Price: $8.99<br/>Qty in Display: 12"]
+        PP_Item4["SKU: CANDY-GUMMY-03<br/>Gummy Bears<br/>🟢 Sellable<br/>Price: $2.49<br/>Qty in Display: 18"]
+
+        PP_Display ==>|"contains"| PP_Item1
+        PP_Display ==>|"contains"| PP_Item2
+        PP_Display ==>|"contains"| PP_Item3
+        PP_Display ==>|"contains"| PP_Item4
+    end
+
+    style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style PP_Display fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style PP_Item1 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style PP_Item2 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style PP_Item3 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style PP_Item4 fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style legend fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+    style prepack fill:#ecfeff,stroke:#0e7490,stroke-dasharray:5
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Packaging Hierarchy Individual View -->
+                <div id="diagram-packaging" class="diagram-view">
+                    <div class="diagram-description">
+                        <h3>6️⃣ Packaging Hierarchy - Each/Box/Case/Pallet Supply Chain</h3>
+                        <p>Each/Case/Pallet GTIN-UPC supply chain relationships with nested quantity aggregation. Only the "Each" unit is typically sellable to consumers; higher levels are logistics and wholesale units.</p>
+                        <div class="example">
+                            <strong>Real-World Example:</strong> A bottle of shampoo sold individually (1 Each), packaged in boxes (6 Each per box), shipped in cases (4 boxes = 24 Each per case), and palletized (50 cases = 1,200 Each per pallet). Only the individual bottle is sold to consumers; cases and pallets are for distribution.
+                        </div>
+                        <p><strong>Key Characteristics:</strong></p>
+                        <ul>
+                            <li>🟢 Each: Sellable (consumer unit)</li>
+                            <li>🔴 Box/Case/Pallet: Non-Sellable (logistics units)</li>
+                            <li>📦 Nested quantity aggregation</li>
+                            <li>Each level has unique GTIN/UPC</li>
+                            <li>Supply chain and warehouse management</li>
+                        </ul>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 100, "rankSpacing": 90}} }%%
+flowchart TB
+    subgraph legend["LEGEND"]
+        direction LR
+        L_SELL["🟢 Sellable"]
+        L_NONSELL["🔴 Non-Sellable"]
+        L_QTY["📦 Quantity Aggregation"]
+
+        style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+        style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+        style L_QTY fill:#bfdbfe,stroke:#1d4ed8,color:#1f2937
+    end
+
+    subgraph packaging["PACKAGING HIERARCHY - Supply Chain Units with GTIN"]
+        direction TB
+        PKG_Each["SKU: SHAMPOO-500ML<br/>Each - Shampoo Bottle<br/>🟢 Sellable (Consumer Unit)<br/>500ml bottle<br/>UPC: 012345678901<br/>Unit Price: $8.99"]
+        PKG_Box["GTIN: 10123456789018<br/>Box (Inner Pack)<br/>🔴 Non-Sellable<br/>Contains: 6 bottles<br/>Qty: 6 Each<br/>Box Dims: 12×8×10 in"]
+        PKG_Case["GTIN: 20123456789015<br/>Case (Master Carton)<br/>🔴 Non-Sellable<br/>Contains: 4 boxes = 24 bottles<br/>Qty: 24 Each<br/>Case Dims: 18×16×12 in<br/>Weight: 35 lbs"]
+        PKG_Pallet["GTIN: 00012345678905<br/>Pallet (Logistics Unit)<br/>🔴 Non-Sellable<br/>Contains: 50 cases = 1,200 bottles<br/>Qty: 1,200 Each<br/>Pallet Dims: 48×40×60 in<br/>Weight: 1,850 lbs"]
+
+        PKG_Each -->|"📦 6 bottles per box"| PKG_Box
+        PKG_Box -->|"📦 4 boxes per case<br/>(24 bottles total)"| PKG_Case
+        PKG_Case -->|"📦 50 cases per pallet<br/>(1,200 bottles total)"| PKG_Pallet
+    end
+
+    style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style L_NONSELL fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style L_QTY fill:#bfdbfe,stroke:#1d4ed8,color:#1f2937
+    style PKG_Each fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style PKG_Box fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style PKG_Case fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style PKG_Pallet fill:#fecaca,stroke:#b91c1c,color:#1f2937
+    style legend fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+    style packaging fill:#ecfdf5,stroke:#047857,stroke-dasharray:5
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bundle Individual View -->
+                <div id="diagram-bundle" class="diagram-view">
+                    <div class="diagram-description">
+                        <h3>7️⃣ Bundle - Sellable Parent with External Components</h3>
+                        <p>Sellable parent object with component items that are not formally related within the IDM system. Components may exist in external systems or be managed separately. Used for marketing bundles and promotional packages.</p>
+                        <div class="example">
+                            <strong>Real-World Example:</strong> A "New Homeowner Bundle" containing items from multiple departments or suppliers: paint from aisle 10, brushes from aisle 15, drop cloths from aisle 20, and a gift card. The bundle SKU is sold as a package, but individual items are not formally linked in the system.
+                        </div>
+                        <p><strong>Key Characteristics:</strong></p>
+                        <ul>
+                            <li>🟢 Parent: Sellable (the bundle)</li>
+                            <li>🔘 Children: External or not formally related in IDM</li>
+                            <li>Marketing and promotional packages</li>
+                            <li>Components may come from different suppliers</li>
+                            <li>Reference-only relationships (no cost aggregation)</li>
+                        </ul>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 80, "rankSpacing": 70}} }%%
+flowchart TB
+    subgraph legend["LEGEND"]
+        direction LR
+        L_SELL["🟢 Sellable"]
+        L_EXT["🔘 External/Reference Only"]
+
+        style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+        style L_EXT fill:#e2e8f0,stroke:#334155,color:#1f2937
+    end
+
+    subgraph bundle["BUNDLE - Sellable Package with External Components"]
+        direction TB
+        BUNDLE_Parent["SKU: BUNDLE-NEWHOME<br/>New Homeowner Bundle<br/>🟢 Sellable<br/>Bundle Price: $149.99<br/>Promotional Package<br/>Components NOT in IDM"]
+        BUNDLE_C1["Reference: Paint Supplies<br/>From Department: Paint<br/>Items: 2 gal paint, primer<br/>🔘 External<br/>Not linked in IDM"]
+        BUNDLE_C2["Reference: Tools<br/>From Department: Hardware<br/>Items: Brushes, roller, tray<br/>🔘 External<br/>Not linked in IDM"]
+        BUNDLE_C3["Reference: Protection<br/>From Department: Supplies<br/>Items: Drop cloths, tape<br/>🔘 External<br/>Not linked in IDM"]
+        BUNDLE_C4["Reference: Gift Card<br/>From Department: Services<br/>Items: $25 gift card<br/>🔘 External<br/>Not linked in IDM"]
+
+        BUNDLE_Parent -.->|"references but<br/>not related in IDM"| BUNDLE_C1
+        BUNDLE_Parent -.->|"references but<br/>not related in IDM"| BUNDLE_C2
+        BUNDLE_Parent -.->|"references but<br/>not related in IDM"| BUNDLE_C3
+        BUNDLE_Parent -.->|"references but<br/>not related in IDM"| BUNDLE_C4
+    end
+
+    style L_SELL fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style L_EXT fill:#e2e8f0,stroke:#334155,color:#1f2937
+    style BUNDLE_Parent fill:#a7f3d0,stroke:#047857,color:#1f2937
+    style BUNDLE_C1 fill:#e2e8f0,stroke:#334155,color:#1f2937
+    style BUNDLE_C2 fill:#e2e8f0,stroke:#334155,color:#1f2937
+    style BUNDLE_C3 fill:#e2e8f0,stroke:#334155,color:#1f2937
+    style BUNDLE_C4 fill:#e2e8f0,stroke:#334155,color:#1f2937
+    style legend fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+    style bundle fill:#f8fafc,stroke:#334155,stroke-dasharray:5
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Relationship Types Section -->
+            <section class="section">
+                <h2>Relationship Type Details</h2>
+
+                <div class="relationship-grid">
+                    <div class="relationship-card">
+                        <h4><span class="icon">1️⃣</span> Super SKU (SSKU)</h4>
+                        <p>Non-sellable ghost parent item that groups multiple sellable variants by attributes like color, size, or material.</p>
+                        <p><strong>Example:</strong> A pillow in blue, yellow, or red, and in 3 different sizes.</p>
+                        <div>
+                            <span class="badge non-sellable">Parent: Non-Sellable</span>
+                            <span class="badge sellable">Children: Sellable</span>
+                        </div>
+                    </div>
+
+                    <div class="relationship-card">
+                        <h4><span class="icon">2️⃣</span> Combo</h4>
+                        <p>Parent/child grouping where parent cost is aggregated from component costs and quantities. Both parent and children are sellable units.</p>
+                        <p><strong>Example:</strong> Meal combo with burger ($10), fries ($4), and drink ($3) = $17 total.</p>
+                        <div>
+                            <span class="badge sellable">Parent: Sellable</span>
+                            <span class="badge sellable">Children: Sellable</span>
+                            <span class="badge cost-agg">Cost Aggregation</span>
+                        </div>
+                    </div>
+
+                    <div class="relationship-card">
+                        <h4><span class="icon">3️⃣</span> Multibox</h4>
+                        <p>A single product shipped across multiple boxes, each a non-sellable child with its own cost allocation.</p>
+                        <p><strong>Example:</strong> Large furniture item shipped in 3 separate boxes.</p>
+                        <div>
+                            <span class="badge sellable">Parent: Sellable</span>
+                            <span class="badge non-sellable">Children: Non-Sellable</span>
+                        </div>
+                    </div>
+
+                    <div class="relationship-card">
+                        <h4><span class="icon">4️⃣</span> VAS (Value-Added Service)</h4>
+                        <p>Non-sellable parent (base product) where child cost copies to the parent base cost. Used for customizable items.</p>
+                        <p><strong>Example:</strong> Blinds or paint that can be cut/mixed into custom sizes or colors.</p>
+                        <div>
+                            <span class="badge non-sellable">Parent: Non-Sellable</span>
+                            <span class="badge sellable">Children: Sellable</span>
+                            <span class="badge cost-agg">Cost Copy</span>
+                        </div>
+                    </div>
+
+                    <div class="relationship-card">
+                        <h4><span class="icon">5️⃣</span> Prepack</h4>
+                        <p>Non-sellable cardboard display that contains sellable component items. Store concept only for merchandising.</p>
+                        <p><strong>Example:</strong> Floor display containing multiple products for impulse purchase.</p>
+                        <div>
+                            <span class="badge non-sellable">Parent: Non-Sellable</span>
+                            <span class="badge sellable">Children: Sellable</span>
+                        </div>
+                    </div>
+
+                    <div class="relationship-card">
+                        <h4><span class="icon">6️⃣</span> Packaging Hierarchy</h4>
+                        <p>Each/Case/Pallet GTIN-UPC supply chain relationships with nested quantity aggregation.</p>
+                        <p><strong>Example:</strong> 1 Each → Box of 10 → Case of 100 → Pallet of 1000.</p>
+                        <div>
+                            <span class="badge sellable">Each: Sellable</span>
+                            <span class="badge non-sellable">Others: Non-Sellable</span>
+                            <span class="badge qty-agg">Quantity Aggregation</span>
+                        </div>
+                    </div>
+
+                    <div class="relationship-card">
+                        <h4><span class="icon">7️⃣</span> Bundle</h4>
+                        <p>Sellable parent object with component items that are not related within IDM itself. External reference only.</p>
+                        <p><strong>Example:</strong> Marketing bundle with items from different suppliers.</p>
+                        <div>
+                            <span class="badge sellable">Parent: Sellable</span>
+                            <span class="badge">External Components</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comparison Table -->
+            <section class="section">
+                <h2>Relationship Comparison Matrix</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Parent Sellable?</th>
+                            <th>Child Sellable?</th>
+                            <th>Cost Behavior</th>
+                            <th>Quantity Aggregation</th>
+                            <th>Primary Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Super SKU</strong></td>
+                            <td>🔴 No (Ghost)</td>
+                            <td>🟢 Yes</td>
+                            <td>N/A</td>
+                            <td>No</td>
+                            <td>Group variants by attributes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Combo</strong></td>
+                            <td>🟢 Yes</td>
+                            <td>🟢 Yes</td>
+                            <td>Parent = Σ(child costs × qty)</td>
+                            <td>Yes</td>
+                            <td>Meal deals, kits</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Multibox</strong></td>
+                            <td>🟢 Yes</td>
+                            <td>🔴 No</td>
+                            <td>Individual box costs</td>
+                            <td>No</td>
+                            <td>Large furniture shipping</td>
+                        </tr>
+                        <tr>
+                            <td><strong>VAS</strong></td>
+                            <td>🔴 No</td>
+                            <td>🟢 Yes</td>
+                            <td>Child cost → parent base</td>
+                            <td>No</td>
+                            <td>Custom-cut blinds, paint</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Prepack</strong></td>
+                            <td>🔴 No (Display)</td>
+                            <td>🟢 Yes</td>
+                            <td>N/A</td>
+                            <td>No</td>
+                            <td>In-store displays</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Packaging Hierarchy</strong></td>
+                            <td>🟢 Yes (Each only)</td>
+                            <td>🔴 No (Box+)</td>
+                            <td>Cost at Each level</td>
+                            <td>Yes (nested)</td>
+                            <td>Supply chain units</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bundle</strong></td>
+                            <td>🟢 Yes</td>
+                            <td>External</td>
+                            <td>N/A</td>
+                            <td>No</td>
+                            <td>Marketing bundles</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Technical Details Section -->
+            <section class="section">
+                <h2>Technical Implementation Details</h2>
+
+                <h3>Cost Aggregation Patterns</h3>
+                <ol>
+                    <li><strong>Combo:</strong> Parent cost = SUM(child costs × quantities). Real-time calculation based on component changes.</li>
+                    <li><strong>VAS:</strong> Child cost copies to parent base cost. One-way sync on child cost update.</li>
+                    <li><strong>Multibox:</strong> Each box has own cost, parent shows total. Independent box cost management.</li>
+                    <li><strong>Packaging Hierarchy:</strong> Cost typically at Each level only. Higher levels are logistics containers.</li>
+                </ol>
+
+                <h3>Quantity Aggregation Patterns</h3>
+                <ol>
+                    <li><strong>Packaging Hierarchy:</strong> Nested multiplication (1 Each → 10 Box → 100 Case → 1000 Pallet). Automatic calculation through hierarchy.</li>
+                    <li><strong>Combo:</strong> Quantity multipliers affect cost calculation. Example: 2× burger + 1× fries + 1× drink.</li>
+                </ol>
+
+                <h3>Sellability Rules</h3>
+                <ul>
+                    <li><strong>Sellable Parent, Sellable Child:</strong> Combo only (both can be sold independently)</li>
+                    <li><strong>Non-Sellable Parent, Sellable Child:</strong> Super SKU, VAS, Prepack (parent is organizational only)</li>
+                    <li><strong>Sellable Parent, Non-Sellable Child:</strong> Multibox, Packaging Hierarchy (parent is the only purchasable unit)</li>
+                    <li><strong>External Reference:</strong> Bundle (components may exist outside IDM)</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h4>🔑 Key Benefits</h4>
+                    <ul>
+                        <li><strong>No Workarounds Required:</strong> All relationship types are native to the system</li>
+                        <li><strong>Flexible Data Model:</strong> Supports both retail and supply chain use cases</li>
+                        <li><strong>Automatic Cost Calculation:</strong> Real-time aggregation for Combo and VAS types</li>
+                        <li><strong>Supply Chain Integration:</strong> GTIN/UPC support across packaging hierarchies</li>
+                        <li><strong>Merchandising Support:</strong> Store-specific concepts like Prepacks included</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Use Cases Section -->
+            <section class="section">
+                <h2>Real-World Use Cases</h2>
+
+                <h3>Home Improvement Retailer (The Home Depot Example)</h3>
+                <ul>
+                    <li><strong>Super SKUs:</strong> Organize paint colors, lumber sizes, or appliance configurations</li>
+                    <li><strong>Combos:</strong> Tool kits, starter packs, or seasonal bundles</li>
+                    <li><strong>Multibox:</strong> Large appliances, sectional furniture, or bulk materials</li>
+                    <li><strong>VAS (Blind/Paint):</strong> Custom-cut blinds, mixed paint colors, cut lumber</li>
+                    <li><strong>Prepacks:</strong> Seasonal displays, impulse purchase items at checkout</li>
+                    <li><strong>Packaging Hierarchy:</strong> Screws, nails, fasteners sold by Each/Box/Case</li>
+                    <li><strong>Bundles:</strong> Project bundles with items from multiple departments</li>
+                </ul>
+
+                <h3>E-Commerce Platform</h3>
+                <ul>
+                    <li><strong>Super SKUs:</strong> Product page showing all size/color combinations</li>
+                    <li><strong>Combos:</strong> "Frequently bought together" with special pricing</li>
+                    <li><strong>Multibox:</strong> Oversized items requiring multiple shipments</li>
+                    <li><strong>Packaging Hierarchy:</strong> Wholesale options (buy by case/pallet)</li>
+                    <li><strong>Bundles:</strong> Gift sets, starter kits, promotional packages</li>
+                </ul>
+            </section>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 PIM System - Complex Product Relationship Model</p>
+            <p>Generated: <span id="currentDate"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Diagram switching functionality
+        function showDiagram(diagramId) {
+            // Hide all diagram views
+            const allViews = document.querySelectorAll('.diagram-view');
+            allViews.forEach(view => view.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const allTabs = document.querySelectorAll('.tab-button');
+            allTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected diagram
+            const selectedView = document.getElementById('diagram-' + diagramId);
+            if (selectedView) {
+                selectedView.classList.add('active');
+            }
+
+            // Highlight active tab
+            event.target.classList.add('active');
+
+            // Scroll to diagram section
+            document.querySelector('.diagram-tabs').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+
+            // Re-render mermaid diagrams for the newly visible view
+            setTimeout(() => {
+                mermaid.init(undefined, selectedView.querySelectorAll('.mermaid'));
+            }, 100);
+        }
+
+        // Initialize mermaid after a short delay to ensure DOM is ready
+        setTimeout(() => {
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+        }, 100);
+    </script>
+</body>
+</html>
