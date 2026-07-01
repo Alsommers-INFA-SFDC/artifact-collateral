@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demystifying the Golden Record: Informatica MDM Guide for Sales Account Executives</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        header {
+            border-bottom: 4px solid #FF5F00;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #FF5F00;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        h2 {
+            color: #FF5F00;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .key-insight {
+            background: #fff3e6;
+            border-left: 5px solid #FF5F00;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .key-insight h4 {
+            color: #FF5F00;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .discovery-questions {
+            background: #e8f4f8;
+            border-left: 5px solid #0070d2;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .discovery-questions h4 {
+            color: #0070d2;
+            margin-bottom: 15px;
+        }
+
+        .discovery-questions ol {
+            margin-left: 20px;
+        }
+
+        .discovery-questions li {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: #FF5F00;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .use-case-card {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #FF5F00;
+        }
+
+        .use-case-card h4 {
+            color: #FF5F00;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .competitive-angle {
+            background: #f0f0f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            border-left: 5px solid #666;
+        }
+
+        .competitive-angle h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #666;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-left: 4px solid #ddd;
+            background: #fafafa;
+        }
+
+        .example-box {
+            background: #e8f5e9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            border-left: 5px solid #4caf50;
+        }
+
+        .example-box h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: #FF5F00;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: #666;
+            font-size: 0.9em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Demystifying the Golden Record</h1>
+            <p class="subtitle">A Guide to Informatica MDM for Sales Account Executives</p>
+        </header>
+
+        <section>
+            <h2>The Problem with "Golden Record"</h2>
+
+            <div class="key-insight">
+                <h4>🚨 Critical Insight</h4>
+                <p><strong>The term "golden record" is ambiguous and means different things to different people.</strong> Customers often use this term without understanding what they actually need.</p>
+            </div>
+
+            <p>When a customer mentions "golden record," they might be referring to:</p>
+            <ul>
+                <li>Clean, standardized data</li>
+                <li>A true customer singular ID</li>
+                <li>Something they heard they need but don't fully understand</li>
+                <li>Match and merge capabilities</li>
+                <li>Complete master data management</li>
+            </ul>
+
+            <div class="discovery-questions">
+                <h4>🎯 The Three Essential Discovery Questions</h4>
+                <ol>
+                    <li><strong>What does "golden record" mean to you?</strong> (Define their understanding)</li>
+                    <li><strong>Why do you need it?</strong> (Understand the business driver)
+                        <ul>
+                            <li>Marketing purposes → Maybe just segmentation</li>
+                            <li>Operational needs → Likely need data management</li>
+                            <li>Reporting → Could need MDM</li>
+                            <li>Compliance/Audit → Definitely need MDM entities</li>
+                        </ul>
+                    </li>
+                    <li><strong>What will it do? What will it solve?</strong> (Identify the outcome)</li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <h2>Identity Resolution vs Entity Management</h2>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Identity Resolution</th>
+                        <th>Entity Management (MDM)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>What it does</strong></td>
+                        <td>Collects and connects data points</td>
+                        <td>Creates a single version of truth with governance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Primary use</strong></td>
+                        <td>Customer experiences, marketing, analytics, customer care</td>
+                        <td>Operational systems, compliance, audit, cross-domain relationships</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Focus</strong></td>
+                        <td>The "WHO" - customer identities</td>
+                        <td>The "WHAT" - entities (person, business, product, location)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scope</strong></td>
+                        <td>Primarily B2C customers</td>
+                        <td>All domains: customer, supplier, product, location, reference data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>When you need it</strong></td>
+                        <td>Marketing optimization, personalization</td>
+                        <td>Financial implications, auditability, compliance, multi-system integration</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="key-insight">
+                <h4>🔑 Key Differentiator</h4>
+                <p><strong>If it can be audited, it needs an entity.</strong> Audits apply to customers, locations, products, suppliers, and more.</p>
+                <p>Identity resolution can connect identities, but if you need to track a single version with tax ID, compliance data, or relationships across systems—you need entity management.</p>
+            </div>
+
+            <h3>When Data Cloud Identity Resolution Is Enough</h3>
+            <ul>
+                <li>Pure marketing optimization</li>
+                <li>Customer experience personalization</li>
+                <li>Analytics and insights</li>
+                <li>Within Salesforce ecosystem only</li>
+            </ul>
+
+            <h3>When You Need MDM Entity Management</h3>
+            <ul>
+                <li>Financial/commerce operations (auditability required)</li>
+                <li>Multi-brand organizations under one entity</li>
+                <li>Systems beyond Salesforce (ERP, supply chain, etc.)</li>
+                <li>Compliance and regulatory requirements</li>
+                <li>Product, supplier, or location mastering</li>
+                <li>Cross-domain relationships that must persist</li>
+            </ul>
+
+            <div class="warning">
+                <strong>⚠️ Important:</strong> The moment you have commerce in Salesforce, there are financial implications, which means data should be auditable—that's when you need entity management, not just identity resolution.
+            </div>
+        </section>
+
+        <section>
+            <h2>Beyond the Golden Record: What MDM Really Does</h2>
+
+            <p><strong>"Golden record" implies just matching and merging. Master Data Management is a complete program.</strong></p>
+
+            <h3>MDM Capabilities Include:</h3>
+            <div class="use-case-grid">
+                <div class="use-case-card">
+                    <h4>Governance</h4>
+                    <p>Data stewardship, workflow, and oversight</p>
+                </div>
+                <div class="use-case-card">
+                    <h4>Auditability</h4>
+                    <p>Complete change tracking and compliance</p>
+                </div>
+                <div class="use-case-card">
+                    <h4>Enrichment</h4>
+                    <p>Data augmentation and standardization</p>
+                </div>
+                <div class="use-case-card">
+                    <h4>Data Quality</h4>
+                    <p>Validation, cleansing, deduplication</p>
+                </div>
+                <div class="use-case-card">
+                    <h4>Relationships</h4>
+                    <p>Cross-entity connections and hierarchies</p>
+                </div>
+                <div class="use-case-card">
+                    <h4>Reference Data</h4>
+                    <p>Standards, codes, and controlled vocabularies</p>
+                </div>
+                <div class="use-case-card">
+                    <h4>Canonical Models</h4>
+                    <p>Standard data structures across systems</p>
+                </div>
+                <div class="use-case-card">
+                    <h4>Syndication</h4>
+                    <p>Pushing clean data back to source systems</p>
+                </div>
+            </div>
+
+            <div class="quote">
+                "This is not a golden record. This is a complete data management program."
+            </div>
+        </section>
+
+        <section>
+            <h2>Multi-Domain Mastering: The Power of Connected Entities</h2>
+
+            <p>MDM isn't just about customers. <strong>Informatica's multi-domain capability manages complex relationships across:</strong></p>
+
+            <h3>Customer Domain</h3>
+            <ul>
+                <li>Householding and organizational hierarchies</li>
+                <li>B2B account structures</li>
+                <li>Customer-to-customer relationships</li>
+                <li>Contact roles and affiliations</li>
+            </ul>
+
+            <h3>Supplier/Supply Chain Domain</h3>
+            <ul>
+                <li>Supplier relationships and hierarchies</li>
+                <li>Location traceability (plants, warehouses, distribution centers)</li>
+                <li>ESG compliance and regulations</li>
+                <li>Quality assurance tracking</li>
+                <li>Anti-fraud and anti-money laundering (requires singular EIN/Tax ID)</li>
+            </ul>
+
+            <h3>Product Domain</h3>
+            <ul>
+                <li>Product hierarchies and variants (models, colors, sizes)</li>
+                <li>Product attributes and specifications</li>
+                <li>Channel-specific requirements (Amazon vs Target vs Kroger)</li>
+                <li>Product Information Management (PIM)</li>
+                <li>Bill of materials (BOM) management</li>
+                <li>Omni-channel consistency</li>
+            </ul>
+
+            <h3>Location Domain</h3>
+            <ul>
+                <li>Store/facility hierarchies</li>
+                <li>Geographic relationships</li>
+                <li>Attributes (EV charging, pump count, hours)</li>
+                <li>Service capabilities per location</li>
+            </ul>
+
+            <div class="example-box">
+                <h4>🌍 Real-World Example: Supply Chain Traceability</h4>
+                <p><strong>The Pineapple Journey</strong></p>
+                <p>A pineapple grown at a specific field in Costa Rica is sold at a store in Avignon, France. With MDM, you can trace every step that pineapple took from field to store.</p>
+                <p><strong>Why this matters:</strong> If there's a contamination at that field requiring a recall, you can identify exactly which pineapples need to be recalled, from which stores, and who purchased them—all through connected entities.</p>
+            </div>
+
+            <div class="example-box">
+                <h4>🔧 Real-World Example: Customer Service</h4>
+                <p><strong>The Vacuum Cleaner Support Call</strong></p>
+                <p>A customer buys a vacuum at Walmart. Something breaks, they call the manufacturer (Eureka/Electrolux). The manufacturer needs the serial number because:</p>
+                <ul>
+                    <li>The vacuum went through 3 different iterations</li>
+                    <li>Different factories used different parts</li>
+                    <li>Belt size and screw specifications vary by version</li>
+                    <li>Bill of materials differs by factory and production date</li>
+                </ul>
+                <p><strong>With MDM:</strong> The manufacturer instantly knows which version from which factory, can send the correct part the first time, and the customer has a great experience.</p>
+                <p><strong>Without MDM:</strong> Customer gets 3 wrong screws, multiple calls, poor experience.</p>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 The Aha Moment</h4>
+                <p>Many sellers only think of MDM through a customer lens. The breakthrough comes when they realize MDM can master supplier, product, location, and reference data—and connect them all together in a persistent, governed way.</p>
+                <p><strong>This comprehensive view is what creates the true 360-degree understanding for customer experience, reporting, and auditability.</strong></p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Industry-Specific Use Cases</h2>
+
+            <h3>Food & Beverage / Restaurant</h3>
+            <div class="use-case-card">
+                <h4>Menu Mastering</h4>
+                <p>Manage menu items, ingredients, nutrition data, allergens, and pricing across locations and brands. Already proven with Dine Brands, Whataburger, Jack in the Box, In-N-Out.</p>
+            </div>
+            <div class="use-case-card">
+                <h4>Food Safety & FSMA Compliance</h4>
+                <p>FDA Food Safety Modernization Act requires traceability. Manage supplier relationships, ingredient sourcing, and complete supply chain visibility.</p>
+            </div>
+
+            <h3>Retail (Big Box)</h3>
+            <div class="use-case-card">
+                <h4>Customer Entity Management</h4>
+                <p>When e-commerce is involved, you need entity management for financial auditability, not just identity resolution.</p>
+            </div>
+            <div class="use-case-card">
+                <h4>Credit Card Integration</h4>
+                <p>Retailers work with third parties for credit cards, adding another layer of customer data complexity requiring entity management.</p>
+            </div>
+            <div class="use-case-card">
+                <h4>Right to Be Forgotten / GDPR Compliance</h4>
+                <p>Data spans POS, e-commerce, loyalty programs, and third-party credit systems—requires governed entity management.</p>
+            </div>
+            <div class="use-case-card">
+                <h4>Retail Media Networks</h4>
+                <p>Emerging monetization opportunity requires clean supplier and product data for advertising platforms.</p>
+            </div>
+
+            <h3>Financial Services</h3>
+            <div class="use-case-card">
+                <h4>Anti-Fraud / Anti-Money Laundering</h4>
+                <p>Requires entity management with singular EIN/Tax ID for suppliers and customers. Identity resolution alone is insufficient.</p>
+            </div>
+
+            <h3>Manufacturing</h3>
+            <div class="use-case-card">
+                <h4>Product Traceability & Recalls</h4>
+                <p>Track products from component manufacturing through distribution to end customer for quality control and recalls.</p>
+            </div>
+
+            <h3>Energy / Convenience Stores</h3>
+            <div class="use-case-card">
+                <h4>Location Mastering</h4>
+                <p>Manage location attributes like pump count, EV charging availability, service offerings, online ordering capabilities (e.g., Wawa, Sheetz).</p>
+            </div>
+
+            <h3>All Industries</h3>
+            <div class="use-case-card">
+                <h4>Supplier Onboarding Workflow</h4>
+                <p>Streamline vendor/supplier approval, validation, and lifecycle management.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Competitive Positioning</h2>
+
+            <h3>vs. Google Cloud Platform / BigQuery</h3>
+            <div class="competitive-angle">
+                <h4>The Push-Back You'll Hear:</h4>
+                <p>"We're putting everything in Google/BigQuery. Once it's there, it's all taken care of."</p>
+
+                <h4>Your Response Strategy:</h4>
+                <div class="quote">
+                    "I wouldn't buy a pair of shoes from a car dealer, so why would you buy master data management from a cloud platform?"
+                </div>
+
+                <p><strong>Key Questions to Ask:</strong></p>
+                <ul>
+                    <li><strong>Can Google do this?</strong> (Show the multi-domain relationship diagrams)</li>
+                    <li><strong>Does Google provide a UI where business users can understand and search master data?</strong></li>
+                    <li><strong>Are you doing identity resolution or entity resolution?</strong></li>
+                    <li><strong>How many developers will you hire to build and maintain custom match-merge algorithms?</strong></li>
+                    <li><strong>What about governance?</strong> (Google uses Dataplex - "ETL light", not true governance)</li>
+                </ul>
+
+                <h4>The Reality:</h4>
+                <ul>
+                    <li>BigQuery is a data lake—just dumping data in without logic or match/merge capability</li>
+                    <li>Data disseminated to business applications doesn't track changes back to the analytics platform</li>
+                    <li>No stewardship, workflow, or governed change management</li>
+                    <li>LLM-based match algorithms become obsolete immediately and require constant developer maintenance</li>
+                    <li>Informatica has a dedicated team doing this for 30+ years</li>
+                </ul>
+
+                <h4>Interesting Intel:</h4>
+                <p>Google (and other platforms) reportedly use Informatica's matching algorithm internally for their own MDM needs. Salesforce also uses Informatica.</p>
+            </div>
+
+            <h3>vs. Databricks</h3>
+            <div class="competitive-angle">
+                <p>Same positioning as Google—it's a data platform, not a master data management solution. Ask about governance, stewardship, UI for business users, and cross-domain entity relationships.</p>
+            </div>
+
+            <h3>vs. Salesforce Data Cloud</h3>
+            <div class="competitive-angle">
+                <h4>When Data Cloud Is Appropriate:</h4>
+                <ul>
+                    <li>Staying within Salesforce ecosystem</li>
+                    <li>Pure marketing/customer experience use cases</li>
+                    <li>No commerce/financial implications</li>
+                    <li>No multi-domain needs beyond customer</li>
+                </ul>
+
+                <h4>When Data Cloud Falls Short:</h4>
+                <ul>
+                    <li>Data spans beyond Salesforce (ERP, supply chain systems, etc.)</li>
+                    <li>Need supplier, product, or location mastering</li>
+                    <li>Commerce is involved (auditability required)</li>
+                    <li>Compliance and regulatory requirements</li>
+                    <li>Need persistent cross-domain relationships (customer + product + supplier)</li>
+                </ul>
+
+                <h4>Key Question:</h4>
+                <p>"Data Cloud can connect a product to a customer, but is it a persisted record or just a connection at a point in time?"</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Discovery & Qualification Framework</h2>
+
+            <h3>Qualifying for MDM vs. Identity Resolution</h3>
+
+            <div class="discovery-questions">
+                <h4>Ask These Questions:</h4>
+                <ol>
+                    <li><strong>Systems & Scope</strong>
+                        <ul>
+                            <li>What systems house your data today?</li>
+                            <li>Do you have an ERP system?</li>
+                            <li>What's in your Salesforce implementation? (CRM, Commerce, Service, Industries?)</li>
+                            <li>If Commerce is present → financial implications → likely need entity management</li>
+                        </ul>
+                    </li>
+                    <li><strong>Domains</strong>
+                        <ul>
+                            <li>Are you only managing customer data, or do you also need supplier, product, or location data?</li>
+                            <li>Do you have supply chain visibility needs?</li>
+                            <li>Do you syndicate product data to multiple channels (Amazon, Target, etc.)?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Compliance & Audit</strong>
+                        <ul>
+                            <li>Do you have regulatory compliance requirements? (FSMA, GDPR, financial regulations)</li>
+                            <li>Do you need to audit who changed what and when?</li>
+                            <li>Do you need a single Tax ID/EIN for entities?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Business Process</strong>
+                        <ul>
+                            <li>Who needs to interact with and maintain master data? (IT only, or business users too?)</li>
+                            <li>Do you need workflow for data stewardship and approval?</li>
+                            <li>How do changes get synced back to source systems?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Relationships & Complexity</strong>
+                        <ul>
+                            <li>Do you need to track relationships between entities? (Customer to product to supplier to location)</li>
+                            <li>Do you have organizational hierarchies or householding needs?</li>
+                            <li>Do you need product variants, bill of materials, or PIM capabilities?</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Red Flags for "We Don't Need MDM"</h3>
+            <ul>
+                <li><strong>"We're just putting it all in [cloud platform]"</strong> → Ask about governance, business user access, and cross-domain relationships</li>
+                <li><strong>"We only care about marketing"</strong> → Confirm there's no commerce, compliance, or supplier/product needs</li>
+                <li><strong>"Golden record will solve it"</strong> → Probe on what they think that means and what problem it solves</li>
+                <li><strong>"Data Cloud can do this"</strong> → Ask about systems beyond Salesforce and domains beyond customer</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Key Takeaways for Account Executives</h2>
+
+            <div class="key-insight">
+                <h4>1. Stop Selling "Golden Record"</h4>
+                <p>Start selling <strong>data management programs</strong> and <strong>entity governance</strong>. Golden record undersells the value of what MDM actually does.</p>
+            </div>
+
+            <div class="key-insight">
+                <h4>2. Ask Discovery Questions First</h4>
+                <p>Before positioning any solution, understand what they mean, why they need it, and what it will solve.</p>
+            </div>
+
+            <div class="key-insight">
+                <h4>3. Think Beyond Customer</h4>
+                <p>Don't limit MDM conversations to customer data. Explore supplier, product, location, and reference data needs.</p>
+            </div>
+
+            <div class="key-insight">
+                <h4>4. Look for Complexity</h4>
+                <p>The more domains, the more systems, the more relationships—the stronger the MDM case.</p>
+            </div>
+
+            <div class="key-insight">
+                <h4>5. Audit = Entity</h4>
+                <p>If data needs to be audited for compliance, financial, or regulatory purposes—they need entity management, not just identity resolution.</p>
+            </div>
+
+            <div class="key-insight">
+                <h4>6. Use Visual Examples</h4>
+                <p>Show relationship diagrams and use real-world stories (pineapple traceability, vacuum repair) to make complexity concrete.</p>
+            </div>
+
+            <div class="key-insight">
+                <h4>7. Positioning vs. Cloud Platforms</h4>
+                <p>You wouldn't buy shoes from a car dealer. Cloud platforms do data storage and analytics—they're not purpose-built for master data management with governance, stewardship, and cross-domain entity relationships.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Next Steps & Resources</h2>
+
+            <h3>Internal Resources Being Developed:</h3>
+            <ul>
+                <li><strong>Use Case Canvas:</strong> Tracking industry-specific use cases and accounts</li>
+                <li><strong>Big Box Retail Canvas:</strong> How to sell MDM without mentioning "golden record"</li>
+                <li><strong>Compliance Models Canvas:</strong> FSMA, GDPR, financial regulations</li>
+                <li><strong>Visual Diagrams:</strong> Domain relationship models for customer, supplier, product, location</li>
+            </ul>
+
+            <h3>Questions to Discuss with Your Team:</h3>
+            <ul>
+                <li>What use cases are you seeing in your accounts?</li>
+                <li>What competitive objections are you hearing?</li>
+                <li>What industries or domains need more collateral?</li>
+            </ul>
+
+            <p><strong>Remember:</strong> Informatica has 30+ years of dedicated MDM expertise. This isn't a side feature of a cloud platform—it's purpose-built, battle-tested master data management.</p>
+        </section>
+
+        <footer>
+            <p><strong>Internal Documentation for Informatica Sales Account Executives</strong></p>
+            <p>Compiled from internal training session on Informatica MDM positioning and discovery</p>
+        </footer>
+    </div>
+</body>
+</html>
