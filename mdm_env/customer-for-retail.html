@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatica MDM - Customer For Retail Environment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            font-size: 1.3rem;
+            color: #764ba2;
+            margin: 1.5rem 0 0.75rem 0;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-left: 4px solid #ff6b6b;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h4 {
+            color: #ff6b6b;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge.success {
+            background: #51cf66;
+        }
+
+        .badge.warning {
+            background: #ffd43b;
+            color: #1a1a1a;
+        }
+
+        .badge.info {
+            background: #4dabf7;
+        }
+
+        ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-active {
+            color: #51cf66;
+            font-weight: 600;
+        }
+
+        .status-configured {
+            color: #4dabf7;
+            font-weight: 600;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .highlight {
+            background: #fff3bf;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #ffd43b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛍️ Customer For Retail</h1>
+            <p>Informatica MDM Environment Overview</p>
+        </header>
+
+        <div class="content">
+            <!-- Environment Overview -->
+            <section class="section">
+                <h2>Environment Overview</h2>
+                <div class="card">
+                    <h4>Environment Name</h4>
+                    <p><strong>Customer For Retail</strong> - Informatica MDM demonstration environment showcasing retail customer master data management capabilities</p>
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <h4>Environment Type</h4>
+                        <p><span class="badge success">Production-Ready Demo</span></p>
+                        <p>Configured for customer-facing demonstrations and proof-of-concept scenarios</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Primary Focus</h4>
+                        <p><span class="badge info">B2C Retail</span></p>
+                        <p>Customer 360, identity resolution, and omnichannel customer experience</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Use Cases -->
+            <section class="section">
+                <h2>Use Cases & Capabilities</h2>
+
+                <div class="card">
+                    <h4>Customer 360 View</h4>
+                    <p>Unified customer profile aggregating data from multiple touchpoints:</p>
+                    <ul>
+                        <li>E-commerce transactions and browsing behavior</li>
+                        <li>In-store purchase history (POS integration)</li>
+                        <li>Loyalty program membership and points</li>
+                        <li>Customer service interactions and case history</li>
+                        <li>Marketing campaign responses and preferences</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Identity Resolution & Deduplication</h4>
+                    <p>Match and merge customer records across channels using:</p>
+                    <ul>
+                        <li>Fuzzy matching on name, email, phone, address</li>
+                        <li>Probabilistic matching algorithms</li>
+                        <li>Household and family relationship modeling</li>
+                        <li>Cross-reference (XREF) management</li>
+                        <li>Survivorship rules for golden record creation</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Data Quality & Enrichment</h4>
+                    <p>Cleanse, standardize, and enrich customer data:</p>
+                    <ul>
+                        <li>Address validation and standardization (USPS, international)</li>
+                        <li>Email validation and hygiene</li>
+                        <li>Phone number parsing and formatting</li>
+                        <li>Data completeness scoring</li>
+                        <li>Third-party data enrichment (demographics, firmographics)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Hierarchy Management</h4>
+                    <p>Model complex customer relationships:</p>
+                    <ul>
+                        <li>Household hierarchies (family units)</li>
+                        <li>Business-to-business customer hierarchies</li>
+                        <li>Parent-child account relationships</li>
+                        <li>Loyalty tier groupings</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Omnichannel Orchestration</h4>
+                    <p>Support consistent customer experience across channels:</p>
+                    <ul>
+                        <li>Real-time customer profile API for web/mobile</li>
+                        <li>Batch synchronization to downstream systems</li>
+                        <li>Event-driven updates via Change Data Capture</li>
+                        <li>Integration with marketing automation platforms</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Technical Setup -->
+            <section class="section">
+                <h2>Technical Environment Setup</h2>
+
+                <h3>MDM Configuration</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Configuration</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>MDM Hub</strong></td>
+                            <td>Informatica MDM - Multidomain Edition</td>
+                            <td><span class="status-active">● Active</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Model</strong></td>
+                            <td>Customer (Person) base object with extensions</td>
+                            <td><span class="status-configured">● Configured</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Match Rules</strong></td>
+                            <td>Fuzzy + exact matching on key attributes</td>
+                            <td><span class="status-configured">● Configured</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Business Rules</strong></td>
+                            <td>Data quality, validation, survivorship</td>
+                            <td><span class="status-configured">● Configured</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>API Access</strong></td>
+                            <td>REST API, SOAP, Batch import/export</td>
+                            <td><span class="status-active">● Active</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Technology Stack</h3>
+                <div class="tech-stack">
+                    <span class="badge">Informatica MDM</span>
+                    <span class="badge">Business 360 Console</span>
+                    <span class="badge">Data Director</span>
+                    <span class="badge">REST API</span>
+                    <span class="badge">Match & Merge</span>
+                    <span class="badge">Data Quality</span>
+                    <span class="badge">Hierarchy Manager</span>
+                    <span class="badge">Workflow Engine</span>
+                </div>
+
+                <h3>Data Sources</h3>
+                <div class="card">
+                    <h4>Integrated Systems</h4>
+                    <ul>
+                        <li><strong>E-commerce Platform</strong> - Customer registrations, orders, cart data</li>
+                        <li><strong>Point of Sale (POS)</strong> - In-store transaction data</li>
+                        <li><strong>CRM System</strong> - Customer service cases, interactions</li>
+                        <li><strong>Loyalty Platform</strong> - Membership, points, tiers</li>
+                        <li><strong>Marketing Automation</strong> - Campaign responses, preferences</li>
+                        <li><strong>Mobile App</strong> - App usage, in-app purchases</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Data Objects -->
+            <section class="section">
+                <h2>Data Objects & Schema</h2>
+
+                <div class="card">
+                    <h4>Customer (Person) Object</h4>
+                    <p><strong>Core Attributes:</strong></p>
+                    <ul>
+                        <li>Customer ID (Master, Cross-references)</li>
+                        <li>Name (First, Middle, Last, Suffix)</li>
+                        <li>Email Address (Primary, Secondary)</li>
+                        <li>Phone Numbers (Mobile, Home, Work)</li>
+                        <li>Physical Address (Mailing, Shipping)</li>
+                        <li>Date of Birth</li>
+                        <li>Gender</li>
+                    </ul>
+
+                    <p><strong>Extended Attributes:</strong></p>
+                    <ul>
+                        <li>Loyalty Status & Tier</li>
+                        <li>Customer Lifetime Value (CLV)</li>
+                        <li>Preferred Communication Channel</li>
+                        <li>Marketing Opt-in Preferences</li>
+                        <li>Household ID</li>
+                        <li>Customer Segment</li>
+                        <li>Last Purchase Date</li>
+                        <li>Total Purchase Amount</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Related Objects</h4>
+                    <ul>
+                        <li><strong>Addresses</strong> - Multiple address records per customer</li>
+                        <li><strong>Contacts</strong> - Email, phone, social media handles</li>
+                        <li><strong>Interactions</strong> - Customer touchpoints and activities</li>
+                        <li><strong>Preferences</strong> - Communication, product, channel preferences</li>
+                        <li><strong>Households</strong> - Family and household groupings</li>
+                        <li><strong>Loyalty Accounts</strong> - Loyalty program membership details</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Collateral & Assets -->
+            <section class="section">
+                <h2>Demo Collateral & Assets</h2>
+
+                <div class="grid">
+                    <div class="card">
+                        <h4>📊 Sample Data</h4>
+                        <ul>
+                            <li>10,000+ synthetic customer records</li>
+                            <li>Duplicate records for match/merge demos</li>
+                            <li>Multi-channel transaction history</li>
+                            <li>Household relationship examples</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>📱 UI Components</h4>
+                        <ul>
+                            <li>Business 360 Console (web UI)</li>
+                            <li>Data Director for stewardship</li>
+                            <li>Custom dashboards</li>
+                            <li>API integration examples</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>📖 Documentation</h4>
+                        <ul>
+                            <li>Architecture diagrams</li>
+                            <li>Data model documentation</li>
+                            <li>API reference guide</li>
+                            <li>Demo script and talking points</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>🔧 Configuration Files</h4>
+                        <ul>
+                            <li>Match rule configurations</li>
+                            <li>Business rule definitions</li>
+                            <li>Workflow templates</li>
+                            <li>Integration mappings</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hierarchies -->
+            <section class="section">
+                <h2>Hierarchies</h2>
+
+                <div class="card">
+                    <h4>Hierarchy Types Configured</h4>
+                    <p>The Customer For Retail environment supports multiple hierarchy models to represent complex customer relationships:</p>
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <h4>🏠 Household Hierarchies</h4>
+                        <p><span class="badge success">Active</span></p>
+                        <ul>
+                            <li><strong>Purpose:</strong> Group family members sharing a residence</li>
+                            <li><strong>Structure:</strong> Head of Household → Spouse/Partner → Children → Other Members</li>
+                            <li><strong>Use Cases:</strong> Family discounts, shared loyalty benefits, household-level marketing</li>
+                            <li><strong>Attributes:</strong> Household ID, relationship type, primary member flag</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>🏢 B2B Customer Hierarchies</h4>
+                        <p><span class="badge info">Configured</span></p>
+                        <ul>
+                            <li><strong>Purpose:</strong> Model corporate accounts and divisions</li>
+                            <li><strong>Structure:</strong> Parent Company → Subsidiaries → Departments → Individual Buyers</li>
+                            <li><strong>Use Cases:</strong> Corporate pricing, consolidated billing, enterprise agreements</li>
+                            <li><strong>Attributes:</strong> Corporate account ID, division code, billing entity</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>🎯 Loyalty Tier Hierarchies</h4>
+                        <p><span class="badge success">Active</span></p>
+                        <ul>
+                            <li><strong>Purpose:</strong> Segment customers by loyalty program status</li>
+                            <li><strong>Structure:</strong> Diamond → Platinum → Gold → Silver → Bronze</li>
+                            <li><strong>Use Cases:</strong> Tiered benefits, personalized offers, VIP service</li>
+                            <li><strong>Attributes:</strong> Tier level, points balance, tier expiry date</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>📍 Geographic Hierarchies</h4>
+                        <p><span class="badge info">Configured</span></p>
+                        <ul>
+                            <li><strong>Purpose:</strong> Organize customers by location</li>
+                            <li><strong>Structure:</strong> Region → State/Province → City → Postal Code</li>
+                            <li><strong>Use Cases:</strong> Regional campaigns, store affinity, local inventory</li>
+                            <li><strong>Attributes:</strong> Geographic IDs, store assignment, market segment</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Hierarchy Management Features</h3>
+                <div class="card">
+                    <h4>Capabilities</h4>
+                    <ul>
+                        <li><strong>Multi-parent Support:</strong> Customers can belong to multiple hierarchies simultaneously</li>
+                        <li><strong>Effective Dating:</strong> Time-bound hierarchy relationships with start/end dates</li>
+                        <li><strong>Cycle Detection:</strong> Prevents circular hierarchy references</li>
+                        <li><strong>Rollup Calculations:</strong> Aggregate metrics (spend, transactions) up hierarchy levels</li>
+                        <li><strong>Hierarchy Navigation:</strong> UI for exploring parent/child relationships</li>
+                        <li><strong>Bulk Operations:</strong> API support for mass hierarchy updates</li>
+                    </ul>
+                </div>
+
+                <div class="highlight">
+                    <h3>Demo Example: Household Hierarchy</h3>
+                    <p><strong>Smith Family Household:</strong></p>
+                    <ul>
+                        <li>Head of Household: John Smith (Primary Account, Loyalty: Gold)</li>
+                        <li>Spouse: Jane Smith (Linked Account, shares loyalty points)</li>
+                        <li>Child: Emma Smith (Teen Account, parental controls)</li>
+                        <li>Household Benefits: Shared shipping address, family discount applied, combined purchase history</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Domains -->
+            <section class="section">
+                <h2>Domains</h2>
+
+                <div class="card">
+                    <h4>MDM Domain Architecture</h4>
+                    <p>The environment is configured as a multi-domain MDM implementation supporting eight core business entity domains:</p>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Domain</th>
+                            <th>Business Object</th>
+                            <th>Primary Use Case</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Customer (Person)</strong></td>
+                            <td>Individual Consumers</td>
+                            <td>B2C retail customers, loyalty members, shoppers</td>
+                            <td><span class="status-active">● Active</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Organization</strong></td>
+                            <td>Companies, Groups, Teams</td>
+                            <td>B2B accounts, franchisees, business customers</td>
+                            <td><span class="status-active">● Active</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Retail Location</strong></td>
+                            <td>Stores, Distribution Centers</td>
+                            <td>Physical retail locations, warehouses, fulfillment</td>
+                            <td><span class="status-active">● Active</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Supplier</strong></td>
+                            <td>Vendors, Manufacturers</td>
+                            <td>Supply chain partners, product suppliers</td>
+                            <td><span class="status-configured">● Configured</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Supplier Location</strong></td>
+                            <td>Supplier Facilities</td>
+                            <td>Manufacturing plants, distribution hubs</td>
+                            <td><span class="status-configured">● Configured</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Product Categorization</strong></td>
+                            <td>Categories, Departments</td>
+                            <td>Taxonomy, merchandising hierarchy</td>
+                            <td><span class="status-active">● Active</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Product Line</strong></td>
+                            <td>Product Families, Collections</td>
+                            <td>Brand lines, seasonal collections</td>
+                            <td><span class="status-active">● Active</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sellable Item (SKU)</strong></td>
+                            <td>Individual Products</td>
+                            <td>Stock keeping units, inventory items</td>
+                            <td><span class="status-active">● Active</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Domain Details</h3>
+
+                <div class="card">
+                    <h4>1. Customer (Person) Domain</h4>
+                    <p><span class="badge success">Primary Focus</span> <span class="badge">B2C</span></p>
+                    <p><strong>Base Object:</strong> Person (C_PERSON_BO)</p>
+
+                    <p><strong>Key Attributes:</strong></p>
+                    <ul>
+                        <li>Customer ID (Master), Cross-References (Source System IDs)</li>
+                        <li>Name (First, Middle, Last, Suffix, Nickname)</li>
+                        <li>Contact Info (Email, Phone, Address)</li>
+                        <li>Demographics (DOB, Gender, Language, Income Range)</li>
+                        <li>Loyalty (Tier, Points, Membership Date)</li>
+                        <li>Preferences (Channel, Communication, Product Categories)</li>
+                        <li>Transactional (CLV, Last Purchase Date, Total Spend, Frequency)</li>
+                    </ul>
+
+                    <p><strong>Configuration:</strong></p>
+                    <ul>
+                        <li><strong>Trust Model:</strong> Consolidated trust (multiple sources, single golden record)</li>
+                        <li><strong>Matching:</strong> Probabilistic + deterministic rules (email, name, phone, address)</li>
+                        <li><strong>Survivorship:</strong> Source priority + recency + completeness</li>
+                        <li><strong>Workflow:</strong> Auto-merge above 95 score, manual review 70-94</li>
+                        <li><strong>Data Quality:</strong> Address validation, email verification, phone parsing</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>2. Organization Domain</h4>
+                    <p><span class="badge info">B2B</span> <span class="badge">Companies, Groups, Teams</span></p>
+
+                    <p><strong>Key Attributes:</strong></p>
+                    <ul>
+                        <li>Organization ID, DUNS Number, Tax ID</li>
+                        <li>Legal Name, DBA Name, Brand Names</li>
+                        <li>Organization Type (Corporation, LLC, Partnership, Franchise, Government)</li>
+                        <li>Industry Classification (NAICS, SIC codes)</li>
+                        <li>Company Size (Employee count, Revenue range)</li>
+                        <li>Headquarters Address, Billing Address</li>
+                        <li>Contact Info (Main phone, Website, Primary contact person)</li>
+                        <li>Credit Terms, Payment Terms, Account Status</li>
+                    </ul>
+
+                    <p><strong>Sub-Types:</strong></p>
+                    <ul>
+                        <li><strong>Company:</strong> Legal business entities (corporate accounts)</li>
+                        <li><strong>Franchise Group:</strong> Multi-location franchise owners</li>
+                        <li><strong>Business Unit:</strong> Divisions or departments within companies</li>
+                        <li><strong>Buying Group:</strong> Purchasing consortiums</li>
+                        <li><strong>Team/Department:</strong> Internal business units</li>
+                    </ul>
+
+                    <p><strong>Use Cases:</strong></p>
+                    <ul>
+                        <li>B2B customer accounts with corporate pricing</li>
+                        <li>Franchise relationship management</li>
+                        <li>Corporate hierarchy modeling (parent-subsidiary)</li>
+                        <li>Consolidated billing and reporting</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>3. Retail Location Domain</h4>
+                    <p><span class="badge success">Store Network</span></p>
+
+                    <p><strong>Key Attributes:</strong></p>
+                    <ul>
+                        <li>Location ID, Store Number, Site Code</li>
+                        <li>Location Name, DBA Name</li>
+                        <li>Location Type (Flagship Store, Standard Store, Outlet, Kiosk, Pop-up, Warehouse, DC)</li>
+                        <li>Physical Address, Geocoordinates (Lat/Long)</li>
+                        <li>Operating Hours, Time Zone</li>
+                        <li>Store Manager, District, Region assignments</li>
+                        <li>Square Footage, Layout Type</li>
+                        <li>Opening Date, Status (Active, Temporarily Closed, Permanently Closed)</li>
+                        <li>Services Available (Click & Collect, Returns, Gift Wrap, etc.)</li>
+                        <li>Annual Revenue, Traffic volume</li>
+                    </ul>
+
+                    <p><strong>Location Hierarchies:</strong></p>
+                    <ul>
+                        <li>Enterprise → Region → District → Store</li>
+                        <li>Banner/Brand groupings (for multi-brand retailers)</li>
+                        <li>Fulfillment network (Ship-from-Store nodes)</li>
+                    </ul>
+
+                    <p><strong>Use Cases:</strong></p>
+                    <ul>
+                        <li>Store locator functionality</li>
+                        <li>Inventory availability by location</li>
+                        <li>Customer-to-store affinity (preferred store)</li>
+                        <li>Store performance reporting</li>
+                        <li>Omnichannel fulfillment (BOPIS, Ship-from-Store)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>4. Supplier Domain</h4>
+                    <p><span class="badge">Supply Chain</span></p>
+
+                    <p><strong>Key Attributes:</strong></p>
+                    <ul>
+                        <li>Supplier ID, Vendor Number, DUNS</li>
+                        <li>Supplier Name, Legal Name</li>
+                        <li>Supplier Type (Manufacturer, Distributor, Wholesaler, Drop-shipper)</li>
+                        <li>Contact Info (Primary contact, Email, Phone)</li>
+                        <li>Payment Terms, Lead Time, MOQ (Minimum Order Quantity)</li>
+                        <li>Certifications (Organic, Fair Trade, Sustainability)</li>
+                        <li>Performance Metrics (On-time delivery %, Quality rating)</li>
+                        <li>Contract Terms, Pricing Agreements</li>
+                        <li>Status (Approved, Probation, Inactive)</li>
+                    </ul>
+
+                    <p><strong>Use Cases:</strong></p>
+                    <ul>
+                        <li>Supplier relationship management</li>
+                        <li>Purchase order automation</li>
+                        <li>Supplier performance tracking</li>
+                        <li>Cost analysis and negotiation</li>
+                        <li>Risk management (single-source dependency)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>5. Supplier Location Domain</h4>
+                    <p><span class="badge">Supplier Facilities</span></p>
+
+                    <p><strong>Key Attributes:</strong></p>
+                    <ul>
+                        <li>Supplier Location ID, Facility Code</li>
+                        <li>Parent Supplier ID (FK to Supplier domain)</li>
+                        <li>Facility Type (Manufacturing Plant, Distribution Center, Warehouse, Office)</li>
+                        <li>Physical Address, Geocoordinates</li>
+                        <li>Capacity (units/day, sq ft, pallet positions)</li>
+                        <li>Certifications (ISO, FDA, USDA, etc.)</li>
+                        <li>Products Manufactured/Distributed at this location</li>
+                        <li>Shipping Methods, Transit Times to each retail DC</li>
+                        <li>Operating Days/Hours, Contact Person</li>
+                    </ul>
+
+                    <p><strong>Relationships:</strong></p>
+                    <ul>
+                        <li>Supplier → Supplier Location (1:Many)</li>
+                        <li>Supplier Location → Product SKU (products sourced from this facility)</li>
+                        <li>Supplier Location → Retail Location (shipping routes, lead times)</li>
+                    </ul>
+
+                    <p><strong>Use Cases:</strong></p>
+                    <ul>
+                        <li>Multi-location supplier management</li>
+                        <li>Source tracking for product traceability</li>
+                        <li>Lead time calculation by origin facility</li>
+                        <li>Regional sourcing optimization</li>
+                        <li>Disaster recovery (alternate supplier sites)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>6. Product Categorization Domain</h4>
+                    <p><span class="badge success">Taxonomy & Hierarchy</span></p>
+
+                    <p><strong>Key Attributes:</strong></p>
+                    <ul>
+                        <li>Category ID, Category Code</li>
+                        <li>Category Name, Display Name</li>
+                        <li>Category Level (L1=Department, L2=Class, L3=Subclass, L4=Segment)</li>
+                        <li>Parent Category ID (hierarchical structure)</li>
+                        <li>Category Description, Keywords</li>
+                        <li>Merchandising Attributes (Seasonality, Target Demo)</li>
+                        <li>Sort Order, Display Flag (visible on web/app)</li>
+                        <li>Category Image, Icon</li>
+                    </ul>
+
+                    <p><strong>Example Hierarchy:</strong></p>
+                    <ul>
+                        <li><strong>L1 - Department:</strong> Men's Apparel</li>
+                        <li><strong>L2 - Class:</strong> Men's Outerwear</li>
+                        <li><strong>L3 - Subclass:</strong> Men's Jackets</li>
+                        <li><strong>L4 - Segment:</strong> Men's Winter Jackets</li>
+                    </ul>
+
+                    <p><strong>Use Cases:</strong></p>
+                    <ul>
+                        <li>Website navigation (category browsing)</li>
+                        <li>Reporting and analytics by category</li>
+                        <li>Promotional targeting (sale on entire category)</li>
+                        <li>Inventory planning and allocation</li>
+                        <li>Merchandising strategy</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>7. Product Line Domain</h4>
+                    <p><span class="badge info">Brand Lines & Collections</span></p>
+
+                    <p><strong>Key Attributes:</strong></p>
+                    <ul>
+                        <li>Product Line ID, Line Code</li>
+                        <li>Line Name (e.g., "Summer 2026 Collection", "Premium Essentials")</li>
+                        <li>Brand Association (House brand, licensed brand, designer)</li>
+                        <li>Line Type (Core, Seasonal, Limited Edition, Exclusive)</li>
+                        <li>Launch Date, End Date (for limited collections)</li>
+                        <li>Target Customer Segment (Mass, Premium, Luxury)</li>
+                        <li>Marketing Theme, Storytelling</li>
+                        <li>Line Manager, Buyer Contact</li>
+                    </ul>
+
+                    <p><strong>Examples:</strong></p>
+                    <ul>
+                        <li>"Nike Air Max Collection" (Brand-specific line)</li>
+                        <li>"Fall/Winter 2026 Fashion" (Seasonal line)</li>
+                        <li>"Sustainable Living Series" (Theme-based line)</li>
+                        <li>"Private Label Basics" (Store brand line)</li>
+                    </ul>
+
+                    <p><strong>Use Cases:</strong></p>
+                    <ul>
+                        <li>Marketing campaign management (promote entire line)</li>
+                        <li>Assortment planning (which lines for which stores)</li>
+                        <li>Cross-sell recommendations (other items in same line)</li>
+                        <li>Vendor collaboration (co-branded lines)</li>
+                        <li>Performance tracking by product line</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>8. Sellable Item (SKU) Domain</h4>
+                    <p><span class="badge success">Core Product Master</span></p>
+
+                    <p><strong>Key Attributes:</strong></p>
+                    <ul>
+                        <li>SKU ID, UPC/EAN Barcode, Item Number</li>
+                        <li>Product Name, Short Description, Long Description</li>
+                        <li>Brand, Manufacturer</li>
+                        <li>Category (FK to Product Categorization)</li>
+                        <li>Product Line (FK to Product Line domain)</li>
+                        <li>Supplier (FK to Supplier domain)</li>
+                        <li>Pricing (MSRP, Wholesale Cost, Current Retail Price)</li>
+                        <li>Attributes (Size, Color, Material, Style)</li>
+                        <li>Dimensions (Length, Width, Height, Weight)</li>
+                        <li>Packaging (Units per case, cases per pallet)</li>
+                        <li>Inventory (Stock status, Safety stock, Reorder point)</li>
+                        <li>Images, Videos, 360° Views</li>
+                        <li>Lifecycle Status (New, Active, Clearance, Discontinued)</li>
+                        <li>Compliance (Regulatory flags, Hazmat, Age restriction)</li>
+                    </ul>
+
+                    <p><strong>Product Variants:</strong></p>
+                    <ul>
+                        <li><strong>Style Master:</strong> Parent product (e.g., "Blue Cotton T-Shirt")</li>
+                        <li><strong>SKU Variants:</strong> Child SKUs (Small, Medium, Large, XL)</li>
+                        <li>Each size/color combo = unique SKU with own barcode</li>
+                    </ul>
+
+                    <p><strong>Use Cases:</strong></p>
+                    <ul>
+                        <li>E-commerce product catalog</li>
+                        <li>POS scanning and checkout</li>
+                        <li>Inventory management and replenishment</li>
+                        <li>Pricing and promotions</li>
+                        <li>Product recommendations and search</li>
+                    </ul>
+
+                    <p><strong>Matching & Deduplication:</strong></p>
+                    <ul>
+                        <li><strong>Exact Match:</strong> UPC/EAN barcode match (100% confidence)</li>
+                        <li><strong>Fuzzy Match:</strong> Product name + brand + attributes (handle typos)</li>
+                        <li><strong>Consolidation:</strong> Merge duplicate product listings from different sources</li>
+                        <li><strong>Golden Record:</strong> Single master SKU with all source data unified</li>
+                    </ul>
+                </div>
+
+                <h3>Cross-Domain Relationships</h3>
+                <div class="card">
+                    <h4>Configured Relationships</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>From Domain</th>
+                                <th>To Domain</th>
+                                <th>Relationship Type</th>
+                                <th>Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Customer (Person)</td>
+                                <td>Organization</td>
+                                <td>Works For, Purchases For</td>
+                                <td>B2B employee purchasing, corporate accounts</td>
+                            </tr>
+                            <tr>
+                                <td>Customer (Person)</td>
+                                <td>Retail Location</td>
+                                <td>Preferred Store, Visited</td>
+                                <td>Store affinity, visit history, local inventory</td>
+                            </tr>
+                            <tr>
+                                <td>Customer (Person)</td>
+                                <td>Sellable Item (SKU)</td>
+                                <td>Purchased, Reviewed, Wishlisted</td>
+                                <td>Purchase history, recommendations, ratings</td>
+                            </tr>
+                            <tr>
+                                <td>Organization</td>
+                                <td>Retail Location</td>
+                                <td>Owns, Operates</td>
+                                <td>Franchise ownership, store portfolio</td>
+                            </tr>
+                            <tr>
+                                <td>Supplier</td>
+                                <td>Supplier Location</td>
+                                <td>Has Facility</td>
+                                <td>Multi-site supplier management</td>
+                            </tr>
+                            <tr>
+                                <td>Supplier</td>
+                                <td>Sellable Item (SKU)</td>
+                                <td>Supplies, Manufactures</td>
+                                <td>Source tracking, procurement</td>
+                            </tr>
+                            <tr>
+                                <td>Supplier Location</td>
+                                <td>Retail Location</td>
+                                <td>Ships To</td>
+                                <td>Supply chain routing, lead times</td>
+                            </tr>
+                            <tr>
+                                <td>Product Line</td>
+                                <td>Sellable Item (SKU)</td>
+                                <td>Contains</td>
+                                <td>Collection membership, line reporting</td>
+                            </tr>
+                            <tr>
+                                <td>Product Categorization</td>
+                                <td>Sellable Item (SKU)</td>
+                                <td>Categorizes</td>
+                                <td>Taxonomy, navigation, reporting</td>
+                            </tr>
+                            <tr>
+                                <td>Retail Location</td>
+                                <td>Sellable Item (SKU)</td>
+                                <td>Stocks, Sells</td>
+                                <td>Store inventory, local assortment</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Domain Integration Architecture</h3>
+                <div class="card">
+                    <h4>Data Flow & Synchronization</h4>
+                    <ul>
+                        <li><strong>Inbound:</strong> Source systems feed domain data to MDM via APIs and batch loads</li>
+                        <li><strong>MDM Processing:</strong> Match, merge, data quality, survivorship applied per domain</li>
+                        <li><strong>Cross-Reference:</strong> Source system IDs linked to golden records (XREF tables)</li>
+                        <li><strong>Outbound:</strong> Golden records published to consuming systems (CRM, E-commerce, ERP, BI)</li>
+                        <li><strong>Event-Driven:</strong> CDC events trigger downstream updates in real-time</li>
+                        <li><strong>Bi-Directional:</strong> Some domains support write-back (updates from consuming systems flow back to MDM)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Data Quality -->
+            <section class="section">
+                <h2>Data Quality</h2>
+
+                <div class="card">
+                    <h4>Data Quality Framework</h4>
+                    <p>Comprehensive data quality processes ensure clean, standardized, and enriched customer records:</p>
+                </div>
+
+                <h3>Validation Rules</h3>
+                <div class="grid">
+                    <div class="card">
+                        <h4>Format Validation</h4>
+                        <ul>
+                            <li><strong>Email:</strong> RFC 5322 format validation, disposable domain check</li>
+                            <li><strong>Phone:</strong> E.164 format, country code validation</li>
+                            <li><strong>Postal Code:</strong> Country-specific format rules</li>
+                            <li><strong>Date of Birth:</strong> Valid date, age range check (13-120 years)</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Business Rule Validation</h4>
+                        <ul>
+                            <li><strong>Required Fields:</strong> First Name, Last Name, Email OR Phone</li>
+                            <li><strong>Unique Constraints:</strong> Email must be unique per customer</li>
+                            <li><strong>Referential Integrity:</strong> Loyalty ID must exist in loyalty system</li>
+                            <li><strong>Value Domains:</strong> Gender, Country, State from approved lists</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Standardization & Cleansing</h3>
+                <div class="card">
+                    <h4>Address Standardization</h4>
+                    <ul>
+                        <li><strong>Vendor:</strong> Informatica Address Verification (USPS, international databases)</li>
+                        <li><strong>Process:</strong> Parse → Validate → Standardize → Geocode</li>
+                        <li><strong>Output:</strong> Corrected address, standardized format, delivery point barcode, latitude/longitude</li>
+                        <li><strong>Quality Scores:</strong> Address Quality Index (AQI) score, delivery confidence level</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Name Parsing & Standardization</h4>
+                    <ul>
+                        <li><strong>Parse full name into components:</strong> Prefix, First, Middle, Last, Suffix</li>
+                        <li><strong>Case normalization:</strong> Proper case (Smith not SMITH)</li>
+                        <li><strong>Special character handling:</strong> Preserve accents, hyphens, apostrophes</li>
+                        <li><strong>Nickname expansion:</strong> Bob → Robert (stored in alternate name field)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Email & Phone Cleansing</h4>
+                    <ul>
+                        <li><strong>Email:</strong> Lowercase, trim whitespace, check MX records, flag disposable domains</li>
+                        <li><strong>Phone:</strong> Remove formatting, normalize to E.164 (+1XXXXXXXXXX), validate area code</li>
+                    </ul>
+                </div>
+
+                <h3>Enrichment</h3>
+                <div class="card">
+                    <h4>Data Enrichment Services</h4>
+                    <ul>
+                        <li><strong>Demographic Append:</strong> Age, income range, household size from third-party providers</li>
+                        <li><strong>Lifestyle Segmentation:</strong> Interest categories, purchase propensity scores</li>
+                        <li><strong>Geocoding:</strong> Latitude/longitude from address</li>
+                        <li><strong>Company Enrichment:</strong> For B2B, append company size, industry, revenue</li>
+                    </ul>
+                </div>
+
+                <h3>Data Quality Scoring</h3>
+                <div class="card">
+                    <h4>Completeness Score</h4>
+                    <p>Calculated based on presence of key attributes (0-100):</p>
+                    <ul>
+                        <li>Name fields populated: 20 points</li>
+                        <li>Valid email: 20 points</li>
+                        <li>Valid phone: 15 points</li>
+                        <li>Complete address: 25 points</li>
+                        <li>Date of birth: 10 points</li>
+                        <li>Preferences captured: 10 points</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Accuracy Score</h4>
+                    <p>Based on validation results (0-100):</p>
+                    <ul>
+                        <li>Address verified (AQI score)</li>
+                        <li>Email verified (MX check)</li>
+                        <li>Phone validated (carrier lookup)</li>
+                        <li>Recent data update (within 90 days)</li>
+                    </ul>
+                </div>
+
+                <h3>Data Quality Monitoring</h3>
+                <div class="card">
+                    <h4>Quality Dashboards</h4>
+                    <ul>
+                        <li><strong>Record Quality Distribution:</strong> Histogram of completeness/accuracy scores</li>
+                        <li><strong>Trend Analysis:</strong> Quality score trends over time</li>
+                        <li><strong>Source System Comparison:</strong> Quality by source system</li>
+                        <li><strong>Issue Tracking:</strong> Count of validation failures by rule</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Data Governance -->
+            <section class="section">
+                <h2>Data Governance</h2>
+
+                <div class="card">
+                    <h4>Governance Framework</h4>
+                    <p>Policies, processes, and controls to ensure data quality, security, and compliance:</p>
+                </div>
+
+                <h3>Data Stewardship</h3>
+                <div class="card">
+                    <h4>Stewardship Model</h4>
+                    <ul>
+                        <li><strong>Chief Data Steward:</strong> Owns overall customer data quality, resolves escalations</li>
+                        <li><strong>Regional Stewards:</strong> Review match/merge candidates, approve exceptions</li>
+                        <li><strong>Source System Stewards:</strong> Responsible for data quality at source</li>
+                        <li><strong>Business Stewards:</strong> Define business rules, validation criteria</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Stewardship Workflows</h4>
+                    <ul>
+                        <li><strong>Match Review:</strong> Manual review of potential duplicates above auto-merge threshold</li>
+                        <li><strong>Merge Approval:</strong> Steward approval for high-value customer merges</li>
+                        <li><strong>Data Quality Exceptions:</strong> Review and remediate low-quality records</li>
+                        <li><strong>Unmerge Requests:</strong> Process requests to split incorrectly merged records</li>
+                        <li><strong>Data Corrections:</strong> Approve manual data updates from business users</li>
+                    </ul>
+                </div>
+
+                <h3>Data Access & Security</h3>
+                <div class="card">
+                    <h4>Role-Based Access Control (RBAC)</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Access Level</th>
+                                <th>Permitted Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Admin</strong></td>
+                                <td>Full Access</td>
+                                <td>Configure, read, write, merge, delete</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Steward</strong></td>
+                                <td>Elevated</td>
+                                <td>Read, write, merge, quality review</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Business User</strong></td>
+                                <td>Read-Only</td>
+                                <td>View customer 360, run reports</td>
+                            </tr>
+                            <tr>
+                                <td><strong>API Service Account</strong></td>
+                                <td>Scoped</td>
+                                <td>Create, read, update via API (no delete)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marketing User</strong></td>
+                                <td>Restricted</td>
+                                <td>Read (PII masked), export for campaigns</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h4>Data Privacy & PII Protection</h4>
+                    <ul>
+                        <li><strong>Data Masking:</strong> Dynamic masking of SSN, credit card, sensitive fields for non-privileged users</li>
+                        <li><strong>Field-Level Security:</strong> Restrict access to salary, medical info, financial data</li>
+                        <li><strong>Audit Logging:</strong> Log all access to PII fields with user ID, timestamp, action</li>
+                        <li><strong>Consent Management:</strong> Track marketing opt-in/opt-out, GDPR consent flags</li>
+                        <li><strong>Right to Erasure:</strong> GDPR/CCPA delete workflow, anonymization process</li>
+                    </ul>
+                </div>
+
+                <h3>Data Lineage & Audit</h3>
+                <div class="card">
+                    <h4>Lineage Tracking</h4>
+                    <ul>
+                        <li><strong>Source System Tracking:</strong> Every field value tagged with source system and load date</li>
+                        <li><strong>Transformation History:</strong> Log of data quality transformations applied</li>
+                        <li><strong>Survivorship Trail:</strong> Which source "won" for each field, why</li>
+                        <li><strong>Merge History:</strong> Parent records merged to create golden record</li>
+                        <li><strong>Change Data Capture:</strong> Delta tracking of all field-level changes</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Audit Logging</h4>
+                    <ul>
+                        <li><strong>User Actions:</strong> Create, read, update, delete operations</li>
+                        <li><strong>Merge Operations:</strong> Auto-merge, manual merge, unmerge with steward ID</li>
+                        <li><strong>Configuration Changes:</strong> Match rules, business rules, workflow modifications</li>
+                        <li><strong>API Access:</strong> API calls with service account, operation, timestamp</li>
+                        <li><strong>Export Tracking:</strong> Data extract events for compliance reporting</li>
+                    </ul>
+                </div>
+
+                <h3>Compliance & Policy</h3>
+                <div class="card">
+                    <h4>Regulatory Compliance</h4>
+                    <ul>
+                        <li><strong>GDPR (EU):</strong> Right to access, right to erasure, consent management, data portability</li>
+                        <li><strong>CCPA (California):</strong> Consumer data rights, opt-out of sale, privacy notices</li>
+                        <li><strong>CAN-SPAM:</strong> Email opt-out honored within 10 days</li>
+                        <li><strong>TCPA:</strong> Phone consent tracking for SMS/call campaigns</li>
+                        <li><strong>PCI-DSS:</strong> Credit card data not stored in MDM (tokenized references only)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Data Retention Policies</h4>
+                    <ul>
+                        <li><strong>Active Customers:</strong> Retain indefinitely while active</li>
+                        <li><strong>Inactive Customers:</strong> Archive after 3 years of no purchases</li>
+                        <li><strong>Deleted Records:</strong> Soft delete with 90-day recovery window, then purge</li>
+                        <li><strong>Audit Logs:</strong> Retain 7 years for compliance</li>
+                        <li><strong>Merge History:</strong> Retain indefinitely for unmerge scenarios</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Match & Merge -->
+            <section class="section">
+                <h2>Match & Merge</h2>
+
+                <div class="card">
+                    <h4>Match & Merge Strategy</h4>
+                    <p>Multi-pass matching algorithm to identify and consolidate duplicate customer records:</p>
+                </div>
+
+                <h3>Match Rules Configuration</h3>
+                <div class="card">
+                    <h4>Match Rule Set: Customer Exact Match</h4>
+                    <p><span class="badge success">Priority 1</span> <span class="badge">Deterministic</span></p>
+                    <ul>
+                        <li><strong>Criteria:</strong> Email = Email (exact match)</li>
+                        <li><strong>Score:</strong> 100 (auto-match)</li>
+                        <li><strong>Action:</strong> Auto-merge</li>
+                        <li><strong>Use Case:</strong> Same person registers twice with same email</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Match Rule Set: High Confidence Fuzzy Match</h4>
+                    <p><span class="badge info">Priority 2</span> <span class="badge">Probabilistic</span></p>
+                    <ul>
+                        <li><strong>Criteria:</strong>
+                            <ul>
+                                <li>First Name (fuzzy, 85% similarity) AND Last Name (fuzzy, 90% similarity)</li>
+                                <li>AND (Phone = Phone OR Address = Address)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Score:</strong> 85-95 (manual review)</li>
+                        <li><strong>Action:</strong> Flag for steward review</li>
+                        <li><strong>Use Case:</strong> Typos in name, same person different channel</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Match Rule Set: Household Match</h4>
+                    <p><span class="badge info">Priority 3</span> <span class="badge">Probabilistic</span></p>
+                    <ul>
+                        <li><strong>Criteria:</strong>
+                            <ul>
+                                <li>Different First Name, Same Last Name</li>
+                                <li>AND Address = Address (standardized)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Score:</strong> 70-80</li>
+                        <li><strong>Action:</strong> Link as household members (do not merge)</li>
+                        <li><strong>Use Case:</strong> Family members at same address</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Match Rule Set: Low Confidence Match</h4>
+                    <p><span class="badge warning">Priority 4</span> <span class="badge">Probabilistic</span></p>
+                    <ul>
+                        <li><strong>Criteria:</strong> Name (fuzzy 70%) AND Date of Birth AND Partial Phone Match</li>
+                        <li><strong>Score:</strong> 60-70</li>
+                        <li><strong>Action:</strong> Flag for review, do not auto-merge</li>
+                        <li><strong>Use Case:</strong> Possible match but insufficient confidence</li>
+                    </ul>
+                </div>
+
+                <h3>Matching Algorithms</h3>
+                <div class="card">
+                    <h4>Fuzzy Matching Techniques</h4>
+                    <ul>
+                        <li><strong>Jaro-Winkler:</strong> String similarity for names (weights prefix matches higher)</li>
+                        <li><strong>Levenshtein Distance:</strong> Edit distance for email, account numbers</li>
+                        <li><strong>Soundex/Metaphone:</strong> Phonetic matching for names (Smith = Smyth)</li>
+                        <li><strong>Token-Based:</strong> Break address into tokens, match on components</li>
+                        <li><strong>N-Gram:</strong> Character sequence matching for misspellings</li>
+                    </ul>
+                </div>
+
+                <h3>Match Workflow</h3>
+                <div class="card">
+                    <h4>Match Process Flow</h4>
+                    <ol>
+                        <li><strong>Trigger:</strong> New record loaded or existing record updated</li>
+                        <li><strong>Standardization:</strong> Apply data quality rules (name case, address standardization)</li>
+                        <li><strong>Blocking:</strong> Generate match keys (e.g., first 3 chars of last name + postal code) to reduce search space</li>
+                        <li><strong>Candidate Selection:</strong> Find records with matching block keys</li>
+                        <li><strong>Match Rule Execution:</strong> Apply match rules in priority order</li>
+                        <li><strong>Scoring:</strong> Calculate match score (0-100)</li>
+                        <li><strong>Auto-Merge:</strong> Score ≥ 95 → auto-merge</li>
+                        <li><strong>Manual Review:</strong> Score 70-94 → steward task</li>
+                        <li><strong>No Match:</strong> Score < 70 → create new master record</li>
+                    </ol>
+                </div>
+
+                <h3>Merge Process</h3>
+                <div class="card">
+                    <h4>Merge Execution Steps</h4>
+                    <ol>
+                        <li><strong>Identify Records:</strong> Parent records to merge (based on match score or manual selection)</li>
+                        <li><strong>Apply Survivorship:</strong> Determine winning value for each field (see Survivorship section)</li>
+                        <li><strong>Create Golden Record:</strong> New master record with survived values</li>
+                        <li><strong>Update Cross-References:</strong> Link all source system IDs to golden record</li>
+                        <li><strong>Archive Parent Records:</strong> Move original records to merge history</li>
+                        <li><strong>Propagate Changes:</strong> Publish merge event to downstream systems</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h4>Unmerge Process</h4>
+                    <p>Support for splitting incorrectly merged records:</p>
+                    <ul>
+                        <li><strong>Trigger:</strong> Steward identifies incorrect merge or customer dispute</li>
+                        <li><strong>Process:</strong> Restore original parent records, remove golden record, update XREFs</li>
+                        <li><strong>History:</strong> Log unmerge reason, steward ID, timestamp</li>
+                        <li><strong>Downstream Impact:</strong> Publish unmerge event to notify consuming systems</li>
+                    </ul>
+                </div>
+
+                <h3>Match & Merge Metrics</h3>
+                <div class="card">
+                    <h4>Key Performance Indicators</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Target</th>
+                                <th>Current</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Auto-Merge Rate</td>
+                                <td>≥ 80%</td>
+                                <td>85%</td>
+                            </tr>
+                            <tr>
+                                <td>Manual Review Queue Size</td>
+                                <td>< 100 daily</td>
+                                <td>75 daily</td>
+                            </tr>
+                            <tr>
+                                <td>False Positive Merge Rate</td>
+                                <td>< 1%</td>
+                                <td>0.5%</td>
+                            </tr>
+                            <tr>
+                                <td>Steward Review Time</td>
+                                <td>< 2 minutes avg</td>
+                                <td>1.5 minutes</td>
+                            </tr>
+                            <tr>
+                                <td>Unmerge Requests</td>
+                                <td>< 10 monthly</td>
+                                <td>5 monthly</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Survivorship -->
+            <section class="section">
+                <h2>Survivorship</h2>
+
+                <div class="card">
+                    <h4>Survivorship Strategy</h4>
+                    <p>Rules to determine which field values "survive" to the golden record when merging duplicate customer records:</p>
+                </div>
+
+                <h3>Survivorship Rule Types</h3>
+                <div class="grid">
+                    <div class="card">
+                        <h4>Source Priority</h4>
+                        <p><span class="badge info">Most Common</span></p>
+                        <p>Trust hierarchy based on source system reliability:</p>
+                        <ol>
+                            <li>CRM (customer self-update) - Highest trust</li>
+                            <li>E-commerce (user registration)</li>
+                            <li>POS (in-store data)</li>
+                            <li>Third-party enrichment - Lowest trust</li>
+                        </ol>
+                        <p><strong>Applied to:</strong> Email, phone, address, preferences</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Recency</h4>
+                        <p><span class="badge success">Most Current</span></p>
+                        <p>Most recently updated value wins</p>
+                        <p><strong>Applied to:</strong> Phone number, address, communication preferences, loyalty tier</p>
+                        <p><strong>Exception:</strong> If recent value is NULL, keep older non-NULL value</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Completeness</h4>
+                        <p><span class="badge warning">Most Complete</span></p>
+                        <p>Value with most complete data wins</p>
+                        <p><strong>Applied to:</strong> Full name (prefer records with middle name populated), address (prefer records with unit/apt number)</p>
+                        <p><strong>Example:</strong> "John M. Smith" beats "John Smith"</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Longest Value</h4>
+                        <p><span class="badge">Length-Based</span></p>
+                        <p>Value with most characters wins</p>
+                        <p><strong>Applied to:</strong> Company name, product descriptions</p>
+                        <p><strong>Rationale:</strong> Longer values typically more descriptive</p>
+                    </div>
+                </div>
+
+                <h3>Field-Level Survivorship Configuration</h3>
+                <div class="card">
+                    <h4>Customer Domain Survivorship Rules</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Survivorship Rule</th>
+                                <th>Rationale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>First Name</strong></td>
+                                <td>Source Priority → Completeness</td>
+                                <td>Trust CRM data, prefer full name over nickname</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last Name</strong></td>
+                                <td>Source Priority → Recency</td>
+                                <td>Trust CRM, handle name changes (marriage)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td>Source Priority → Recency → Data Quality Score</td>
+                                <td>Trust self-reported, prefer verified emails</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phone</strong></td>
+                                <td>Recency → Source Priority</td>
+                                <td>Phone numbers change frequently</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Address</strong></td>
+                                <td>Recency → Data Quality Score</td>
+                                <td>Prefer validated addresses, recent moves</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date of Birth</strong></td>
+                                <td>Source Priority → Most Complete</td>
+                                <td>DOB doesn't change, prefer full date over partial</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender</strong></td>
+                                <td>Source Priority (CRM self-reported)</td>
+                                <td>Trust self-identification</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Loyalty Tier</strong></td>
+                                <td>Source Priority (Loyalty System)</td>
+                                <td>Single source of truth</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Customer Lifetime Value</strong></td>
+                                <td>Max Value</td>
+                                <td>Take highest calculated CLV</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marketing Opt-In</strong></td>
+                                <td>Recency + Legal Flag</td>
+                                <td>Most recent consent, opt-out always wins</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Advanced Survivorship Patterns</h3>
+                <div class="card">
+                    <h4>Conditional Survivorship</h4>
+                    <p>Rules that apply different logic based on conditions:</p>
+                    <ul>
+                        <li><strong>Opt-Out Override:</strong> If ANY source says opt-out = TRUE, golden record opt-out = TRUE (most restrictive wins)</li>
+                        <li><strong>NULL Value Handling:</strong> If recent value is NULL, fallback to older non-NULL value (don't lose data)</li>
+                        <li><strong>Data Quality Threshold:</strong> If recent value has quality score < 50, use older value with higher score</li>
+                        <li><strong>Business Hours Update:</strong> For phone, prefer business hours (9-5) sources over batch loads</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Multi-Value Survivorship</h4>
+                    <p>For fields that allow multiple values (e.g., addresses, phone numbers):</p>
+                    <ul>
+                        <li><strong>Merge All:</strong> Retain all unique values from all parent records</li>
+                        <li><strong>Deduplicate:</strong> Remove duplicate values (after standardization)</li>
+                        <li><strong>Primary Flag:</strong> Apply survivorship to determine which value is "primary"</li>
+                        <li><strong>Active Flag:</strong> Mark recent values as active, old values as inactive (don't delete)</li>
+                    </ul>
+                </div>
+
+                <h3>Survivorship Transparency</h3>
+                <div class="card">
+                    <h4>Audit & Lineage</h4>
+                    <p>Every field value in the golden record includes metadata:</p>
+                    <ul>
+                        <li><strong>Source System:</strong> Which source provided this value</li>
+                        <li><strong>Source Record ID:</strong> Original record identifier</li>
+                        <li><strong>Load Date:</strong> When value entered MDM</li>
+                        <li><strong>Update Date:</strong> When value last changed</li>
+                        <li><strong>Survivorship Rule:</strong> Which rule determined this value won</li>
+                        <li><strong>Data Quality Score:</strong> Quality score at time of load</li>
+                    </ul>
+                </div>
+
+                <div class="highlight">
+                    <h3>Demo Example: Survivorship in Action</h3>
+                    <p><strong>Scenario:</strong> Merging 3 customer records for "Jane Smith"</p>
+                    <ul>
+                        <li><strong>Record A (E-commerce):</strong> Jane Smith, jane.smith@email.com, 555-1234, 123 Main St, Loaded: 2024-01-15</li>
+                        <li><strong>Record B (POS):</strong> J. Smith, jane@email.com, 555-5678, 123 Main Street Apt 2, Loaded: 2025-06-20</li>
+                        <li><strong>Record C (CRM):</strong> Jane Marie Smith, jane.smith@email.com, 555-5678, 123 Main St #2, Loaded: 2026-01-10</li>
+                    </ul>
+                    <p><strong>Golden Record After Survivorship:</strong></p>
+                    <ul>
+                        <li><strong>Name:</strong> Jane Marie Smith (CRM source priority + most complete)</li>
+                        <li><strong>Email:</strong> jane.smith@email.com (CRM source priority, validated)</li>
+                        <li><strong>Phone:</strong> 555-5678 (Recency - Records B & C most recent)</li>
+                        <li><strong>Address:</strong> 123 Main Street Apt 2 (Recency + Completeness + Data Quality - validated)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Key Scenarios -->
+            <section class="section">
+                <h2>Key Demo Scenarios</h2>
+
+                <div class="highlight">
+                    <h3>Scenario 1: Customer Onboarding & Duplicate Detection</h3>
+                    <p>New customer registers on e-commerce site. MDM automatically checks for duplicates using fuzzy matching, identifies potential match with existing in-store customer, and prompts for merge review.</p>
+                </div>
+
+                <div class="highlight">
+                    <h3>Scenario 2: Customer 360 View</h3>
+                    <p>Call center agent searches for customer "Jane Smith". System returns unified profile showing online orders, in-store purchases, loyalty points, recent service cases, and household members.</p>
+                </div>
+
+                <div class="highlight">
+                    <h3>Scenario 3: Data Quality Remediation</h3>
+                    <p>Batch job processes 50,000 customer records, standardizing addresses, validating emails, enriching with missing phone numbers, and flagging incomplete records for steward review.</p>
+                </div>
+
+                <div class="highlight">
+                    <h3>Scenario 4: Real-time API Integration</h3>
+                    <p>Mobile app calls MDM REST API to retrieve customer profile, verify loyalty status, and update preferences in real-time during checkout flow.</p>
+                </div>
+            </section>
+
+            <!-- Access Information -->
+            <section class="section">
+                <h2>Access & Credentials</h2>
+
+                <div class="card">
+                    <h4>Environment Access</h4>
+                    <ul>
+                        <li><strong>MDM URL:</strong> <code>https://dmp-us.informaticacloud.com</code></li>
+                        <li><strong>Business 360 Console:</strong> Available via MDM hub</li>
+                        <li><strong>API Endpoint:</strong> REST API v2</li>
+                        <li><strong>Authentication:</strong> OAuth 2.0 / Session tokens</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Demo User Roles</h4>
+                    <ul>
+                        <li><strong>Admin User:</strong> Full configuration and data access</li>
+                        <li><strong>Data Steward:</strong> Data quality review and merge decisions</li>
+                        <li><strong>Business User:</strong> Read-only 360 view access</li>
+                        <li><strong>API Integration:</strong> Service account for system integrations</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>Informatica MDM - Customer For Retail Environment</p>
+            <p>Last Updated: July 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
