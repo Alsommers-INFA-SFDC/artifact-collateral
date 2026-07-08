@@ -1,0 +1,369 @@
+<\!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDM Integration Architecture Patterns</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        .pattern-card.active {
+            border-color: #f97316;
+            background-color: #fff7ed;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .pattern-card {
+            transition: all 0.2s ease-in-out;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+    
+    <script>
+        const patterns = {
+            consolidation: {
+                title: 'Consolidation',
+                icon: '📊',
+                what: 'A read-only reporting pattern where MDM serves as a centralized analytical repository that aggregates and reconciles data from multiple source systems without changing those sources.',
+                how: 'Source systems push data to MDM on a scheduled or event-driven basis. MDM matches, merges, and enriches records to create golden records. Consuming applications (BI, analytics) read from MDM but do not write back. Source systems remain authoritative.',
+                when: 'Use when you need unified reporting and analytics across siloed systems, but cannot or should not change operational source systems. Ideal for early MDM maturity stages or when governance over transactional systems is limited.',
+                chars: 'Data Flow: Source → MDM → BI/Analytics only\nSource Authority: Retained in originating systems\nComplexity: Low to Medium'
+            },
+            registry: {
+                title: 'Registry',
+                icon: '🔗',
+                what: 'A lightweight reference pattern where MDM stores only keys and cross-reference mappings between systems without storing full record copies.',
+                how: 'MDM maintains a registry of identifiers and their relationships across systems. When a query arrives, MDM returns pointers to the authoritative sources. Consuming applications retrieve full records directly from source systems using these references.',
+                when: 'Use when data volume is high, latency requirements are strict, or regulatory constraints prevent data duplication. Best for mature environments with strong API infrastructure across source systems.',
+                chars: 'Data Flow: Bidirectional references only\nSource Authority: Fully distributed\nComplexity: Medium'
+            },
+            centralized: {
+                title: 'Centralized',
+                icon: '🏛️',
+                what: 'A single-source-of-truth pattern where MDM becomes the authoritative system of record for master data, replacing or overriding source systems.',
+                how: 'All master data changes are created or approved in MDM. MDM publishes golden records to downstream consuming systems. Source systems either defer to MDM or are retired. MDM becomes the operational master.',
+                when: 'Use when you have executive mandate for data governance, can fund enterprise-wide change management, and need strict control over master data quality and lifecycle. Suitable for new greenfield implementations or post-merger consolidations.',
+                chars: 'Data Flow: MDM → All consuming systems\nSource Authority: MDM is the master\nComplexity: High'
+            },
+            coexistence: {
+                title: 'Coexistence',
+                icon: '🔄',
+                what: 'A hybrid pattern where MDM and source systems share responsibility for master data through bidirectional synchronization and collaborative authoring.',
+                how: 'Changes can originate in either MDM or source systems. MDM applies survivorship rules and data quality policies to create golden records. Golden records are published back to source systems. Both MDM and sources maintain their own copies with continuous reconciliation.',
+                when: 'Use during phased MDM rollouts, when legacy systems cannot be fully replaced, or when different business units require local control with enterprise visibility. Common in large, decentralized organizations.',
+                chars: 'Data Flow: Bidirectional sync\nSource Authority: Shared with survivorship rules\nComplexity: Very High'
+            }
+        };
+
+        function selectIntegrationPattern(patternKey) {
+            // Remove active from all cards
+            document.querySelectorAll('.pattern-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active to selected card
+            document.getElementById('card-' + patternKey).classList.add('active');
+            
+            // Update detail panel
+            const pattern = patterns[patternKey];
+            document.getElementById('detail-icon').textContent = pattern.icon;
+            document.getElementById('detail-title').textContent = pattern.title;
+            document.getElementById('detail-what').textContent = pattern.what;
+            document.getElementById('detail-how').textContent = pattern.how;
+            document.getElementById('detail-when').textContent = pattern.when;
+            document.getElementById('detail-chars').textContent = pattern.chars;
+            
+            // Clone and insert graphic
+            const sourceGraphic = document.querySelector('#card-' + patternKey + ' .relative.w-full.h-72');
+            const targetContainer = document.getElementById('detail-graphic-container');
+            targetContainer.innerHTML = '';
+            if (sourceGraphic) {
+                const clone = sourceGraphic.cloneNode(true);
+                targetContainer.appendChild(clone);
+            }
+        }
+
+        function nextIntegrationPattern() {
+            const order = ['consolidation', 'registry', 'centralized', 'coexistence'];
+            const currentActive = document.querySelector('.pattern-card.active');
+            if (\!currentActive) {
+                selectIntegrationPattern('consolidation');
+                return;
+            }
+            
+            const currentId = currentActive.id.replace('card-', '');
+            const currentIndex = order.indexOf(currentId);
+            const nextIndex = (currentIndex + 1) % order.length;
+            selectIntegrationPattern(order[nextIndex]);
+        }
+
+        // Initialize with consolidation on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            selectIntegrationPattern('consolidation');
+        });
+    </script>
+</head>
+<body class="bg-slate-50">
+    <div class="max-w-6xl mx-auto p-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2">MDM Integration Architecture Patterns</h1>
+            <p class="text-slate-600">Extracted from Menu Master Data Model Documentation v7</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+            <h2 class="text-xl font-semibold text-slate-800 mb-6">Four Core MDM Integration Architecture Patterns</h2>
+            
+            <div class="mb-8">
+                <p class="text-slate-600 leading-relaxed">
+                    Organizations typically implement one of four core MDM architecture patterns to synchronize and govern master data across systems. Selecting the right integration architecture depends on your domain complexity, data maturity, operational expectations, and long-term transformation goals. Click a pattern below to explore its details.
+                </p>
+            </div>
+
+            <\!-- Interactive Graphics Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <\!-- 1. Consolidation -->
+                <button onclick="selectIntegrationPattern('consolidation')" id="card-consolidation" class="pattern-card active group relative flex flex-col p-5 border-2 border-slate-200 rounded-xl cursor-pointer transition-all hover:bg-orange-50/50 focus:outline-none w-full text-center">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 w-full">Consolidation</h3>
+                    <div class="relative w-full h-72 bg-[#fdfbf6] rounded-lg border border-orange-100 overflow-hidden shadow-inner">
+                        <\!-- BI -->
+                        <div class="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                            <div class="w-8 h-8 rounded-full border-2 border-slate-700 bg-white flex items-center justify-center text-slate-700 text-xl leading-none shadow-sm">&#9881;</div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1">BI</span>
+                        </div>
+                        <\!-- BI Arrow -->
+                        <div class="absolute top-[26%] left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-90 text-slate-700 text-2xl font-bold">&#8592;</div>
+
+                        <\!-- DBs -->
+                        <div class="absolute top-10 left-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute top-10 right-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute bottom-8 left-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute bottom-8 right-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+
+                        <\!-- MDM -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-600 border-2 border-blue-800 rounded-lg shadow-md flex items-center justify-center text-white font-bold text-sm z-20 tracking-wider">
+                            MDM
+                        </div>
+
+                        <\!-- Arrows -->
+                        <div class="absolute top-[35%] left-[28%] -translate-x-1/2 -translate-y-1/2 rotate-45 text-slate-700 text-2xl font-bold">&#8594;</div>
+                        <div class="absolute top-[35%] right-[28%] translate-x-1/2 -translate-y-1/2 -rotate-45 text-slate-700 text-2xl font-bold">&#8592;</div>
+                        <div class="absolute bottom-[35%] left-[28%] -translate-x-1/2 translate-y-1/2 -rotate-45 text-slate-700 text-2xl font-bold">&#8594;</div>
+                        <div class="absolute bottom-[35%] right-[28%] translate-x-1/2 translate-y-1/2 rotate-45 text-slate-700 text-2xl font-bold">&#8592;</div>
+                    </div>
+                </button>
+
+                <\!-- 2. Registry -->
+                <button onclick="selectIntegrationPattern('registry')" id="card-registry" class="pattern-card group relative flex flex-col p-5 border-2 border-slate-200 rounded-xl cursor-pointer transition-all hover:bg-orange-50/50 focus:outline-none w-full text-center">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 w-full">Registry</h3>
+                    <div class="relative w-full h-72 bg-[#fdfbf6] rounded-lg border border-orange-100 overflow-hidden shadow-inner">
+                        <\!-- DBs -->
+                        <div class="absolute top-10 left-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute top-10 right-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute bottom-8 left-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute bottom-8 right-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+
+                        <\!-- MDM -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-600 border-2 border-blue-800 rounded-lg shadow-md flex items-center justify-center text-white font-bold text-sm z-20 tracking-wider">
+                            MDM
+                        </div>
+
+                        <\!-- Arrows -->
+                        <div class="absolute top-[35%] left-[28%] -translate-x-1/2 -translate-y-1/2 rotate-45 text-slate-700 text-2xl font-bold">&#8596;</div>
+                        <div class="absolute top-[35%] right-[28%] translate-x-1/2 -translate-y-1/2 -rotate-45 text-slate-700 text-2xl font-bold">&#8596;</div>
+                        <div class="absolute bottom-[35%] left-[28%] -translate-x-1/2 translate-y-1/2 -rotate-45 text-slate-700 text-2xl font-bold">&#8596;</div>
+                        <div class="absolute bottom-[35%] right-[28%] translate-x-1/2 translate-y-1/2 rotate-45 text-slate-700 text-2xl font-bold">&#8596;</div>
+                    </div>
+                </button>
+
+                <\!-- 3. Centralized -->
+                <button onclick="selectIntegrationPattern('centralized')" id="card-centralized" class="pattern-card group relative flex flex-col p-5 border-2 border-slate-200 rounded-xl cursor-pointer transition-all hover:bg-orange-50/50 focus:outline-none w-full text-center">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 w-full">Centralized</h3>
+                    <div class="relative w-full h-72 bg-[#fdfbf6] rounded-lg border border-orange-100 overflow-hidden shadow-inner">
+                        <\!-- DBs -->
+                        <div class="absolute top-10 left-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute top-10 right-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute bottom-8 left-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute bottom-8 right-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+
+                        <\!-- MDM -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-600 border-2 border-blue-800 rounded-lg shadow-md flex items-center justify-center text-white font-bold text-sm z-20 tracking-wider">
+                            MDM
+                        </div>
+
+                        <\!-- Arrows -->
+                        <div class="absolute top-[35%] left-[28%] -translate-x-1/2 -translate-y-1/2 rotate-45 text-slate-700 text-2xl font-bold">&#8592;</div>
+                        <div class="absolute top-[35%] right-[28%] translate-x-1/2 -translate-y-1/2 -rotate-45 text-slate-700 text-2xl font-bold">&#8594;</div>
+                        <div class="absolute bottom-[35%] left-[28%] -translate-x-1/2 translate-y-1/2 -rotate-45 text-slate-700 text-2xl font-bold">&#8592;</div>
+                        <div class="absolute bottom-[35%] right-[28%] translate-x-1/2 translate-y-1/2 rotate-45 text-slate-700 text-2xl font-bold">&#8594;</div>
+                    </div>
+                </button>
+
+                <\!-- 4. Coexistence -->
+                <button onclick="selectIntegrationPattern('coexistence')" id="card-coexistence" class="pattern-card group relative flex flex-col p-5 border-2 border-slate-200 rounded-xl cursor-pointer transition-all hover:bg-orange-50/50 focus:outline-none w-full text-center">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 w-full">Coexistence</h3>
+                    <div class="relative w-full h-72 bg-[#fdfbf6] rounded-lg border border-orange-100 overflow-hidden shadow-inner">
+                        <\!-- BI -->
+                        <div class="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                            <div class="w-8 h-8 rounded-full border-2 border-slate-700 bg-white flex items-center justify-center text-slate-700 text-xl leading-none shadow-sm">&#9881;</div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1">BI</span>
+                        </div>
+                        <\!-- BI Arrow -->
+                        <div class="absolute top-[26%] left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-90 text-slate-700 text-2xl font-bold">&#8592;</div>
+
+                        <\!-- DBs -->
+                        <div class="absolute top-10 left-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute top-10 right-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute bottom-8 left-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+                        <div class="absolute bottom-8 right-8 flex flex-col items-center">
+                            <div class="w-12 h-3.5 border-2 border-slate-700 rounded-[50%] bg-white z-20"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-10"></div>
+                            <div class="w-12 h-4 border-x-2 border-b-2 border-slate-700 rounded-b-[50%] bg-white -mt-1.5 z-0"></div>
+                            <span class="text-[11px] font-semibold text-slate-700 mt-1.5">System</span>
+                        </div>
+
+                        <\!-- MDM -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-600 border-2 border-blue-800 rounded-lg shadow-md flex items-center justify-center text-white font-bold text-sm z-20 tracking-wider">
+                            MDM
+                        </div>
+
+                        <\!-- Arrows -->
+                        <div class="absolute top-[35%] left-[28%] -translate-x-1/2 -translate-y-1/2 rotate-45 text-slate-700 text-2xl font-bold">&#8596;</div>
+                        <div class="absolute top-[35%] right-[28%] translate-x-1/2 -translate-y-1/2 -rotate-45 text-slate-700 text-2xl font-bold">&#8596;</div>
+                        <div class="absolute bottom-[35%] left-[28%] -translate-x-1/2 translate-y-1/2 -rotate-45 text-slate-700 text-2xl font-bold">&#8596;</div>
+                        <div class="absolute bottom-[35%] right-[28%] translate-x-1/2 translate-y-1/2 rotate-45 text-slate-700 text-2xl font-bold">&#8596;</div>
+                    </div>
+                </button>
+            </div>
+
+            <\!-- Detail Panel -->
+            <div class="bg-white border border-slate-200 shadow-inner rounded-xl p-6 lg:p-8">
+                <div class="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
+                    <div class="flex items-center gap-3">
+                        <span id="detail-icon" class="text-3xl">&#128269;</span>
+                        <h3 id="detail-title" class="text-2xl font-bold text-slate-800">Integration Pattern Details</h3>
+                    </div>
+                    <button onclick="nextIntegrationPattern()" class="flex items-center gap-2 px-3 py-2 bg-orange-50 border border-orange-200 text-orange-700 hover:bg-orange-100 rounded-lg text-sm font-bold shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        Next Style <span class="text-lg leading-none">&#8594;</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+                    <\!-- Left Column: What & How -->
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">What it is</h4>
+                            <p id="detail-what" class="text-slate-700 leading-relaxed"></p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">How it works</h4>
+                            <p id="detail-how" class="text-slate-700 leading-relaxed"></p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-100 rounded-lg p-4">
+                            <h4 class="text-sm font-bold text-slate-600 mb-2">Integration Characteristics</h4>
+                            <p id="detail-chars" class="text-sm text-slate-600 leading-relaxed font-mono"></p>
+                        </div>
+                    </div>
+
+                    <\!-- Right Column: When & Graphic -->
+                    <div class="flex flex-col justify-between space-y-6 h-full">
+                        <div>
+                            <h4 class="text-sm font-bold text-indigo-600 uppercase tracking-wider mb-2">When to use</h4>
+                            <p id="detail-when" class="text-slate-700 leading-relaxed border-l-4 border-indigo-500 pl-4 bg-indigo-50/30 py-2 rounded-r-lg"></p>
+                        </div>
+                        
+                        <\!-- Dynamic Graphic Container (Lower Right) -->
+                        <div class="mt-auto pt-6 flex flex-col items-end">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 w-full text-right">Architecture Diagram</h4>
+                            <div id="detail-graphic-container" class="w-full max-w-sm pointer-events-none opacity-90 scale-95 origin-bottom-right">
+                                <\!-- JS will inject the graphic clone here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
