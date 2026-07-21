@@ -355,6 +355,227 @@
             font-weight: bold;
             color: #333;
         }
+
+        /* TAB NAVIGATION */
+        .tab-navigation {
+            display: flex;
+            gap: 0;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: 40px;
+            background: #f5f5f5;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 20px 30px;
+            background: #e0e0e0;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-button:hover {
+            background: #d0d0d0;
+            color: #333;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* PROJECT SCOPE STYLES */
+        .scope-header {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .scope-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .scope-stat {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .scope-stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .scope-stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .domain-table {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .domain-table-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .domain-table-title {
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .domain-table-count {
+            background: rgba(255,255,255,0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .domain-table-body {
+            padding: 0;
+        }
+
+        .field-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .field-table th {
+            background: #f5f5f5;
+            padding: 12px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .field-table td {
+            padding: 12px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .field-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .field-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .field-table-name {
+            font-weight: 600;
+            color: #333;
+            font-family: 'Courier New', monospace;
+        }
+
+        .field-table-type {
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .field-table-description {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .hierarchy-list, .relationship-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .hierarchy-list li, .relationship-list li {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .hierarchy-list-title, .relationship-list-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .hierarchy-list-path, .relationship-list-path {
+            font-family: 'Courier New', monospace;
+            color: #333;
+            font-size: 0.95em;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        .hierarchy-list-example, .relationship-list-example {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .key-indicator {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .fk-indicator {
+            display: inline-block;
+            background: #2196f3;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            margin-left: 8px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -365,6 +586,18 @@
         </header>
 
         <div class="content">
+            <!-- TAB NAVIGATION -->
+            <div class="tab-navigation">
+                <button class="tab-button active" onclick="switchTab('detailed')">
+                    📊 Detailed View
+                </button>
+                <button class="tab-button" onclick="switchTab('scope')">
+                    📋 Project Scope
+                </button>
+            </div>
+
+            <!-- TAB 1: DETAILED VIEW -->
+            <div id="tab-detailed" class="tab-content active">
             <!-- DOMAINS SECTION -->
             <div class="section">
                 <h2 class="section-title">📦 Core Domains</h2>
@@ -981,7 +1214,504 @@
                     Version 1.0 | Last Updated: July 21, 2026
                 </p>
             </div>
+            </div>
+            <!-- END TAB 1: DETAILED VIEW -->
+
+            <!-- TAB 2: PROJECT SCOPE -->
+            <div id="tab-scope" class="tab-content">
+                <!-- SCOPE HEADER -->
+                <div class="scope-header">
+                    <h2 style="margin-bottom: 10px;">📋 Project Scope Metadata</h2>
+                    <p style="opacity: 0.9; margin-bottom: 20px;">Complete inventory of domains, fields, hierarchies, and relationships for professional services scoping and estimation.</p>
+
+                    <div class="scope-stats">
+                        <div class="scope-stat">
+                            <span class="scope-stat-number">4</span>
+                            <span class="scope-stat-label">Core Domains</span>
+                        </div>
+                        <div class="scope-stat">
+                            <span class="scope-stat-number">45+</span>
+                            <span class="scope-stat-label">Total Fields</span>
+                        </div>
+                        <div class="scope-stat">
+                            <span class="scope-stat-number">3</span>
+                            <span class="scope-stat-label">Hierarchies</span>
+                        </div>
+                        <div class="scope-stat">
+                            <span class="scope-stat-number">5</span>
+                            <span class="scope-stat-label">Relationships</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOMAIN: BANNER -->
+                <div class="domain-table">
+                    <div class="domain-table-header">
+                        <div class="domain-table-title">🏢 Banner Domain</div>
+                        <div class="domain-table-count">6 Fields</div>
+                    </div>
+                    <div class="domain-table-body">
+                        <table class="field-table">
+                            <thead>
+                                <tr>
+                                    <th>Field Name</th>
+                                    <th>Data Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="field-table-name">banner_id</span> <span class="key-indicator">PK</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Unique identifier for banner</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">banner_name</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Retail brand name (e.g., Harris Teeter, Kroger Supermarkets)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">parent_retailer_id</span> <span class="fk-indicator">FK</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Foreign key to parent organization (e.g., The Kroger Co.)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">banner_tier</span></td>
+                                    <td><span class="field-table-type">ENUM</span></td>
+                                    <td class="field-table-description">Premium, Standard, or Discount tier classification</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">loyalty_program_name</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Customer loyalty program identifier (e.g., VIC Card, Kroger Plus)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">private_label_brands</span></td>
+                                    <td><span class="field-table-type">ARRAY[STRING]</span></td>
+                                    <td class="field-table-description">List of house brands (e.g., Simple Truth, Harris Teeter Organics)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DOMAIN: LOCATION -->
+                <div class="domain-table">
+                    <div class="domain-table-header">
+                        <div class="domain-table-title">📍 Location Domain (Store Master)</div>
+                        <div class="domain-table-count">24+ Fields</div>
+                    </div>
+                    <div class="domain-table-body">
+                        <table class="field-table">
+                            <thead>
+                                <tr>
+                                    <th>Field Name</th>
+                                    <th>Data Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Core Identity -->
+                                <tr style="background: #e3f2fd;">
+                                    <td colspan="3" style="font-weight: bold; color: #1565c0;">Core Identity</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">location_id</span> <span class="key-indicator">PK</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Unique master location identifier</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">location_name</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Store name (e.g., Kroger Store #456)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">store_number</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Retailer-assigned store number</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">location_status</span></td>
+                                    <td><span class="field-table-type">ENUM</span></td>
+                                    <td class="field-table-description">Active, Inactive, Pending, Closed</td>
+                                </tr>
+
+                                <!-- Store Footprint -->
+                                <tr style="background: #e3f2fd;">
+                                    <td colspan="3" style="font-weight: bold; color: #1565c0;">Store Footprint & Structural Attributes</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">square_footage</span></td>
+                                    <td><span class="field-table-type">INT</span></td>
+                                    <td class="field-table-description">Total store square footage</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">endcap_count</span></td>
+                                    <td><span class="field-table-type">INT</span></td>
+                                    <td class="field-table-description">Number of end-of-aisle display units</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">lobby_space_sqft</span></td>
+                                    <td><span class="field-table-type">INT</span></td>
+                                    <td class="field-table-description">Entrance/lobby space available for displays</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">linear_shelf_feet</span></td>
+                                    <td><span class="field-table-type">JSON</span></td>
+                                    <td class="field-table-description">Shelf space by category (e.g., {"chips": 48, "beverages": 96})</td>
+                                </tr>
+
+                                <!-- Performance Metrics -->
+                                <tr style="background: #e3f2fd;">
+                                    <td colspan="3" style="font-weight: bold; color: #1565c0;">Hyper-Local Performance & Traffic</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">weekly_transaction_count</span></td>
+                                    <td><span class="field-table-type">INT</span></td>
+                                    <td class="field-table-description">Total customer transactions per week</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">category_sales_volume</span></td>
+                                    <td><span class="field-table-type">JSON</span></td>
+                                    <td class="field-table-description">Weekly sales by category (e.g., {"chips": 12400, "cereal": 8900})</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">avg_basket_size</span></td>
+                                    <td><span class="field-table-type">DECIMAL</span></td>
+                                    <td class="field-table-description">Average transaction dollar amount</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">peak_traffic_windows</span></td>
+                                    <td><span class="field-table-type">JSON</span></td>
+                                    <td class="field-table-description">High-traffic days/hours (e.g., {"Saturday": "10am-2pm"})</td>
+                                </tr>
+
+                                <!-- Demographics -->
+                                <tr style="background: #e3f2fd;">
+                                    <td colspan="3" style="font-weight: bold; color: #1565c0;">Catchment Area Demographics (1-3 Mile Radius)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">median_hh_income</span></td>
+                                    <td><span class="field-table-type">DECIMAL</span></td>
+                                    <td class="field-table-description">Median household income in catchment area</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">age_distribution</span></td>
+                                    <td><span class="field-table-type">JSON</span></td>
+                                    <td class="field-table-description">Age brackets (e.g., {"18-34": 28, "35-54": 35, "55+": 37})</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">avg_household_size</span></td>
+                                    <td><span class="field-table-type">DECIMAL</span></td>
+                                    <td class="field-table-description">Average people per household</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">dominant_housing_type</span></td>
+                                    <td><span class="field-table-type">ENUM</span></td>
+                                    <td class="field-table-description">Single-family, Apartment, Condo, Townhouse</td>
+                                </tr>
+
+                                <!-- Competitive Context -->
+                                <tr style="background: #e3f2fd;">
+                                    <td colspan="3" style="font-weight: bold; color: #1565c0;">Competitive & Brand Context</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">private_label_penetration</span></td>
+                                    <td><span class="field-table-type">DECIMAL</span></td>
+                                    <td class="field-table-description">% of category sales from house brands</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">competitor_proximity_count</span></td>
+                                    <td><span class="field-table-type">INT</span></td>
+                                    <td class="field-table-description">Number of competitor stores within 3 miles</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">store_tier</span></td>
+                                    <td><span class="field-table-type">ENUM</span></td>
+                                    <td class="field-table-description">A (Flagship), B (Standard), C (Value/Discount)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">pharmacy_present</span></td>
+                                    <td><span class="field-table-type">BOOLEAN</span></td>
+                                    <td class="field-table-description">Indicates in-store pharmacy (health-conscious traffic)</td>
+                                </tr>
+
+                                <!-- Address & Geo -->
+                                <tr style="background: #e3f2fd;">
+                                    <td colspan="3" style="font-weight: bold; color: #1565c0;">Address & Geolocation</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">address_line_1</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Street address</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">city</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">City name</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">state_province</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">State/province code (e.g., IN, TX, CA)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">postal_code</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">ZIP/postal code</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">latitude</span></td>
+                                    <td><span class="field-table-type">FLOAT</span></td>
+                                    <td class="field-table-description">Geocoded latitude</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">longitude</span></td>
+                                    <td><span class="field-table-type">FLOAT</span></td>
+                                    <td class="field-table-description">Geocoded longitude</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DOMAIN: CATEGORY (REGION) -->
+                <div class="domain-table">
+                    <div class="domain-table-header">
+                        <div class="domain-table-title">🗺️ Category: Region (Geography)</div>
+                        <div class="domain-table-count">6 Fields</div>
+                    </div>
+                    <div class="domain-table-body">
+                        <table class="field-table">
+                            <thead>
+                                <tr>
+                                    <th>Field Name</th>
+                                    <th>Data Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="field-table-name">geography_id</span> <span class="key-indicator">PK</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Unique geographic identifier</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">geography_name</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Geographic region name (e.g., Indiana, Kroger Midwest Region)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">geography_type</span></td>
+                                    <td><span class="field-table-type">ENUM</span></td>
+                                    <td class="field-table-description">COUNTRY, STATE, REGION, DMA, COUNTY</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">parent_geography_id</span> <span class="fk-indicator">FK</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Self-referencing hierarchy (e.g., State → Country)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">iso_code</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">ISO 3166 country/state code (e.g., US-IN)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">climate_zone</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Climate classification (for seasonal product planning)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DOMAIN: CATEGORY (REGULATION) -->
+                <div class="domain-table">
+                    <div class="domain-table-header">
+                        <div class="domain-table-title">⚖️ Category: Regulation (Eligibility Controls)</div>
+                        <div class="domain-table-count">6 Fields</div>
+                    </div>
+                    <div class="domain-table-body">
+                        <table class="field-table">
+                            <thead>
+                                <tr>
+                                    <th>Field Name</th>
+                                    <th>Data Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="field-table-name">control_code</span> <span class="key-indicator">PK</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Unique regulation code (e.g., STATE_LAW_INDIANA_IC_7.1-5-10-25)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">control_description</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Human-readable description of restriction</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">applies_to_geography</span> <span class="fk-indicator">FK</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Foreign key to geography_reference (e.g., Indiana)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">applies_to_category</span></td>
+                                    <td><span class="field-table-type">ENUM</span></td>
+                                    <td class="field-table-description">ALCOHOL, TOBACCO, CANNABIS, PHARMA, FOOD</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">legal_citation</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Legal statute/code reference (e.g., Indiana Code 7.1-5-10-25)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="field-table-name">penalty_description</span></td>
+                                    <td><span class="field-table-type">STRING</span></td>
+                                    <td class="field-table-description">Consequences of violation (fines, permit loss)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- HIERARCHIES -->
+                <div class="section">
+                    <h2 class="section-title">🌳 Hierarchies</h2>
+                    <ul class="hierarchy-list">
+                        <li>
+                            <div class="hierarchy-list-title">Organizational Hierarchy (Banner → Store)</div>
+                            <div class="hierarchy-list-path">Organization (Parent Retailer) → Banner → Location (Store)</div>
+                            <div class="hierarchy-list-example">
+                                <strong>Example:</strong> The Kroger Co. → Harris Teeter → Store #2345 (Charlotte, NC)<br>
+                                <strong>Levels:</strong> 3 levels<br>
+                                <strong>Temporal Support:</strong> Yes (tracks M&A, e.g., Harris Teeter acquired by Kroger in 2014)<br>
+                                <strong>Relationship Table:</strong> org_location_relationship
+                            </div>
+                        </li>
+                        <li>
+                            <div class="hierarchy-list-title">Geographic Hierarchy (Corporate Standard)</div>
+                            <div class="hierarchy-list-path">Country → State → Store</div>
+                            <div class="hierarchy-list-example">
+                                <strong>Example:</strong> United States → Indiana → Kroger Store #456<br>
+                                <strong>Levels:</strong> 3 levels<br>
+                                <strong>Purpose:</strong> State-level regulatory controls (alcohol, tobacco laws)<br>
+                                <strong>Relationship Table:</strong> geo_location_relationship (hierarchy_owner_id = NULL)
+                            </div>
+                        </li>
+                        <li>
+                            <div class="hierarchy-list-title">Parallel Geographic Hierarchy (Retailer-Specific Regions)</div>
+                            <div class="hierarchy-list-path">Organization → Retailer Region → Store</div>
+                            <div class="hierarchy-list-example">
+                                <strong>Example:</strong> The Kroger Co. → Kroger Midwest Region → Store #456<br>
+                                <strong>Levels:</strong> 3 levels<br>
+                                <strong>Key Feature:</strong> Same store exists in multiple regional groupings (Kroger Midwest vs. DG Central)<br>
+                                <strong>Relationship Table:</strong> geo_location_relationship (hierarchy_owner_id = ORG_KROGER)
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- RELATIONSHIPS -->
+                <div class="section">
+                    <h2 class="section-title">🔗 Relationships</h2>
+                    <ul class="relationship-list">
+                        <li>
+                            <div class="relationship-list-title">Banner → OPERATES → Store</div>
+                            <div class="relationship-list-path">Banner (1) → (N) Location</div>
+                            <div class="relationship-list-example">
+                                <strong>Cardinality:</strong> 1:N (One banner operates many stores)<br>
+                                <strong>Example:</strong> Harris Teeter (banner) → Store #2345, Store #2346, Store #2347<br>
+                                <strong>Temporal:</strong> Yes (effective_from_date, effective_to_date)<br>
+                                <strong>Attributes:</strong> relationship_type, hierarchy_level, change_reason
+                            </div>
+                        </li>
+                        <li>
+                            <div class="relationship-list-title">Location → LOCATED_IN → Geography</div>
+                            <div class="relationship-list-path">Location (N) → (1) Geography</div>
+                            <div class="relationship-list-example">
+                                <strong>Cardinality:</strong> N:1 (Many stores in one state/region)<br>
+                                <strong>Example:</strong> Kroger #456, Kroger #789, DG #8765 → Indiana (State)<br>
+                                <strong>Parallel Support:</strong> hierarchy_owner_id enables retailer-specific regional views<br>
+                                <strong>Attributes:</strong> geo_hierarchy_type, hierarchy_owner_id, effective dates
+                            </div>
+                        </li>
+                        <li>
+                            <div class="relationship-list-title">Regulation → APPLIES_TO → Location</div>
+                            <div class="relationship-list-path">Eligibility Control (N) → (M) Location</div>
+                            <div class="relationship-list-example">
+                                <strong>Cardinality:</strong> N:M (Many-to-many, one regulation affects many stores)<br>
+                                <strong>Example:</strong> STATE_LAW_INDIANA_IC_7.1-5-10-25 → All Indiana stores<br>
+                                <strong>Cascading:</strong> Geography-level controls auto-apply to child locations<br>
+                                <strong>Attributes:</strong> control_code, applies_to_location_id, effective dates
+                            </div>
+                        </li>
+                        <li>
+                            <div class="relationship-list-title">Regulation → APPLIES_TO → Banner</div>
+                            <div class="relationship-list-path">Eligibility Control (N) → (M) Banner</div>
+                            <div class="relationship-list-example">
+                                <strong>Cardinality:</strong> N:M (Many-to-many, banner-specific policies)<br>
+                                <strong>Example:</strong> BANNER_POLICY_ORGANIC_ONLY → Harris Teeter (all stores)<br>
+                                <strong>Inheritance:</strong> Banner-level controls apply to all stores under that banner<br>
+                                <strong>Attributes:</strong> control_code, applies_to_banner_id, effective dates
+                            </div>
+                        </li>
+                        <li>
+                            <div class="relationship-list-title">Regulation → APPLIES_TO → Geography</div>
+                            <div class="relationship-list-path">Eligibility Control (N) → (M) Geography</div>
+                            <div class="relationship-list-example">
+                                <strong>Cardinality:</strong> N:M (Many-to-many, state/regional laws)<br>
+                                <strong>Example:</strong> PROP_65_TOBACCO → California (all counties and stores)<br>
+                                <strong>Cascading:</strong> Regulations cascade from geography → all locations within<br>
+                                <strong>Attributes:</strong> control_code, applies_to_geography_id, effective dates
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- SCOPE FOOTER -->
+                <div style="text-align: center; padding: 40px 20px; background: #f5f5f5; border-radius: 8px; margin-top: 50px;">
+                    <p style="font-size: 1.1em; color: #666; margin-bottom: 10px;">
+                        💼 <strong>Professional Services Scoping Summary</strong>
+                    </p>
+                    <p style="font-size: 0.9em; color: #999; line-height: 1.8;">
+                        <strong>Domain Count:</strong> 4 domains (Banner, Location, Region, Regulation)<br>
+                        <strong>Field Count:</strong> 45+ fields across all domains<br>
+                        <strong>Hierarchy Count:</strong> 3 hierarchies (organizational, geographic, parallel retailer-specific)<br>
+                        <strong>Relationship Count:</strong> 5 relationships (2 hierarchical, 3 eligibility control)<br>
+                        <strong>Complexity Factors:</strong> Temporal tracking, parallel hierarchies, cascading eligibility rules
+                    </p>
+                    <p style="font-size: 0.85em; color: #999; margin-top: 20px;">
+                        Version 1.0 | Last Updated: July 21, 2026
+                    </p>
+                </div>
+            </div>
+            <!-- END TAB 2: PROJECT SCOPE -->
+
         </div>
     </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.getElementById('tab-detailed').classList.remove('active');
+            document.getElementById('tab-scope').classList.remove('active');
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            if (tabName === 'detailed') {
+                document.getElementById('tab-detailed').classList.add('active');
+                buttons[0].classList.add('active');
+            } else if (tabName === 'scope') {
+                document.getElementById('tab-scope').classList.add('active');
+                buttons[1].classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>
