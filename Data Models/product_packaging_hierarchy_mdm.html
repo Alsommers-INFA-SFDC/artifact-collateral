@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Packaging Hierarchy &mdash; MDM Data Model</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            /* Teal — SKU / Consumer Unit */
+            --teal-deep: #134E4A; --teal-mid: #0F766E; --teal-light: #CCFBF1; --teal-border: #5EEAD4;
+            /* Amber — Case */
+            --amber-deep: #78350F; --amber-mid: #D97706; --amber-light: #FEF3C7; --amber-border: #FCD34D;
+            /* Indigo — Pallet */
+            --ind-deep: #1E1B4B; --ind-mid: #4338CA; --ind-light: #E0E7FF; --ind-border: #A5B4FC;
+            /* Violet — Product (parent) */
+            --vio-deep: #4C1D95; --vio-mid: #7C3AED; --vio-light: #F5F3FF; --vio-border: #DDD6FE;
+            /* Rose — Regulations */
+            --ros-deep: #881337; --ros-mid: #E11D48; --ros-light: #FFE4E6; --ros-border: #FECDD3;
+            /* Neutral */
+            --stone: #57534E; --stone-light: #F5F5F4; --stone-border: #D6D3D1;
+            --bg: #FAFAF9; --white: #FFFFFF; --text: #1C1917; --text-muted: #78716C;
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,.08),0 2px 4px -2px rgba(0,0,0,.05);
+        }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+        /* ── HEADER ── */
+        header{background:var(--teal-deep);color:white;padding:28px 40px;border-bottom:3px solid var(--teal-mid)}
+        header .eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5EEAD4;margin-bottom:6px}
+        header h1{font-family:'Fraunces',serif;font-size:28px;font-weight:700;line-height:1.25}
+        header p{color:#99F6E4;font-size:14px;margin-top:6px;max-width:820px}
+
+        /* ── LAYOUT ── */
+        .page-body{display:flex;max-width:1300px;margin:0 auto;padding:32px 24px;gap:32px}
+        aside{width:220px;flex-shrink:0}
+        main{flex:1;min-width:0}
+
+        /* ── NAV ── */
+        .outline-nav{position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto;background:var(--white);border:1px solid var(--stone-border);border-radius:var(--radius);padding:16px 12px;box-shadow:var(--shadow)}
+        .outline-nav h3{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);padding:0 8px;margin-bottom:10px}
+        .outline-nav a{display:block;padding:6px 10px;font-size:12px;color:var(--stone);text-decoration:none;border-radius:6px;border-left:2px solid transparent;transition:all .15s;margin-bottom:1px}
+        .outline-nav a:hover{background:var(--stone-light);color:var(--text);padding-left:14px}
+        .outline-nav a.active{background:var(--teal-light);border-left-color:var(--teal-mid);color:var(--teal-deep);font-weight:600}
+        .outline-nav .nav-sub{padding-left:18px;font-size:11px}
+        .outline-nav .nav-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:10px 10px 4px;margin-top:4px}
+
+        /* ── SECTIONS ── */
+        .section{background:var(--white);border:1px solid var(--stone-border);border-radius:var(--radius);margin-bottom:24px;overflow:hidden;box-shadow:var(--shadow)}
+        .sec-hdr{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;background:var(--stone-light);border-bottom:1px solid var(--stone-border);cursor:pointer;user-select:none}
+        .sec-hdr:hover{background:#EEECE9}
+        .sec-hdr h2{font-size:16px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:10px}
+        .sn{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:var(--teal-deep);color:white;border-radius:50%;font-size:12px;font-weight:700;flex-shrink:0}
+        .chevron{font-size:18px;color:var(--text-muted);transition:transform .25s}
+        .chevron.open{transform:rotate(180deg)}
+        .sec-body{padding:24px}
+        .sec-intro{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--stone-border)}
+
+        /* ── CALLOUTS ── */
+        .callout{border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;line-height:1.65}
+        .callout.teal{background:var(--teal-light);border-left:4px solid var(--teal-mid);color:var(--teal-deep)}
+        .callout.amber{background:var(--amber-light);border-left:4px solid var(--amber-mid);color:var(--amber-deep)}
+        .callout.ind{background:var(--ind-light);border-left:4px solid var(--ind-mid);color:var(--ind-deep)}
+        .callout.rose{background:var(--ros-light);border-left:4px solid var(--ros-mid);color:var(--ros-deep)}
+        .callout.vio{background:var(--vio-light);border-left:4px solid var(--vio-mid);color:var(--vio-deep)}
+        .callout strong{font-weight:700}
+
+        /* ── ENTITY CARDS ── */
+        .domain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;margin-bottom:24px}
+        .ec{border:2px solid;border-radius:10px;padding:20px;transition:box-shadow .15s}
+        .ec:hover{box-shadow:var(--shadow-md)}
+        .ec.teal{border-color:var(--teal-border);background:var(--teal-light)}
+        .ec.amber{border-color:var(--amber-border);background:var(--amber-light)}
+        .ec.ind{border-color:var(--ind-border);background:var(--ind-light)}
+        .ec.vio{border-color:var(--vio-border);background:var(--vio-light)}
+        .ec.rose{border-color:var(--ros-border);background:var(--ros-light)}
+        .ec.st{border-color:var(--stone-border);background:var(--stone-light)}
+        .ec-hdr{display:flex;align-items:center;gap:10px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid rgba(0,0,0,.08)}
+        .ec-icon{font-size:28px;line-height:1}
+        .ec h3{font-size:15px;font-weight:700}
+        .ec.teal h3{color:var(--teal-deep)} .ec.amber h3{color:var(--amber-deep)} .ec.ind h3{color:var(--ind-deep)} .ec.vio h3{color:var(--vio-deep)} .ec.rose h3{color:var(--ros-deep)}
+        .ec p{font-size:13px;color:var(--stone);line-height:1.65;margin-bottom:14px}
+        .attr-box{border-radius:8px;padding:12px 14px}
+        .ec.teal .attr-box{background:white;border:1px solid var(--teal-border)}
+        .ec.amber .attr-box{background:white;border:1px solid var(--amber-border)}
+        .ec.ind .attr-box{background:white;border:1px solid var(--ind-border)}
+        .ec.vio .attr-box{background:white;border:1px solid var(--vio-border)}
+        .ec.rose .attr-box{background:white;border:1px solid var(--ros-border)}
+        .ec.st .attr-box{background:#E7E5E4;border:1px solid #A8A29E}
+        .attr-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+        .ec.teal .attr-label{color:var(--teal-mid)} .ec.amber .attr-label{color:var(--amber-mid)} .ec.ind .attr-label{color:var(--ind-mid)} .ec.vio .attr-label{color:var(--vio-mid)} .ec.rose .attr-label{color:var(--ros-mid)}
+        .attr-box ul{list-style:none}
+        .attr-box ul li{font-size:12px;color:var(--stone);padding:2px 0}
+        .attr-box ul li::before{content:"· ";color:var(--text-muted)}
+
+        /* ── RECORD EXAMPLES ── */
+        .mr{border:2px solid;border-radius:10px;padding:20px;max-width:660px;margin:0 auto 24px}
+        .mr.teal{border-color:var(--teal-mid);background:var(--teal-light)}
+        .mr.amber{border-color:var(--amber-mid);background:var(--amber-light)}
+        .mr.ind{border-color:var(--ind-mid);background:var(--ind-light)}
+        .mr.vio{border-color:var(--vio-mid);background:var(--vio-light)}
+        .mr-hdr{display:flex;align-items:center;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid rgba(0,0,0,.1)}
+        .mr-hdr .big-icon{font-size:36px}
+        .mr-hdr .rt{font-size:16px;font-weight:700}
+        .mr-hdr .rs{font-size:11px;color:var(--text-muted);margin-top:2px}
+        .rbadge{margin-left:auto;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.06em}
+        .badge-act{background:#D1FAE5;color:#065F46}
+        .badge-warn{background:var(--amber-light);color:var(--amber-deep)}
+        .rf{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12px}
+        .rf-item span:first-child{display:block;font-weight:600;color:var(--text-muted);font-size:11px;margin-bottom:2px}
+        .rf-item code{font-family:'Courier New',monospace;font-size:11px;background:rgba(0,0,0,.06);padding:2px 6px;border-radius:4px}
+        .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.1)}
+        .tag{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid}
+        .tag.teal{background:white;border-color:var(--teal-border);color:var(--teal-deep)}
+        .tag.amber{background:white;border-color:var(--amber-border);color:var(--amber-deep)}
+        .tag.ind{background:white;border-color:var(--ind-border);color:var(--ind-deep)}
+        .tag.vio{background:white;border-color:var(--vio-border);color:var(--vio-deep)}
+
+        /* ── DETAIL PANELS ── */
+        .cr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;max-width:720px;margin:0 auto}
+        .cr{border:2px solid;border-radius:8px;padding:14px}
+        .cr.teal{border-color:var(--teal-border);background:var(--teal-light)}
+        .cr.amber{border-color:var(--amber-border);background:var(--amber-light)}
+        .cr.ind{border-color:var(--ind-border);background:var(--ind-light)}
+        .cr.vio{border-color:var(--vio-border);background:var(--vio-light)}
+        .cr.rose{border-color:var(--ros-border);background:var(--ros-light)}
+        .cr.st{border-color:var(--stone-border);background:var(--stone-light)}
+        .cr-hdr{display:flex;align-items:center;gap:8px;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid rgba(0,0,0,.08)}
+        .cr-hdr .icon{font-size:18px}
+        .cr-hdr h5{font-size:13px;font-weight:700}
+        .cr.teal h5{color:var(--teal-deep)} .cr.amber h5{color:var(--amber-deep)} .cr.ind h5{color:var(--ind-deep)} .cr.vio h5{color:var(--vio-deep)} .cr.rose h5{color:var(--ros-deep)}
+        .cr-hdr code{font-size:10px;color:var(--text-muted);font-family:monospace;display:block}
+        .fr{font-size:11px;margin-bottom:4px}
+        .fr .fl{font-weight:600;color:var(--text-muted)}
+        .fr .fv{color:var(--text)}
+        .fr .fv.warn{color:#B45309;font-weight:600}
+        .fr .fv.ok{color:#065F46;font-weight:600}
+        .fr .fv.err{color:var(--ros-deep);font-weight:600}
+
+        /* ── CONNECTOR ── */
+        .rel-conn{display:flex;flex-direction:column;align-items:center;margin:8px 0 16px}
+        .rel-conn .arrow{font-size:24px;color:var(--text-muted)}
+        .rel-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:var(--stone-light);border:1px solid var(--stone-border);color:var(--text-muted);padding:3px 12px;border-radius:20px;margin-top:3px}
+
+        /* ── HIERARCHY VISUAL ── */
+        .hier-wrap{background:var(--stone-light);border:1px solid var(--stone-border);border-radius:12px;padding:24px;margin-bottom:24px}
+        .tier{display:flex;align-items:stretch;gap:0;margin-bottom:6px}
+        .tier-badge{display:flex;align-items:center;justify-content:center;width:90px;flex-shrink:0;border-radius:8px 0 0 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:12px 8px;text-align:center;line-height:1.3}
+        .tier-badge.ind{background:var(--ind-mid);color:white}
+        .tier-badge.amber{background:var(--amber-mid);color:white}
+        .tier-badge.teal{background:var(--teal-mid);color:white}
+        .tier-badge.vio{background:var(--vio-mid);color:white}
+        .tier-body{flex:1;background:white;border:1px solid var(--stone-border);border-left:none;border-radius:0 8px 8px 0;padding:12px 16px;display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+        .tier-name{font-size:14px;font-weight:700;min-width:160px}
+        .tier-name.ind{color:var(--ind-deep)} .tier-name.amber{color:var(--amber-deep)} .tier-name.teal{color:var(--teal-deep)} .tier-name.vio{color:var(--vio-deep)}
+        .tier-attrs{display:flex;flex-wrap:wrap;gap:6px;flex:1}
+        .tier-attr{font-size:11px;background:var(--stone-light);border:1px solid var(--stone-border);border-radius:4px;padding:2px 8px;color:var(--stone)}
+        .tier-attr.key{background:var(--teal-light);border-color:var(--teal-border);color:var(--teal-deep);font-weight:600}
+        .tier-attr.warn{background:var(--amber-light);border-color:var(--amber-border);color:var(--amber-deep);font-weight:600}
+        .tier-connector{display:flex;align-items:center;gap:8px;padding-left:44px;margin-bottom:6px;font-size:11px;color:var(--text-muted);font-weight:600}
+        .tier-connector .line{width:2px;height:20px;background:var(--stone-border);margin-left:44px}
+
+        /* ── INHERITANCE VISUAL ── */
+        .inherit-wrap{background:white;border:1px solid var(--stone-border);border-radius:12px;overflow:hidden;margin-bottom:24px}
+        .inherit-row{display:flex;border-bottom:1px solid var(--stone-border)}
+        .inherit-row:last-child{border-bottom:none}
+        .inherit-cell{padding:14px 18px;font-size:12px;line-height:1.6}
+        .inherit-cell.label{width:140px;flex-shrink:0;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center}
+        .inherit-cell.label.vio{background:var(--vio-light);color:var(--vio-deep)}
+        .inherit-cell.label.teal{background:var(--teal-light);color:var(--teal-deep)}
+        .inherit-cell.label.amber{background:var(--amber-light);color:var(--amber-deep)}
+        .inherit-cell.label.ind{background:var(--ind-light);color:var(--ind-deep)}
+        .inherit-cell.content{flex:1;color:var(--stone)}
+        .inherit-cell.content strong{color:var(--text);font-weight:600}
+        .inherit-header{display:flex;background:var(--stone-light);border-bottom:2px solid var(--stone-border)}
+        .inherit-header .ih{padding:10px 18px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+        .inherit-header .ih:first-child{width:140px;flex-shrink:0}
+
+        /* ── DIAGRAM (flow arrows) ── */
+        .diagram{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin-bottom:16px;justify-content:center}
+        .dn{display:flex;flex-direction:column;align-items:center;gap:4px}
+        .dn .nb{padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;border:2px solid;white-space:nowrap;text-align:center}
+        .dn .nb.teal{background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal-deep)}
+        .dn .nb.amber{background:var(--amber-light);border-color:var(--amber-mid);color:var(--amber-deep)}
+        .dn .nb.ind{background:var(--ind-light);border-color:var(--ind-mid);color:var(--ind-deep)}
+        .dn .nb.vio{background:var(--vio-light);border-color:var(--vio-mid);color:var(--vio-deep)}
+        .dn .nb.rose{background:var(--ros-light);border-color:var(--ros-mid);color:var(--ros-deep)}
+        .dn .nb.st{background:var(--stone-light);border-color:#A8A29E;color:#292524}
+        .dn .nl{font-size:10px;color:var(--text-muted);text-align:center}
+        .das{display:flex;flex-direction:column;align-items:center;flex:1;min-width:48px;max-width:80px}
+        .dal{width:100%;height:2px;background:var(--stone-border);position:relative}
+        .dal::after{content:"\25B6";position:absolute;right:-6px;font-size:10px;color:var(--text-muted);top:-5px}
+        .dall{font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;white-space:nowrap}
+
+        /* ── REGULATION TABLE ── */
+        .reg-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px}
+        .reg-table th{text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding:8px 14px;border-bottom:2px solid var(--stone-border)}
+        .reg-table td{padding:12px 14px;border-bottom:1px solid var(--stone-border);vertical-align:top;line-height:1.55;font-size:12px;color:var(--stone)}
+        .reg-table tr:hover td{background:var(--stone-light)}
+        .reg-table .reg-lbl{font-weight:700;color:var(--text);font-size:12px}
+        .reg-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+        .rb-eu{background:#DBEAFE;color:#1E3A5F}
+        .rb-us{background:var(--ind-light);color:var(--ind-deep)}
+        .rb-global{background:var(--teal-light);color:var(--teal-deep)}
+        .rb-ca{background:var(--ros-light);color:var(--ros-deep)}
+
+        /* ── ROI GRID ── */
+        .roi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+        .roi-card{border:1px solid var(--stone-border);border-radius:10px;padding:18px;background:white;display:flex;flex-direction:column;gap:8px}
+        .roi-card .roi-icon{font-size:28px}
+        .roi-card .roi-title{font-size:13px;font-weight:700;color:var(--text)}
+        .roi-card .roi-stat{font-size:22px;font-weight:700;line-height:1}
+        .roi-card .roi-stat.teal{color:var(--teal-mid)}
+        .roi-card .roi-stat.amber{color:var(--amber-mid)}
+        .roi-card .roi-stat.ind{color:var(--ind-mid)}
+        .roi-card .roi-stat.vio{color:var(--vio-mid)}
+        .roi-card .roi-desc{font-size:12px;color:var(--stone);line-height:1.6}
+
+        /* ── NOTE BOX ── */
+        .note-box{border-radius:8px;padding:14px 18px;font-size:13px;line-height:1.65;border:1px solid;margin-bottom:16px}
+        .note-box.teal{background:var(--teal-light);border-color:var(--teal-border);color:var(--teal-deep)}
+        .note-box.vio{background:var(--vio-light);border-color:var(--vio-border);color:var(--vio-deep)}
+
+        /* ── EXI (example pills) ── */
+        .exi{border-radius:8px;padding:12px 16px;margin-bottom:10px;border-left:4px solid}
+        .exi .exl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+        .exi p{font-size:12px;color:var(--stone);line-height:1.6}
+        .exi.teal{background:var(--teal-light);border-color:var(--teal-mid)} .exi.teal .exl{color:var(--teal-mid)}
+        .exi.amber{background:var(--amber-light);border-color:var(--amber-mid)} .exi.amber .exl{color:var(--amber-mid)}
+        .exi.ind{background:var(--ind-light);border-color:var(--ind-mid)} .exi.ind .exl{color:var(--ind-mid)}
+        .exi.vio{background:var(--vio-light);border-color:var(--vio-mid)} .exi.vio .exl{color:var(--vio-mid)}
+        .exi.rose{background:var(--ros-light);border-color:var(--ros-mid)} .exi.rose .exl{color:var(--ros-mid)}
+        .exi.st{background:var(--stone-light);border-color:#A8A29E} .exi.st .exl{color:var(--stone)}
+
+        /* ── WASTE IMPACT BARS ── */
+        .impact-bar-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+        .impact-bar-row{display:flex;align-items:center;gap:12px;font-size:12px}
+        .impact-bar-label{width:180px;flex-shrink:0;color:var(--stone);font-weight:600}
+        .impact-bar-track{flex:1;height:12px;background:var(--stone-border);border-radius:6px;overflow:hidden}
+        .impact-bar-fill{height:100%;border-radius:6px;transition:width 1s ease}
+        .impact-bar-fill.teal{background:var(--teal-mid)}
+        .impact-bar-fill.amber{background:var(--amber-mid)}
+        .impact-bar-fill.ind{background:var(--ind-mid)}
+        .impact-bar-fill.rose{background:var(--ros-mid)}
+        .impact-bar-val{width:48px;text-align:right;font-weight:700;color:var(--text);font-size:12px}
+
+        @media(max-width:900px){aside{display:none}.page-body{padding:16px}}
+        @media(max-width:600px){.domain-grid,.cr-grid,.rf,.roi-grid{grid-template-columns:1fr}.tier{flex-direction:column}.tier-badge{border-radius:8px 8px 0 0;width:100%;flex-direction:row;gap:8px}.tier-body{border-left:1px solid var(--stone-border);border-radius:0 0 8px 8px}}
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="eyebrow">Master Data Management &middot; Product Domain Reference</div>
+    <h1>Product Packaging Hierarchy &amp; Item Inheritance</h1>
+    <p>The complete data model for Pallet &rarr; Case &rarr; SKU packaging hierarchies, Product-to-Item inheritance for category specification management, and how accurate packaging master data drives waste reduction, routing optimization, and revenue growth in consumer goods and retail distribution.</p>
+</header>
+
+<div class="page-body">
+<aside>
+    <nav class="outline-nav" id="outline-nav">
+        <h3>Contents</h3>
+        <div class="nav-lbl">Model</div>
+        <a href="#hierarchy">1. Packaging Hierarchy</a>
+        <a href="#tier-pallet" class="nav-sub">&#8627; Pallet</a>
+        <a href="#tier-case" class="nav-sub">&#8627; Case</a>
+        <a href="#tier-sku" class="nav-sub">&#8627; Consumer Unit (SKU)</a>
+        <div class="nav-lbl">Inheritance</div>
+        <a href="#inheritance">2. Product &rarr; Item Inheritance</a>
+        <a href="#inh-category" class="nav-sub">&#8627; Category Specification</a>
+        <a href="#inh-attributes" class="nav-sub">&#8627; Attribute Propagation</a>
+        <div class="nav-lbl">Examples</div>
+        <a href="#example-sku">3. SKU Master Record</a>
+        <a href="#example-case">4. Case &amp; Pallet Records</a>
+        <div class="nav-lbl">Compliance</div>
+        <a href="#regulations">5. Packaging Regulations</a>
+        <a href="#reg-eu" class="nav-sub">&#8627; EU EPR / PPWR</a>
+        <a href="#reg-us" class="nav-sub">&#8627; US State Laws</a>
+        <div class="nav-lbl">Business Value</div>
+        <a href="#value">6. Revenue &amp; Waste Impact</a>
+        <a href="#routing" class="nav-sub">&#8627; Routing Optimization</a>
+        <a href="#waste" class="nav-sub">&#8627; Waste Reduction</a>
+        <a href="#revenue" class="nav-sub">&#8627; Revenue Gains</a>
+    </nav>
+</aside>
+
+<main>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 1 — PACKAGING HIERARCHY               -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="section" id="hierarchy">
+    <div class="sec-hdr" onclick="tog('b1','c1')">
+        <h2><span class="sn">1</span> Packaging Hierarchy: Pallet &rarr; Case &rarr; Consumer Unit (SKU)</h2>
+        <span class="chevron open" id="c1">&#9660;</span>
+    </div>
+    <div class="sec-body" id="b1">
+        <p class="sec-intro">Every consumer packaged good exists simultaneously at three physical levels: the <strong>Consumer Unit (SKU)</strong> that sits on a retail shelf, the <strong>Case</strong> that groups SKUs for warehouse stocking and DSD delivery, and the <strong>Pallet</strong> that structures cases for truckload shipping and DC receiving. Each level is a distinct master data entity with its own GTIN, physical dimensions, weight, and compliance obligations. Collapsing these into a single flat product record &mdash; which most ERP and PIM systems do &mdash; is the root cause of routing failures, receiving errors, wasted space, and compliance gaps.</p>
+
+        <div class="callout teal"><strong>Why three entities?</strong> A retailer's WMS needs the pallet height to plan warehouse slot assignments. The carrier's TMS needs the case weight to calculate load capacity. The store's POS system needs the consumer unit GTIN to ring up a sale. These are three different systems consuming three different sets of attributes &mdash; all attached to the same physical product, but at different levels of packaging.</div>
+
+        <!-- VISUAL HIERARCHY -->
+        <div class="hier-wrap">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;">Packaging Level Stack &mdash; Consumer Goods Example</div>
+
+            <!-- PALLET -->
+            <div id="tier-pallet" class="tier">
+                <div class="tier-badge ind">Tier 1<br>Pallet</div>
+                <div class="tier-body">
+                    <div class="tier-name ind">&#128230; Pallet / Shipping Unit</div>
+                    <div class="tier-attrs">
+                        <span class="tier-attr key">GTIN-14 (Pallet)</span>
+                        <span class="tier-attr key">Ti &times; Hi (layers &times; cases/layer)</span>
+                        <span class="tier-attr">Gross weight (lbs / kg)</span>
+                        <span class="tier-attr">Pallet dimensions (L &times; W &times; H)</span>
+                        <span class="tier-attr warn">Cases per pallet</span>
+                        <span class="tier-attr">Pallet type (GMA, Euro, chep)</span>
+                        <span class="tier-attr">Stackability</span>
+                        <span class="tier-attr">Hazmat class (if applicable)</span>
+                        <span class="tier-attr">Country of origin</span>
+                        <span class="tier-attr warn">Packaging material (EPR)</span>
+                        <span class="tier-attr">Recyclability %</span>
+                        <span class="tier-attr">Min order qty</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tier-connector"><div style="width:2px;height:20px;background:var(--stone-border);margin-left:44px;margin-bottom:2px"></div></div>
+
+            <!-- CASE -->
+            <div id="tier-case" class="tier">
+                <div class="tier-badge amber">Tier 2<br>Case</div>
+                <div class="tier-body">
+                    <div class="tier-name amber">&#128218; Case / Shipper</div>
+                    <div class="tier-attrs">
+                        <span class="tier-attr key">GTIN-14 (Case)</span>
+                        <span class="tier-attr key">Units per case (inner pack)</span>
+                        <span class="tier-attr">Case gross weight</span>
+                        <span class="tier-attr">Case net weight</span>
+                        <span class="tier-attr">Case dimensions (L &times; W &times; H)</span>
+                        <span class="tier-attr warn">Case cube (cubic ft / m³)</span>
+                        <span class="tier-attr">Inner packs per case</span>
+                        <span class="tier-attr">Corrugated type</span>
+                        <span class="tier-attr warn">Packaging material weight (EPR)</span>
+                        <span class="tier-attr">Recycled content %</span>
+                        <span class="tier-attr">Recyclability classification</span>
+                        <span class="tier-attr">Country of origin</span>
+                        <span class="tier-attr">Shelf life (days)</span>
+                        <span class="tier-attr">Storage temp range</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tier-connector"><div style="width:2px;height:20px;background:var(--stone-border);margin-left:44px;margin-bottom:2px"></div></div>
+
+            <!-- SKU / CONSUMER UNIT -->
+            <div id="tier-sku" class="tier">
+                <div class="tier-badge teal">Tier 3<br>SKU</div>
+                <div class="tier-body">
+                    <div class="tier-name teal">&#128241; Consumer Unit (SKU)</div>
+                    <div class="tier-attrs">
+                        <span class="tier-attr key">GTIN-12 / EAN-13</span>
+                        <span class="tier-attr key">UPC (retail scan barcode)</span>
+                        <span class="tier-attr">Net weight / volume</span>
+                        <span class="tier-attr">Serving size &amp; servings per container</span>
+                        <span class="tier-attr warn">Consumer packaging material</span>
+                        <span class="tier-attr warn">Packaging material weight (EPR)</span>
+                        <span class="tier-attr">Recyclability label (How2Recycle)</span>
+                        <span class="tier-attr">Nutrition facts</span>
+                        <span class="tier-attr">Allergen declarations</span>
+                        <span class="tier-attr">Ingredient list</span>
+                        <span class="tier-attr">Country of origin</span>
+                        <span class="tier-attr">Shelf life (days)</span>
+                        <span class="tier-attr">Storage conditions</span>
+                        <span class="tier-attr">Brand &amp; sub-brand</span>
+                        <span class="tier-attr">GPC Brick (dynamic attrs)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENTITY CARDS -->
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;">Entity Definitions</div>
+        <div class="domain-grid">
+            <div class="ec ind">
+                <div class="ec-hdr"><span class="ec-icon">&#128230;</span><h3>Pallet / Shipping Unit</h3></div>
+                <p>The logistics unit of measure for truckload and LTL freight. Pallets are what carriers price, what DCs receive, and what slot management systems assign to pick locations. Ti &times; Hi (tier &times; height) is the most critical pallet attribute &mdash; it determines how many cases fit in the pallet configuration and whether a full pallet fits in a standard 53-ft trailer bay or a DC slot.</p>
+                <div class="attr-box">
+                    <div class="attr-label">Primary Consumers</div>
+                    <ul>
+                        <li>Transportation Management System (TMS)</li>
+                        <li>Warehouse Management System (WMS) &mdash; slot planning</li>
+                        <li>DC receiving / labor management</li>
+                        <li>EPR compliance reporting (packaging weight by tier)</li>
+                        <li>Load optimization &amp; trailer cube planning</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ec amber">
+                <div class="ec-hdr"><span class="ec-icon">&#128218;</span><h3>Case / Shipper</h3></div>
+                <p>The stocking and replenishment unit for warehouse pick faces and DSD delivery. Most retailer ordering systems work in case multiples. The case cube drives warehouse slotting efficiency &mdash; a mismatch between the case dimensions in MDM and physical reality causes mis-picks, non-conforming shelf allocations, and DSD receiving disputes. Inner pack configuration is critical for display floor setups.</p>
+                <div class="attr-box">
+                    <div class="attr-label">Primary Consumers</div>
+                    <ul>
+                        <li>WMS &mdash; pick-face slotting &amp; replenishment</li>
+                        <li>Retail ordering system (cases per order)</li>
+                        <li>DSD route planning &amp; delivery manifests</li>
+                        <li>Receiving / scan-verify at store backroom</li>
+                        <li>EPR material weight data for corrugated</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ec teal">
+                <div class="ec-hdr"><span class="ec-icon">&#128241;</span><h3>Consumer Unit (SKU)</h3></div>
+                <p>The retail-sellable unit identified by a GTIN / UPC barcode. The consumer unit is what the POS system scans, what the eCommerce catalog displays, and what the consumer takes home. It carries the regulatory compliance data that is visible to the end consumer: nutrition, allergens, recyclability labeling, and country of origin. It is the base entity from which all packaging levels derive their identity.</p>
+                <div class="attr-box">
+                    <div class="attr-label">Primary Consumers</div>
+                    <ul>
+                        <li>Point of Sale (POS) &mdash; GTIN scan at checkout</li>
+                        <li>eCommerce product catalog &amp; feeds</li>
+                        <li>Category management &amp; planogram systems</li>
+                        <li>Consumer-facing label compliance (FDA, EU)</li>
+                        <li>Retail Media targeting &amp; Google Product feeds</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout amber"><strong>The "Ti &times; Hi" problem in CPG:</strong> Ti &times; Hi is one of the most commonly wrong attributes in distributor and retailer product data. A brand ships 8&times;5 (8 cases per layer, 5 layers high = 40 cases per pallet). The WMS has it recorded as 10&times;4. The result: the DC slots 10 pallets worth of space for a shipment that actually arrives as 12.5 pallets, causing a receiving backup, a carrier detention charge, and a potential chargeback. Accurate pallet data in MDM &mdash; validated at onboarding &mdash; eliminates this class of error entirely.</div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 2 — PRODUCT → ITEM INHERITANCE        -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="section" id="inheritance">
+    <div class="sec-hdr" onclick="tog('b2','c2')">
+        <h2><span class="sn">2</span> Product &rarr; Item Inheritance &amp; Category Specification Management</h2>
+        <span class="chevron open" id="c2">&#9660;</span>
+    </div>
+    <div class="sec-body" id="b2">
+        <p class="sec-intro">In a well-structured product MDM, <strong>Product</strong> is the logical parent entity representing what a brand makes &mdash; a product line, formulation, or commercial offering. <strong>Item</strong> (SKU) is the physical child entity representing a specific sellable configuration &mdash; a size, flavor, format, or packaging variant. The Product-to-Item relationship is the mechanism through which <strong>category specifications, regulatory attributes, and shared metadata cascade down</strong> to all items in a product family without repeating the data on every SKU record.</p>
+
+        <div id="inh-category">
+            <div style="font-family:'Fraunces',serif;font-size:17px;color:var(--vio-deep);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--vio-border);">&#127760; Category Specification Inheritance</div>
+
+            <div class="inherit-wrap">
+                <div class="inherit-header">
+                    <div class="ih" style="width:140px;">Level</div>
+                    <div class="ih">What It Defines</div>
+                    <div class="ih">What It Inherits to Child</div>
+                </div>
+                <div class="inherit-row">
+                    <div class="inherit-cell label vio">Product<br>(Parent)</div>
+                    <div class="inherit-cell content"><strong>Brand identity, formulation, regulatory category, and GPC Brick classification.</strong> The Product record holds the category assignment that determines which structured attribute set applies to all items in the family. Change the GPC Brick on the Product and every child Item inherits the updated attribute template automatically.</div>
+                    <div class="inherit-cell content" style="border-left:1px solid var(--stone-border);">GPC Brick &amp; dynamic attribute template &rarr; all Items<br>Regulatory category (food, cosmetic, hazmat) &rarr; all Items<br>Brand &amp; sub-brand &rarr; all Items<br>Country of origin (default) &rarr; overrideable per Item</div>
+                </div>
+                <div class="inherit-row">
+                    <div class="inherit-cell label teal">Item / SKU<br>(Child)</div>
+                    <div class="inherit-cell content"><strong>Specific packaging variant, size, flavor, and format.</strong> Items inherit the category specification from their parent Product but carry their own physical attributes (GTIN, weight, dimensions) and variant-specific data (flavor, size, packaging material). Items can override inherited defaults where variant-level data differs.</div>
+                    <div class="inherit-cell content" style="border-left:1px solid var(--stone-border);">SKU-specific GTIN, UPC, EAN<br>Physical dimensions &amp; weight (per size/format)<br>Packaging material composition (per variant)<br>Shelf life &amp; storage conditions (per variant)<br>Allergen overrides (if formulation varies by variant)</div>
+                </div>
+                <div class="inherit-row">
+                    <div class="inherit-cell label amber">Case<br>(Packaging)</div>
+                    <div class="inherit-cell content"><strong>Inherited from Item, extended for logistics.</strong> The Case entity inherits core product identity from the Item (brand, category, regulatory class) but extends it with case-level logistics attributes. Case packaging material weight is independently tracked here for EPR purposes, as corrugated outer cartons carry different material obligations than consumer unit packaging.</div>
+                    <div class="inherit-cell content" style="border-left:1px solid var(--stone-border);">Brand &amp; category from Item (inherited)<br>Case-specific GTIN-14<br>Case dimensions, weight, cube<br>Corrugated material weight (EPR)<br>Units per case / inner pack config</div>
+                </div>
+                <div class="inherit-row">
+                    <div class="inherit-cell label ind">Pallet<br>(Logistics)</div>
+                    <div class="inherit-cell content"><strong>Top of the physical hierarchy &mdash; inherits from Case.</strong> The Pallet entity is primarily a logistics record. It inherits category, brand, and regulatory class from the product family but primarily carries physical logistics attributes (Ti&times;Hi, gross weight, pallet type, hazmat class) required by TMS, WMS, and DC systems.</div>
+                    <div class="inherit-cell content" style="border-left:1px solid var(--stone-border);">Regulatory class &amp; hazmat flag from product family<br>Pallet-specific GTIN-14<br>Ti&times;Hi, cases per pallet<br>Gross weight, pallet dimensions<br>Pallet material weight (EPR)</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="inh-attributes" style="margin-top:24px;">
+            <div style="font-family:'Fraunces',serif;font-size:17px;color:var(--teal-deep);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--teal-border);">&#9881;&#65039; Attribute Propagation Examples</div>
+
+            <div class="exi vio"><div class="exl">Category Specification Cascade</div><p>Brand registers a new organic granola bar product. At the <strong>Product</strong> level, the category manager assigns GPC Brick <em>10000260 &mdash; Cereal &amp; Granola Bars</em>. The MDM system automatically applies the 23 GPC brick attributes for that category (base type, flavoring, organic claim, allergen codes, certifications) to every Item (SKU) in the product family &mdash; without the data steward touching each variant individually. When the brand reformulates and updates the organic certification at the Product level, all child Items reflect the change.</p></div>
+
+            <div class="exi teal"><div class="exl">Override at Item Level</div><p>The product family has 4 SKU variants: Original, Dark Chocolate, Nut-Free, and Gluten-Free. The <strong>Nut-Free</strong> and <strong>Gluten-Free</strong> variants override the inherited allergen attributes at the Item level, carrying different values than the product-level default. All other attributes (brand, GPC brick, base ingredient list template) remain inherited. MDM enforces that item-level overrides are flagged as exceptions and reviewed during the next product family governance cycle.</p></div>
+
+            <div class="exi amber"><div class="exl">Case Count Changes Without Breaking Lineage</div><p>A brand reconfigures a case from 12-pack to 8-pack for a new club store format. A new <strong>Case</strong> entity is created with the new GTIN-14, count, and dimensions &mdash; linked to the same parent <strong>Item</strong> (SKU). The product-level category specification, brand, and regulatory attributes are inherited by both case configurations. The TMS and WMS receive updated case dimension data without any category or compliance data being re-entered.</p></div>
+
+            <div class="exi ind"><div class="exl">Pallet Reconfiguration for New DC</div><p>A brand is onboarding a new DC partner that requires a different Ti&times;Hi configuration (standard 8&times;5 &rarr; club store 6&times;6). A new <strong>Pallet</strong> entity is created for the club-store configuration, linked to the same Case. The hazmat classification, regulatory category, and brand identity all inherit from the product family. Only the pallet physical attributes change. The EPR material weight is updated to reflect the difference in pallet-level corrugated usage.</p></div>
+        </div>
+
+        <div class="callout vio"><strong>Specification Management at Scale:</strong> A mid-tier CPG brand with 400 SKUs across 8 product families can manage category specification changes for an entire product line by editing a single <strong>Product</strong> record. Without Product-to-Item inheritance, the same change requires touching 400 individual item records &mdash; introducing inconsistency, stewardship backlog, and compliance exposure. The inheritance model is not optional for brands managing regulatory change at scale.</div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 3 — SKU MASTER RECORD EXAMPLE         -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="section" id="example-sku">
+    <div class="sec-hdr" onclick="tog('b3','c3')">
+        <h2><span class="sn">3</span> Example: Consumer Unit (SKU) Master Record</h2>
+        <span class="chevron open" id="c3">&#9660;</span>
+    </div>
+    <div class="sec-body" id="b3">
+        <p class="sec-intro">This example shows a single SKU &mdash; a 6-count granola bar variety pack &mdash; as a fully specified Consumer Unit record. It demonstrates how product-level inherited data (brand, GPC brick, regulatory category) combines with SKU-level physical and compliance attributes into a single governed master record.</p>
+
+        <div class="mr teal">
+            <div class="mr-hdr">
+                <span class="big-icon">&#128241;</span>
+                <div><div class="rt">Consumer Unit Master Record &mdash; SKU</div><div class="rs">TrailBlaze Organics &middot; Granola Bar &middot; Variety Pack 6ct</div></div>
+                <span class="rbadge badge-act">ACTIVE</span>
+            </div>
+            <div class="rf">
+                <div class="rf-item"><span>MDM Item ID</span><code>ITEM-08831</code></div>
+                <div class="rf-item"><span>GTIN-12 (UPC)</span><code>00847481002219</code></div>
+                <div class="rf-item"><span>EAN-13</span><code>0847481002219</code></div>
+                <div class="rf-item"><span>Product Parent</span><code>PROD-0441</code> TrailBlaze Granola Bar</div>
+                <div class="rf-item"><span>GPC Brick (inherited)</span>10000260 &mdash; Cereal &amp; Granola Bars</div>
+                <div class="rf-item"><span>Brand (inherited)</span>TrailBlaze Organics &middot; Core Line</div>
+                <div class="rf-item"><span>Net Weight</span>8.4 oz (238g)</div>
+                <div class="rf-item"><span>Unit Dimensions</span>7.2&Prime; &times; 4.1&Prime; &times; 2.8&Prime;</div>
+                <div class="rf-item"><span>Serving Size</span>1 bar (40g) &middot; 6 servings</div>
+                <div class="rf-item"><span>Storage Temp</span>55&deg;F &ndash; 77&deg;F / dry</div>
+                <div class="rf-item"><span>Shelf Life</span>365 days</div>
+                <div class="rf-item"><span>Country of Origin</span>USA</div>
+            </div>
+            <div class="tag-row">
+                <span style="font-size:11px;font-weight:700;color:var(--teal-mid);margin-right:4px;">PACKAGING:</span>
+                <span class="tag teal">Wrapper: Metallized BOPP</span>
+                <span class="tag teal">Tray: Recycled Paperboard</span>
+                <span class="tag teal">How2Recycle: Check Locally</span>
+                <span class="tag amber">EPR Material Wt: 8.2g</span>
+            </div>
+        </div>
+
+        <div class="rel-conn"><div class="arrow">&#8595;</div><div class="rel-lbl">Compliance &amp; Category Detail</div></div>
+
+        <div class="cr-grid">
+            <div class="cr teal">
+                <div class="cr-hdr"><span class="icon">&#127807;</span><div><h5>Organic &amp; Cert</h5><code>ITEM-08831 &middot; Certs</code></div></div>
+                <div class="fr"><span class="fl">USDA Organic:</span><span class="fv ok">Certified</span></div>
+                <div class="fr"><span class="fl">Non-GMO Project:</span><span class="fv ok">Verified</span></div>
+                <div class="fr"><span class="fl">Gluten-Free:</span><span class="fv warn">NOT certified</span></div>
+                <div class="fr"><span class="fl">Kosher:</span><span class="fv ok">OU Kosher</span></div>
+            </div>
+            <div class="cr amber">
+                <div class="cr-hdr"><span class="icon">&#9888;&#65039;</span><div><h5>Allergens</h5><code>ITEM-08831 &middot; Allergens</code></div></div>
+                <div class="fr"><span class="fl">Tree Nuts:</span><span class="fv err">Contains (Almonds)</span></div>
+                <div class="fr"><span class="fl">Peanuts:</span><span class="fv warn">May Contain</span></div>
+                <div class="fr"><span class="fl">Wheat/Gluten:</span><span class="fv ok">Absent</span></div>
+                <div class="fr"><span class="fl">Dairy/Soy:</span><span class="fv ok">Absent</span></div>
+            </div>
+            <div class="cr vio">
+                <div class="cr-hdr"><span class="icon">&#128193;</span><div><h5>Category (GPC)</h5><code>ITEM-08831 &middot; GPC</code></div></div>
+                <div class="fr"><span class="fl">Segment:</span><span class="fv">Food/Beverage/Tobacco</span></div>
+                <div class="fr"><span class="fl">Family:</span><span class="fv">Snack Foods</span></div>
+                <div class="fr"><span class="fl">Class:</span><span class="fv">Bars &amp; Snacks</span></div>
+                <div class="fr"><span class="fl">Brick:</span><span class="fv ok">10000260</span></div>
+            </div>
+            <div class="cr rose">
+                <div class="cr-hdr"><span class="icon">&#9851;&#65039;</span><div><h5>EPR Data</h5><code>ITEM-08831 &middot; EPR</code></div></div>
+                <div class="fr"><span class="fl">Wrapper (BOPP):</span><span class="fv">5.1g</span></div>
+                <div class="fr"><span class="fl">Tray (Paperboard):</span><span class="fv ok">3.1g recycled</span></div>
+                <div class="fr"><span class="fl">Total pkg wt:</span><span class="fv">8.2g</span></div>
+                <div class="fr"><span class="fl">Recyclable:</span><span class="fv warn">Partial</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 4 — CASE & PALLET EXAMPLE             -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="section" id="example-case">
+    <div class="sec-hdr" onclick="tog('b4','c4')">
+        <h2><span class="sn">4</span> Example: Case &amp; Pallet Packaging Records</h2>
+        <span class="chevron open" id="c4">&#9660;</span>
+    </div>
+    <div class="sec-body" id="b4">
+        <p class="sec-intro">The same product (TrailBlaze Granola Bar Variety Pack 6ct) shown as its Case and Pallet packaging entities. These records inherit brand, category, and regulatory attributes from the parent Item, and extend them with the logistics and compliance attributes that the SKU record does not carry.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+
+            <div class="mr amber" style="max-width:100%;margin:0">
+                <div class="mr-hdr">
+                    <span class="big-icon">&#128218;</span>
+                    <div><div class="rt">Case Master Record</div><div class="rs">TrailBlaze Granola Bar 6ct &middot; 12-unit shipper</div></div>
+                    <span class="rbadge badge-act">ACTIVE</span>
+                </div>
+                <div class="rf">
+                    <div class="rf-item"><span>Case GTIN-14</span><code>10847481002216</code></div>
+                    <div class="rf-item"><span>Parent Item</span><code>ITEM-08831</code></div>
+                    <div class="rf-item"><span>Units per Case</span>12 units</div>
+                    <div class="rf-item"><span>Inner Packs</span>2 &times; 6-ct inner</div>
+                    <div class="rf-item"><span>Case Net Wt</span>6.35 lbs (2.88 kg)</div>
+                    <div class="rf-item"><span>Case Gross Wt</span>6.72 lbs (3.05 kg)</div>
+                    <div class="rf-item"><span>Case Dims (L&times;W&times;H)</span>14.4&Prime; &times; 8.8&Prime; &times; 5.9&Prime;</div>
+                    <div class="rf-item"><span>Case Cube</span>0.43 ft³</div>
+                </div>
+                <div class="tag-row">
+                    <span class="tag amber">Corrugated: RSC B-flute</span>
+                    <span class="tag amber">EPR Corrugated: 142g</span>
+                    <span class="tag teal">Recycled content: 78%</span>
+                </div>
+            </div>
+
+            <div class="mr ind" style="max-width:100%;margin:0">
+                <div class="mr-hdr">
+                    <span class="big-icon">&#128230;</span>
+                    <div><div class="rt">Pallet Master Record</div><div class="rs">TrailBlaze Granola Bar 6ct &middot; Standard GMA Pallet</div></div>
+                    <span class="rbadge badge-act">ACTIVE</span>
+                </div>
+                <div class="rf">
+                    <div class="rf-item"><span>Pallet GTIN-14</span><code>20847481002213</code></div>
+                    <div class="rf-item"><span>Parent Case</span><code>10847481002216</code></div>
+                    <div class="rf-item"><span>Ti &times; Hi</span>8 &times; 5 = <strong>40 cases/pallet</strong></div>
+                    <div class="rf-item"><span>Cases per Pallet</span>40</div>
+                    <div class="rf-item"><span>Units per Pallet</span>480 consumer units</div>
+                    <div class="rf-item"><span>Gross Weight</span>275 lbs (124.7 kg)</div>
+                    <div class="rf-item"><span>Pallet Dims</span>48&Prime; &times; 40&Prime; &times; 62&Prime; (incl. pallet)</div>
+                    <div class="rf-item"><span>Pallet Type</span>GMA Standard (48&times;40)</div>
+                </div>
+                <div class="tag-row">
+                    <span class="tag ind">Hazmat: None</span>
+                    <span class="tag ind">Stackable: Yes (1 high)</span>
+                    <span class="tag amber">EPR Pallet Film: 38g</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="callout ind"><strong>Traceability from pallet to shelf:</strong> With all three levels in MDM, a DC receiving scan of the pallet GTIN-14 (<code>20847481002213</code>) immediately resolves to 40 cases &rarr; 480 consumer units &rarr; parent item ITEM-08831 &rarr; parent product PROD-0441. A single scan at receiving links to the complete product specification, all EPR packaging material weights, allergen data, and certification status &mdash; without any manual lookup or system hop.</div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 5 — REGULATIONS                       -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="section" id="regulations">
+    <div class="sec-hdr" onclick="tog('b5','c5')">
+        <h2><span class="sn">5</span> Packaging Regulations &amp; Compliance Requirements</h2>
+        <span class="chevron open" id="c5">&#9660;</span>
+    </div>
+    <div class="sec-body" id="b5">
+        <p class="sec-intro">Consumer goods packaging is now subject to a rapidly expanding set of national and regional regulations targeting waste reduction, material disclosure, recyclability labeling, and producer fee obligations. Every regulation in this space requires the same foundational data: <strong>packaging material type, material weight per packaging level, and recyclability classification</strong> &mdash; the exact attributes captured in the SKU, Case, and Pallet entities in the MDM hierarchy. Without accurate master data at each level, brands face regulatory exposure, failed EPR fee calculations, and potential market access restrictions.</p>
+
+        <div id="reg-eu" style="margin-bottom:28px;">
+            <div style="font-family:'Fraunces',serif;font-size:17px;color:var(--ros-deep);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--ros-border);">&#127466;&#127482; EU Regulations &mdash; EPR &amp; PPWR</div>
+
+            <div class="callout rose"><strong>EU Packaging &amp; Packaging Waste Regulation (PPWR, 2025+):</strong> The PPWR replaces the 1994 Packaging Directive and introduces mandatory recyclability categories, labeling requirements, minimum recycled content thresholds, and per-material EPR fee calculation at the packaging level &mdash; not the product level. Brands must report <em>packaging weight by material type, by packaging level</em> (consumer unit, secondary, tertiary). This is exactly the data structure in the Pallet &rarr; Case &rarr; SKU hierarchy.</div>
+
+            <table class="reg-table">
+                <thead><tr><th>Regulation</th><th>Scope</th><th>Key Data Required from MDM</th><th>Packaging Level</th></tr></thead>
+                <tbody>
+                    <tr><td><div class="reg-lbl">EU PPWR <span class="reg-badge rb-eu">EU 2025+</span></div></td><td>All packaging placed on EU market</td><td>Packaging material type &amp; weight per level; recyclability class (A–E); recycled content %; single-use vs. reusable flag</td><td>SKU (primary) + Case (secondary) + Pallet (tertiary)</td></tr>
+                    <tr><td><div class="reg-lbl">Extended Producer Responsibility (EPR) Schemes <span class="reg-badge rb-eu">EU + UK</span></div></td><td>Brands placing packaged goods in EU/UK markets</td><td>Total packaging weight by material (plastic, paper, metal, glass, composite) per year; split by consumer/commercial/industrial tier</td><td>All three levels — reported separately</td></tr>
+                    <tr><td><div class="reg-lbl">EU Green Claims Directive <span class="reg-badge rb-eu">EU 2026+</span></div></td><td>Any environmental claim on packaging or marketing</td><td>Verified recyclability classification; recycled content % with certification evidence; certifying body reference</td><td>SKU (consumer unit) primary</td></tr>
+                    <tr><td><div class="reg-lbl">ESPR (Eco-design for Sustainable Products) <span class="reg-badge rb-eu">EU 2024+</span></div></td><td>Product categories under delegated acts (textiles, electronics, food packaging)</td><td>Product passport: material composition, repairability, end-of-life instructions, supplier traceability</td><td>SKU + Product parent record</td></tr>
+                    <tr><td><div class="reg-lbl">FSMA 204 (Food Traceability) <span class="reg-badge rb-us">US FDA</span></div></td><td>Foods on the FDA Food Traceability List (FTL)</td><td>Traceability lot code; ship-to/from location (GLN); GTIN at case and consumer unit level; quantity shipped; product description</td><td>Case (primary) + Consumer Unit GTIN</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="reg-us">
+            <div style="font-family:'Fraunces',serif;font-size:17px;color:var(--ind-deep);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--ind-border);">&#127482;&#127480; US State EPR &amp; Packaging Laws</div>
+
+            <table class="reg-table">
+                <thead><tr><th>State</th><th>Law / Program</th><th>Status</th><th>MDM Data Required</th></tr></thead>
+                <tbody>
+                    <tr><td><div class="reg-lbl">California <span class="reg-badge rb-ca">SB 54</span></div></td><td>Plastic Packaging Producer Responsibility Act</td><td>Phased 2024&ndash;2032; 25% virgin plastic reduction by 2025, 65% recycled by 2032</td><td>Plastic material weight per SKU; recycled plastic content %; packaging reduction plan per product family</td></tr>
+                    <tr><td><div class="reg-lbl">Oregon <span class="reg-badge rb-us">HB 3065</span></div></td><td>Plastic Pollution &amp; Recycling Modernization Act</td><td>EPR program effective 2025; producer fee based on material weight &amp; type</td><td>All packaging material types &amp; weights at consumer unit, case, and pallet level for Oregon sales</td></tr>
+                    <tr><td><div class="reg-lbl">Colorado <span class="reg-badge rb-us">HB 22-1355</span></div></td><td>Plastic Pollution Reduction Act</td><td>EPR program operational; annual producer report required</td><td>Packaging weight by material; recyclability classification; total units placed on CO market</td></tr>
+                    <tr><td><div class="reg-lbl">Maine <span class="reg-badge rb-us">LD 1541</span></div></td><td>Extended Producer Responsibility for Packaging</td><td>First US statewide EPR law; producer fees calculated on material weight</td><td>Same as Oregon: material weight per packaging level, all tiers</td></tr>
+                    <tr><td><div class="reg-lbl">New York <span class="reg-badge rb-us">PREP Act</span></div></td><td>Packaging Reduction &amp; Recycling Program</td><td>Under implementation; targets 50% packaging reduction by weight by 2033</td><td>Baseline packaging weight per product; annual reduction progress by product family</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout ind"><strong>Multi-state EPR reporting without MDM:</strong> A CPG brand selling nationally must report packaging material weight to each state's EPR program separately, calculated from their actual sales in that state. Without accurate material weight data at the SKU, Case, and Pallet level in a central MDM system, this requires a manual reconciliation project for each state program annually &mdash; typically consuming 3&ndash;6 weeks of data analyst time and producing inconsistent results. Brands with MDM execute this as an automated report extraction.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 6 — VALUE / ROI                       -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="section" id="value">
+    <div class="sec-hdr" onclick="tog('b6','c6')">
+        <h2><span class="sn">6</span> Business Value: Routing Optimization, Waste Reduction &amp; Revenue</h2>
+        <span class="chevron open" id="c6">&#9660;</span>
+    </div>
+    <div class="sec-body" id="b6">
+        <p class="sec-intro">Accurate, complete packaging master data at all three levels &mdash; Consumer Unit, Case, and Pallet &mdash; is not a compliance-only investment. It directly unlocks measurable gains in freight cost, warehouse efficiency, retail shelf performance, and revenue. The data required to meet EPR regulations is the same data that powers trailer load optimization, DC slotting, and DSD route profitability &mdash; making the MDM build a shared asset across supply chain, sustainability, and commercial teams.</p>
+
+        <div class="roi-grid">
+            <div class="roi-card">
+                <div class="roi-icon">&#128666;</div>
+                <div class="roi-title">Trailer Load Optimization</div>
+                <div class="roi-stat teal">3&ndash;7%</div>
+                <div class="roi-desc">Improvement in trailer cube utilization when pallet dimensions and Ti&times;Hi are accurate in the TMS. For a brand shipping 500 truckloads/year at $3,500/load, a 5% load improvement = $87,500 in avoided freight cost annually.</div>
+            </div>
+            <div class="roi-card">
+                <div class="roi-icon">&#127981;</div>
+                <div class="roi-title">DC Slotting Accuracy</div>
+                <div class="roi-stat amber">15&ndash;25%</div>
+                <div class="roi-desc">Reduction in mis-slot events when case cube and weight are validated in MDM at onboarding. Each mis-slot triggers a re-slot labor event estimated at $80&ndash;$150 in WMS operations cost. Brands with 200+ SKUs see rapid payback.</div>
+            </div>
+            <div class="roi-card">
+                <div class="roi-icon">&#128202;</div>
+                <div class="roi-title">Retail Chargebacks Avoided</div>
+                <div class="roi-stat ind">$40K&ndash;$200K</div>
+                <div class="roi-desc">Annual chargeback reduction for mid-tier CPG brands when case count, weight, and dimensions match what the retailer's WMS expects. Chargebacks triggered by inaccurate product spec data are the most common and most preventable form of deduction loss.</div>
+            </div>
+            <div class="roi-card">
+                <div class="roi-icon">&#127975;</div>
+                <div class="roi-title">New Distribution Velocity</div>
+                <div class="roi-stat teal">40&ndash;60%</div>
+                <div class="roi-desc">Faster new item set-up at distributor (UNFI, KeHE) and retailer when complete packaging spec is maintained in MDM and published via GS1 Sync or 1WorldSync. Items with complete data are accepted 3&times; faster than items requiring follow-up data requests.</div>
+            </div>
+            <div class="roi-card">
+                <div class="roi-icon">&#9851;&#65039;</div>
+                <div class="roi-title">EPR Fee Accuracy</div>
+                <div class="roi-stat amber">10&ndash;30%</div>
+                <div class="roi-desc">Reduction in EPR over-reporting when packaging weight is captured per level (not estimated at product level). Brands that estimate packaging weight uniformly across all SKUs consistently over-report by 10&ndash;30%, paying excess fees to state and EU programs.</div>
+            </div>
+            <div class="roi-card">
+                <div class="roi-icon">&#128204;</div>
+                <div class="roi-title">Planogram &amp; Shelf Compliance</div>
+                <div class="roi-stat ind">8&ndash;12%</div>
+                <div class="roi-desc">Increase in on-shelf availability when consumer unit dimensions are accurate in the retailer's planogram system. Dimension errors cause the system to allocate the wrong number of facings, leading to chronic out-of-stocks on high-velocity items despite adequate inventory in the backroom.</div>
+            </div>
+        </div>
+
+        <!-- ROUTING OPTIMIZATION -->
+        <div id="routing" style="margin-bottom:28px;">
+            <div style="font-family:'Fraunces',serif;font-size:17px;color:var(--teal-deep);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--teal-border);">&#128666; Routing Optimization: How Packaging Data Drives Freight Efficiency</div>
+
+            <div class="exi teal"><div class="exl">Load Optimization (TMS)</div><p>A carrier's TMS uses pallet dimensions and gross weight to calculate the maximum number of pallets per trailer without exceeding axle weight limits. When the TMS has <strong>correct Ti&times;Hi and pallet height</strong>, the system can automatically mix loads across multiple brands to achieve 95%+ trailer cube utilization. When pallet data is wrong, the system defaults to conservative estimates &mdash; often leaving 15&ndash;20% of trailer space empty on every load, paying for air.</p></div>
+
+            <div class="exi amber"><div class="exl">DSD Route Profitability</div><p>In Direct Store Delivery, a route driver's truck carries cases from a regional warehouse to 15&ndash;25 store stops per day. Route profitability is determined by how many <strong>cases per route stop</strong> the truck can carry, which is governed by case cube and weight. When MDM has accurate case dimensions, the routing engine can maximize stop density and case count per route without exceeding truck payload. An accurate 12-case box at 0.43 ft³ vs. an incorrectly recorded 0.55 ft³ changes how many cases fit on the truck &mdash; and whether the route is profitable.</p></div>
+
+            <div class="exi ind"><div class="exl">Multi-Retailer Mixed Pallet for Distributors</div><p>Wholesale distributors like UNFI and KeHE mix products from different brands on a single pallet for "less than full pallet" replenishment orders to independent grocery stores. The distributor's WMS uses <strong>case cube and case weight</strong> from each brand's product spec to calculate how many cases from brand A, B, and C fit on a mixed pallet without exceeding height or weight limits. Brands with inaccurate case data create pick failures, rebuilt pallets, and delayed delivery windows &mdash; all of which result in distribution deductions billed back to the brand.</p></div>
+        </div>
+
+        <!-- WASTE REDUCTION -->
+        <div id="waste" style="margin-bottom:28px;">
+            <div style="font-family:'Fraunces',serif;font-size:17px;color:var(--ros-deep);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--ros-border);">&#9851;&#65039; Waste Reduction: From Data Accuracy to Sustainability Impact</div>
+
+            <div class="callout rose"><strong>Packaging waste and master data are more connected than most sustainability teams realize.</strong> Right-sizing packaging, optimizing case counts, and selecting lower-weight materials are all packaging engineering decisions &mdash; but they can only be measured, reported, and optimized if the packaging material data at each level is accurate in MDM. You cannot reduce what you cannot measure.</div>
+
+            <p style="font-size:13px;color:var(--stone);margin-bottom:14px;line-height:1.7;">Where accurate MDM packaging data directly reduces physical waste in the supply chain:</p>
+
+            <div class="impact-bar-wrap">
+                <div class="impact-bar-row"><div class="impact-bar-label">Corrugated over-boxing</div><div class="impact-bar-track"><div class="impact-bar-fill amber" style="width:72%"></div></div><div class="impact-bar-val">72%</div></div>
+                <div class="impact-bar-row"><div class="impact-bar-label">Empty trailer space (air freight)</div><div class="impact-bar-track"><div class="impact-bar-fill teal" style="width:60%"></div></div><div class="impact-bar-val">60%</div></div>
+                <div class="impact-bar-row"><div class="impact-bar-label">Damaged goods from mis-stack</div><div class="impact-bar-track"><div class="impact-bar-fill ind" style="width:45%"></div></div><div class="impact-bar-val">45%</div></div>
+                <div class="impact-bar-row"><div class="impact-bar-label">Expired product from bad shelf-life data</div><div class="impact-bar-track"><div class="impact-bar-fill rose" style="width:38%"></div></div><div class="impact-bar-val">38%</div></div>
+                <div class="impact-bar-row"><div class="impact-bar-label">Pallet film waste from incorrect Ti×Hi</div><div class="impact-bar-track"><div class="impact-bar-fill amber" style="width:30%"></div></div><div class="impact-bar-val">30%</div></div>
+            </div>
+            <p style="font-size:11px;color:var(--text-muted);margin-top:-10px;margin-bottom:20px;font-style:italic;">Estimated % of waste incidents in each category attributable to incorrect packaging master data, based on CPG industry benchmarks.</p>
+
+            <div class="exi rose"><div class="exl">Over-Boxing and Material Over-specification</div><p>When a brand's product spec lists a case dimension 15% larger than the actual physical case (a common error from pre-launch spec sheets that were never updated post-production), the DC allocates a pick-face slot sized for the larger case. The result is dead shelf space, lower slot utilization, and a retailer that orders in case quantities calibrated to the wrong cube. The brand ships more packaging material than necessary per unit of product moved. Correcting case dimensions in MDM reduces corrugated usage per delivery route and improves carbon intensity per case shipped.</p></div>
+
+            <div class="exi teal"><div class="exl">Shelf Life Data &amp; Food Waste</div><p>Inaccurate shelf life at the consumer unit level is one of the largest drivers of preventable food waste in the grocery supply chain. If the shelf life in the retailer's WMS reads 270 days (from an unupdated product spec) but the actual product shelf life is 365 days, the WMS triggers a markdown or disposal flag 95 days before the product should be pulled. Accurate shelf life in MDM &mdash; per item, variant, and storage condition &mdash; directly reduces unnecessary product write-offs across the distribution network.</p></div>
+        </div>
+
+        <!-- REVENUE GAINS -->
+        <div id="revenue">
+            <div style="font-family:'Fraunces',serif;font-size:17px;color:var(--ind-deep);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--ind-border);">&#128200; Revenue Gains: How Accurate Packaging Data Drives Commercial Performance</div>
+
+            <div class="exi ind"><div class="exl">Faster Distribution Onboarding</div><p>When a brand submits a new item to UNFI or KeHE for distribution, the distributor's item-setup team requires complete case and pallet specifications before they will assign a warehouse slot. Brands that submit complete, accurate packaging data at onboarding get their items in distribution 4&ndash;8 weeks faster than brands that submit incomplete specs and go through multiple data-correction cycles. Each week of delayed distribution on a $200K/year item = $3,800 in lost revenue.</p></div>
+
+            <div class="exi vio"><div class="exl">Retailer New Item Form Acceptance</div><p>Major retail chains (Walmart, Kroger, Target) require complete GS1 product data including all three packaging levels before issuing a purchase order. Brands that maintain their MDM hierarchy &mdash; with all three GTINs, dimensions, and weights &mdash; can auto-populate these forms via GS1 Sync or 1WorldSync. Brands without MDM spend 2&ndash;4 weeks per retailer gathering and verifying spec data manually. At a typical brand with 10 retailer activations per year, this is 20&ndash;40 weeks of wasted product team time that competes directly with innovation work.</p></div>
+
+            <div class="exi teal"><div class="exl">Planogram Compliance &amp; Shelf Availability</div><p>A brand's consumer unit dimensions determine how many facings the planogram assigns on the shelf. When the dimensions in the retailer's planogram system are wrong, the shelf space allocation is wrong &mdash; either cutting facings the brand should have (lost sales opportunity) or over-allocating space the brand cannot fill (triggering a slotting review). Accurate consumer unit dimensions in MDM, published to the retailer via GS1, ensure the planogram reflects physical reality and the brand captures its full allocated shelf space.</p></div>
+
+            <div class="exi amber"><div class="exl">Retail Media &amp; Google Product Feed Quality</div><p>Google Shopping and retail media platforms (Kroger Precision Marketing, Walmart Connect) use product spec data including packaging size, weight, and category to determine ad eligibility, search placement, and cost-per-click bids. Products with complete, accurate spec data at the consumer unit level are classified more precisely, appear in more relevant search results, and have higher conversion rates. Incomplete or inaccurate item data is one of the top three reasons CPG brands experience underperformance in retail media campaigns &mdash; and it is entirely a master data problem.</div>
+        </div>
+
+        <div class="callout teal" style="margin-top:24px;"><strong>The compounding return:</strong> The packaging master data captured to satisfy EPR compliance (material weight per level, recyclability) is the same data that optimizes freight loads (weight, cube), enables DC slotting (case dimensions), speeds retailer onboarding (all three GTINs + specs), and powers retail media feeds (consumer unit attributes). The MDM investment is not siloed in the compliance function &mdash; it is a shared data asset that pays back across supply chain, commercial, and sustainability simultaneously. Build it once, use it everywhere.</div>
+    </div>
+</section>
+
+</main>
+</div>
+
+<script>
+function tog(bodyId, chevId) {
+    const b = document.getElementById(bodyId);
+    const c = document.getElementById(chevId);
+    const open = b.style.display !== 'none';
+    b.style.display = open ? 'none' : 'block';
+    c.classList.toggle('open', !open);
+}
+const navLinks = document.querySelectorAll('.outline-nav a');
+const ids = Array.from(navLinks).map(a => a.getAttribute('href').replace('#',''));
+const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+e.target.id));
+    });
+}, {rootMargin:'-15% 0px -60% 0px'});
+ids.map(id => document.getElementById(id)).filter(Boolean).forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
