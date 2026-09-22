@@ -1,0 +1,631 @@
+# Retail Media Transformation Demo Microsite
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesforce & Informatica Retail Media Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .node-active {
+            filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+            stroke-width: 3px;
+        }
+        .custom-logs::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-logs::-webkit-scrollbar-thumb {
+            background-color: #475569;
+            border-radius: 2px;
+        }
+
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Global Presentation Header -->
+    <header class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-600 text-white font-black px-3 py-1 rounded text-xs tracking-wider uppercase">Salesforce</div>
+            <span class="text-slate-500 font-light text-xl">✕</span>
+            <div class="bg-orange-600 text-white font-black px-3 py-1 rounded text-xs tracking-wider uppercase">Informatica</div>
+            <div class="h-6 w-px bg-slate-800 hidden md:block ml-2"></div>
+            <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-blue-400 to-orange-400 bg-clip-text text-transparent">
+                Retail Media Network Strategy Demo Portal
+            </h1>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg p-1">
+            <button onclick="switchTab('data')" id="tab-data" class="tab-btn px-4 py-1.5 text-xs font-medium rounded-md bg-blue-600 text-white transition-all">
+                1. Trusted Data Foundation
+            </button>
+
+            <button onclick="switchTab('graph')" id="tab-graph" class="tab-btn px-4 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-white transition-all">
+                2. Knowledge Graph Explorer
+            </button>
+            <button onclick="switchTab('automation')" id="tab-automation" class="tab-btn px-4 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-white transition-all">
+                3. Automation Simulator
+            </button>
+            <button onclick="switchTab('results')" id="tab-results" class="tab-btn px-4 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-white transition-all">
+                4. Value Dashboard
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 gap-6">
+
+        <!-- TAB 1: TRUSTED DATA FOUNDATION -->
+        <section id="content-data" class="tab-content block space-y-6">
+            <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 shadow-2xl">
+                <div class="max-w-3xl">
+
+                    <h2 class="text-2xl font-bold text-white mb-2">Multi-Domain Master Data Management Ingestion</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        This view replicates the direct synchronization interface between legacy on-premise systems (ISOP) and the Informatica Intelligent Data Management Cloud (IDMC). Clean, non-duplicative store records and dimensional hierarchies pass into Salesforce Media Cloud as an active reference model.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg">
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Total Verified Stores</div>
+                        <div class="text-3xl font-bold text-blue-400 mt-1">1,420</div>
+                        <div class="text-[10px] text-emerald-400 mt-1 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full inline-block"></span> Synchronized Live
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg">
+                        <div class="text-xs text-slate-400 uppercase font-semibold">In-Store Assets Documented</div>
+                        <div class="text-3xl font-bold text-orange-400 mt-1">28,400</div>
+                        <div class="text-[10px] text-slate-400 mt-1">Endcaps, Digital Coolers, Aisles</div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg">
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Match & Merge Accuracy</div>
+                        <div class="text-3xl font-bold text-emerald-400 mt-1">99.98%</div>
+                        <div class="text-[10px] text-slate-500 mt-1">Powered by Informatica CLAIRE AI</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg">
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Compliance Rule Synchronization</div>
+                        <div class="text-3xl font-bold text-purple-400 mt-1">45 Localized</div>
+                        <div class="text-[10px] text-purple-300 mt-1">Active state & category policy restrictions</div>
+                    </div>
+                </div>
+
+                <!-- Interactive Data Quality Pipeline Check -->
+                <div class="mt-8 border border-slate-800 rounded-lg bg-slate-900/50 p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Live Pipeline Quality Monitoring Ticker</h3>
+                        <button onclick="triggerPipelineRefresh()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium px-3 py-1 rounded transition-colors flex items-center gap-2">
+                            Run Asset Quality Validation Audit
+                        </button>
+
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-slate-400 font-mono">
+                                    <th class="pb-2">Source System</th>
+                                    <th class="pb-2">Target Interface</th>
+                                    <th class="pb-2">Data Payload Entity</th>
+                                    <th class="pb-2 text-center">Status</th>
+                                    <th class="pb-2 text-right">Last Verified</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pipeline-rows" class="divide-y divide-slate-800 font-mono text-slate-300">
+                                <tr>
+                                    <td class="py-3 text-orange-400 font-semibold">Informatica IDMC SaaS</td>
+                                    <td>Salesforce Product Catalog</td>
+                                    <td>Regional Store Floor Capacity Master</td>
+                                    <td class="text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px]">VERIFIED</span></td>
+
+                                    <td class="text-right text-slate-500">Just now</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 text-orange-400 font-semibold">Informatica Governance SaaS</td>
+                                    <td>Salesforce OmniStudio Rules</td>
+                                    <td>State-Level Pricing Floors (Dairy Policy)</td>
+                                    <td class="text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px]">VERIFIED</span></td>
+                                    <td class="text-right text-slate-500">1 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 text-slate-500">Oracle Legacy (ISOP)</td>
+                                    <td class="text-orange-400">Informatica Landing Staging</td>
+                                    <td>Raw Store Performance Historical Metrics</td>
+                                    <td class="text-center"><span id="live-status-cell" class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px]">SYNCING</span></td>
+                                    <td class="text-right text-slate-500" id="live-time-cell">In progress</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: BUILT-OUT KNOWLEDGE GRAPH -->
+        <section id="content-graph" class="tab-content hidden space-y-6">
+            <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 shadow-2xl">
+                <div class="max-w-3xl mb-6">
+                    <h2 class="text-2xl font-bold text-white mb-2">Relational Knowledge Graph Mapping</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Informatica connects siloed physical parameters with operational retail properties, feeding a multi-party relationship layer inside Salesforce. **Click on individual nodes below** to inspect how the properties instantly resolve down to atomic constraints in the sales execution system.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Graph Canvas Frame -->
+                    <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-lg p-4 relative h-[380px] flex items-center justify-center overflow-hidden">
+                        <div class="absolute top-2 left-2 text-[10px] text-slate-500 font-mono tracking-wider uppercase">Interactive Network Matrix View</div>
+                        
+
+                        <!-- Mini Mock SVG Node Map -->
+                        <svg class="w-full h-full max-w-lg" viewBox="0 0 500 300">
+                            <!-- Lines connecting elements -->
+                            <line x1="250" y1="50" x2="120" y2="150" stroke="#334155" stroke-width="2" />
+                            <line x1="250" y1="50" x2="380" y2="150" stroke="#334155" stroke-width="2" />
+                            <line x1="120" y1="150" x2="70" y2="250" stroke="#334155" stroke-width="2" />
+                            <line x1="120" y1="150" x2="170" y2="250" stroke="#334155" stroke-width="2" />
+                            <line x1="380" y1="150" x2="330" y2="250" stroke="#334155" stroke-width="2" />
+                            <line x1="380" y1="150" x2="430" y2="250" stroke="#334155" stroke-width="2" />
+
+                            <!-- Root System Node -->
+                            <g onclick="selectNode('root')" class="cursor-pointer">
+                                <circle cx="250" cy="50" r="22" fill="#2563eb" id="node-root" class="node-active transition-all" />
+                                <text x="250" y="54" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">RMN</text>
+                            </g>
+                            
+                            <!-- Location Entity Group -->
+                            <g onclick="selectNode('stores')" class="cursor-pointer">
+                                <circle cx="120" cy="150" r="18" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" id="node-stores" class="transition-all" />
+
+                                <text x="120" y="153" fill="#94a3b8" font-size="9" text-anchor="middle">Stores</text>
+                            </g>
+                            <g onclick="selectNode('store101')" class="cursor-pointer">
+                                <circle cx="70" cy="250" r="14" fill="#0f172a" stroke="#64748b" stroke-width="1.5" id="node-store101" class="transition-all" />
+                                <text x="70" y="253" fill="#cbd5e1" font-size="8" text-anchor="middle">#101</text>
+                            </g>
+                            <g onclick="selectNode('store102')" class="cursor-pointer">
+                                <circle cx="170" cy="250" r="14" fill="#0f172a" stroke="#64748b" stroke-width="1.5" id="node-store102" class="transition-all" />
+                                <text x="170" y="253" fill="#cbd5e1" font-size="8" text-anchor="middle">#102</text>
+                            </g>
+
+                            <!-- Compliance and Product Policy Group -->
+                            <g onclick="selectNode('policies')" class="cursor-pointer">
+                                <circle cx="380" cy="150" r="18" fill="#1e293b" stroke="#ea580c" stroke-width="1.5" id="node-policies" class="transition-all" />
+                                <text x="380" y="153" fill="#94a3b8" font-size="9" text-anchor="middle">Rules</text>
+                            </g>
+                            <g onclick="selectNode('policyDairy')" class="cursor-pointer">
+                                <circle cx="330" cy="250" r="14" fill="#0f172a" stroke="#ea580c" stroke-width="1.5" id="node-policyDairy" class="transition-all" />
+                                <text x="330" y="253" fill="#cbd5e1" font-size="8" text-anchor="middle">Dairy</text>
+
+                            </g>
+                            <g onclick="selectNode('policyExcl')" class="cursor-pointer">
+                                <circle cx="430" cy="250" r="14" fill="#0f172a" stroke="#a855f7" stroke-width="1.5" id="node-policyExcl" class="transition-all" />
+                                <text x="430" y="253" fill="#cbd5e1" font-size="8" text-anchor="middle">Rival</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Metadata Attribute Pane -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="text-xs font-mono uppercase tracking-wider text-slate-500 mb-1">Selected Relationship Model</div>
+                            <h3 id="graph-node-title" class="text-lg font-bold text-white">Unified Master Ledger Network</h3>
+                            <div id="graph-node-type" class="text-[10px] font-mono inline-block bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded mt-1">ROOT DATA DOMAIN</div>
+                            
+                            <div class="h-px bg-slate-800 my-4"></div>
+                            
+                            <div class="space-y-3">
+                                <div>
+
+                                    <label class="text-[10px] text-slate-400 uppercase block font-mono">Informatica Master Attributes Asset Profile</label>
+                                    <p id="graph-node-desc" class="text-xs text-slate-300 mt-1 leading-relaxed">
+                                        Represents the absolute system threshold where supply-side parameters connect seamlessly to active multi-channel pipelines. Select an element to read its metadata map.
+                                    </p>
+                                </div>
+                                <div id="graph-node-attributes" class="space-y-1.5 font-mono text-[11px] bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-400">
+                                    <div>• Enterprise Product Engine: Native</div>
+                                    <div>• Integration Protocol: IDMC Data Fabric</div>
+                                    <div>• Governance Validation: Enforcement Live</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-t border-slate-800 text-[11px] text-slate-400 italic">
+                            💡 Change selections to review cross-object tracking rules.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 3: AUTOMATION OPPORTUNITIES -->
+        <section id="content-automation" class="tab-content hidden space-y-6">
+            <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 shadow-2xl">
+                <div class="max-w-3xl mb-6">
+                    <h2 class="text-2xl font-bold text-white mb-2">OmniStudio Rules & Category Protection Simulator</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Test the real-time guardrails executed within **Salesforce Industry CPQ**. Select different client campaigns to observe how Informatica background data rules automatically catch pricing, dimension, or competitive exclusivity overlaps before the proposal can check out.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Interactive Configuration Controls Form -->
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-lg space-y-4">
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider text-blue-400">1. Placement Configurator</h3>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Select Advertiser Profile</label>
+
+                            <select id="sim-brand" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500">
+                                <option value="mega-dairy">Alpha Premium Organic Dairy (Category: Dairy Corporate)</option>
+                                <option value="rival-dairy">Omega Farms Dairy (Direct Competitor to Alpha Dairy)</option>
+                                <option value="snack-corp">Delta Crunchy Chips LLC (Category: Dry Snacks)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Target Territory / Stores</label>
+                            <select id="sim-region" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500">
+                                <option value="northeast">Northeast Region (Subject to strict state coupon limits)</option>
+                                <option value="midwest">Midwest Hub Stores (Standard baseline pricing rules)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1.5">In-Store Marketing Asset Package</label>
+                            <select id="sim-asset" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500">
+                                <option value="cooler-screen">Aisle 4 Digital Smart Cooler Face Screens (Requires depth validation)</option>
+
+                                <option value="endcap-physical">Physical Checkout Display Island (Requires floor weight clearance)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="runAutomationCheck()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs py-2.5 px-4 rounded transition-colors uppercase tracking-wider mt-2">
+                            Check Compliance & Ingest Cart
+                        </button>
+                    </div>
+
+                    <!-- Output System Logger Logs -->
+                    <div class="md:col-span-2 bg-slate-950 border border-slate-800 rounded-lg p-4 flex flex-col h-[340px]">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2 mb-3">
+                            <span class="text-xs font-mono uppercase tracking-wider text-slate-400">Real-Time OmniStudio Engine Evaluation Log</span>
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+                        </div>
+                        
+                        <div id="automation-terminal" class="flex-1 font-mono text-xs text-slate-300 space-y-2 overflow-y-auto custom-logs pr-2">
+                            <p class="text-slate-500">// System ready. Modify placement fields and tap 'Check Compliance' to simulate rules verification pipelines.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: VALUE DASHBOARD -->
+        <section id="content-results" class="tab-content hidden space-y-6">
+            <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 shadow-2xl">
+                <div class="max-w-3xl mb-6">
+                    <h2 class="text-2xl font-bold text-white mb-2">The Results of Trusted Governance Flowing to Salesforce</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        By integrating accurate structural parameters, manual compliance audit overhead is removed entirely at checkout. This dashboard demonstrates the direct operational and commercial lift realized by transitioning out of the manual ecosystem.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Metric Card 1 -->
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-lg flex flex-col justify-between">
+                        <div>
+
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-sm font-bold text-slate-300">Proposal Turnaround Velocity</h3>
+                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono px-2 py-0.5 rounded">98% REDUCTION</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Time elapsed to generate and completely audit high-complexity regional custom packages.</p>
+                            
+                            <div class="grid grid-cols-2 gap-4 mt-6">
+                                <div class="bg-slate-950 p-3 rounded border border-slate-800">
+                                    <span class="text-[10px] text-slate-500 uppercase block font-mono">Legacy Environment</span>
+                                    <span class="text-xl font-bold text-slate-400 block mt-1">48 - 72 Hours</span>
+                                    <span class="text-[9px] text-slate-500 block">Manual tracking files</span>
+                                </div>
+                                <div class="bg-blue-950/40 p-3 rounded border border-blue-900/50">
+                                    <span class="text-[10px] text-blue-400 uppercase block font-mono">Unified Deployment</span>
+                                    <span class="text-xl font-bold text-blue-400 block mt-1">&lt; 60 Seconds</span>
+                                    <span class="text-[9px] text-emerald-400 block">Fully automated CPQ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400">
+                            <strong>Impact:</strong> Removes friction from the brand pipeline, capturing short-notice quarterly ad-spend surges instantly.
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 2 -->
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-lg flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-sm font-bold text-slate-300">Contract Average Order Value (AOV)</h3>
+                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono px-2 py-0.5 rounded">15% - 22% CONTRACT LIFT</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Revenue captured per media deal using rule-driven automated premium capacity recommendations.</p>
+                            
+                            <div class="grid grid-cols-2 gap-4 mt-6">
+                                <div class="bg-slate-950 p-3 rounded border border-slate-800">
+                                    <span class="text-[10px] text-slate-500 uppercase block font-mono">Legacy Environment</span>
+                                    <span class="text-xl font-bold text-slate-400 block mt-1">Static Baseline</span>
+                                    <span class="text-[9px] text-slate-500 block">Rigid template offerings</span>
+
+                                </div>
+                                <div class="bg-orange-950/40 p-3 rounded border border-orange-900/50">
+                                    <span class="textxl font-bold text-orange-400 block mt-1">+18.5% Median</span>
+                                    <span class="text-[9px] text-orange-300 block">Dynamic tier upselling</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400">
+                            <strong>Impact:</strong> High-performance store locations and unbooked high-yield displays are automatically surfaced to sellers.
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 3 -->
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-lg flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-sm font-bold text-slate-300">Compliance & Regulatory Enforcement</h3>
+                                <span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono px-2 py-0.5 rounded">ZERO FINES</span>
+                            </div>
+
+                            <p class="text-xs text-slate-400 mt-1">Occurrence rate of local dairy price floor deviations or unvetted coupon strategy slip-ups.</p>
+                            
+                            <div class="mt-4 bg-slate-950 p-3 rounded border border-slate-800 text-center font-mono">
+                                <div class="text-xs text-slate-400">Automated Checkout Legal Reviews Enforced</div>
+                                <div class="text-2xl font-bold text-emerald-400 mt-1">100% Guaranteed</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400">
+                            <strong>Impact:</strong> Insulates the retail network from local governance or program parameters auditing penalties.
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 4 -->
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-lg flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-sm font-bold text-slate-300">Frontline Sales CRM Adoption</h3>
+                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono px-2 py-0.5 rounded">95%+ USER COMPLIANCE</span>
+                            </div>
+
+                            <p class="text-xs text-slate-400 mt-1">Daily software active status tracking for sales associates utilizing the cloud ecosystem.</p>
+                            
+                            <div class="mt-4 bg-slate-950 p-3 rounded border border-slate-800 flex items-center justify-around">
+                                <div class="text-center">
+                                    <span class="text-[9px] text-slate-500 uppercase block font-mono">Old Method</span>
+                                    <span class="text-sm font-bold text-slate-400 line-through">Chore Tracker</span>
+                                </div>
+                                <div class="text-xl text-slate-600">➔</div>
+                                <div class="text-center">
+                                    <span class="text-[9px] text-blue-400 uppercase block font-mono">New Method</span>
+                                    <span class="text-base font-bold text-blue-400">Revenue Generator</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400">
+                            <strong>Impact:</strong> Sales reps interact with the CRM daily because it designs proposals automatically rather than tracking historical entries.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 px-6 py-3 text-center text-xs text-slate-500 font-mono">
+        Salesforce Media Cloud & Informatica IDMC Unified Ecosystem Architecture Demo • 2026 Strategy Execution
+    </footer>
+
+    <!-- Interactive Logic Scripts -->
+    <script>
+        // Tab Management Logic
+        function switchTab(tabId) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(element => {
+                element.classList.add('hidden');
+                element.classList.remove('block');
+            });
+            
+
+            // Show target content
+            const activeContent = document.getElementById('content-' + tabId);
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+                activeContent.classList.add('block');
+            }
+            
+            // Reset tab styling buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-slate-400', 'hover:text-white');
+            });
+            
+            // Apply styling to active button
+            const activeTabBtn = document.getElementById('tab-' + tabId);
+            if (activeTabBtn) {
+                activeTabBtn.classList.remove('text-slate-400', 'hover:text-white');
+                activeTabBtn.classList.add('bg-blue-600', 'text-white');
+            }
+
+        }
+
+        // Pipeline Ticker Simulation
+        function triggerPipelineRefresh() {
+            const statusCell = document.getElementById('live-status-cell');
+            const timeCell = document.getElementById('live-time-cell');
+            
+            if (statusCell && timeCell) {
+                statusCell.innerHTML = "VERIFYING";
+                statusCell.className = "px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20 text-[10px]";
+                timeCell.innerHTML = "Processing audit...";
+                
+                setTimeout(() => {
+                    statusCell.innerHTML = "VERIFIED";
+                    statusCell.className = "px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px]";
+                    timeCell.innerHTML = "Just now";
+                }, 1200);
+            }
+        }
+
+
+        // Relational Graph Node Metadata Definitions
+        const nodeMetadata = {
+            root: {
+                title: "Unified Master Ledger Network",
+                type: "ROOT DATA DOMAIN",
+                desc: "The consolidated operational environment linking supplier records to physical storefront availability parameters.",
+                attrs: ["• Enterprise Product Engine: Native", "• Integration Protocol: IDMC Data Fabric", "• Governance Validation: Enforcement Live"]
+            },
+            stores: {
+                title: "Multi-Region Retail Network Locations",
+                type: "INFORMATICA MASTER DATA ENTITY",
+                desc: "Consolidates individual brick-and-mortar storefront specifications including total shelf capacity, cooler placements, and foot-traffic tiers.",
+                attrs: ["• Record Synchronization: Continuous REST API", "• Parent Schema: Global Store Directory", "• Data Cleansing Tier: Active Golden Record"]
+            },
+            store101: {
+                title: "Supermarket Outlet #101 (Boston, MA)",
+                type: "LOCALIZED PROFILE INSTANCE",
+                desc: "Store instance metadata verified by Informatica, displaying an active layout profile with limited cooler shelf capacity.",
+                attrs: ["• Physical Footprint Space: 45,000 sq ft", "• Digital Cooler Displays: 24 active screens", "• Performance Classification: Tier 1 Premium"]
+
+            },
+            store102: {
+                title: "Supermarket Outlet #102 (Albany, NY)",
+                type: "LOCALIZED PROFILE INSTANCE",
+                desc: "Store instance metadata located in a geography subjected to strict localized dairy promotional pricing thresholds.",
+                attrs: ["• Physical Footprint Space: 38,000 sq ft", "• Digital Cooler Displays: 12 active screens", "• Performance Classification: Tier 2 Steady"]
+            },
+            policies: {
+                title: "Enterprise Policy Rules Ledger",
+                type: "GOVERNANCE DATA LAYER",
+                desc: "Tracks the compliance lineage of localized statutes, state pricing constraints, and brand protection guidelines.",
+                attrs: ["• Policy Ingestion Vector: Cloud Data Catalog", "• Enforcement Engine: Salesforce Industry CPQ", "• Audit Trail Audit Vector: Immutable"]
+            },
+            policyDairy: {
+                title: "Northeast Regional Dairy Price Guardrail",
+                type: "OMNISTUDIO ENFORCEMENT PARAMETER",
+                desc: "Automatically locks out promotional mechanics that dip beneath statutory margins for milk and dairy products in specific states.",
+                attrs: ["• Enforcement Stage: Pre-Cart Checkout", "• Trigger Vectors: Category matches 'Dairy'", "• Exception Thresholds: Non-permitted"]
+            },
+
+            policyExcl: {
+                title: "Brand Category Exclusivity Protection",
+                type: "DYNAMIC INVENTORY CALENDAR LOCK",
+                desc: "Prevents direct market competitors from reserving visual real estate inside identical store aisles during active campaign windows.",
+                attrs: ["• Validation Target: Parent Brand Identity", "• Real-Time Conflict Mitigation: Native", "• Enforcement Vector: Salesforce Ad Calendar"]
+            }
+        };
+
+        // Graph Selection Action
+        function selectNode(nodeId) {
+            // Remove highlighting active state from all circles
+            document.querySelectorAll('circle').forEach(circle => {
+                circle.classList.remove('node-active');
+                circle.setAttribute('fill', circle.id === 'node-root' ? '#2563eb' : circle.id.startsWith('node-store') || circle.id.startsWith('node-policy') ? '#0f172a' : '#1e293b');
+            });
+            
+            // Add custom visual glow to selected node
+            const targetedCircle = document.getElementById('node-' + nodeId);
+            if (targetedCircle) {
+
+                targetedCircle.classList.add('node-active');
+                if (nodeId !== 'root') {
+                    targetedCircle.setAttribute('fill', '#1d4ed8');
+                }
+            }
+            
+            // Update Text panel information fields
+            const data = nodeMetadata[nodeId];
+            if (data) {
+                document.getElementById('graph-node-title').innerText = data.title;
+                document.getElementById('graph-node-type').innerText = data.type;
+                document.getElementById('graph-node-desc').innerText = data.desc;
+                
+                // Color configuration for tag badge
+                const typeTag = document.getElementById('graph-node-type');
+                if (data.type.includes('INFORMATICA') || data.type.includes('LOCALIZED')) {
+                    typeTag.className = "text-[10px] font-mono inline-block bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2 py-0.5 rounded mt-1";
+                } else if (data.type.includes('GOVERNANCE') || data.type.includes('OMNISTUDIO')) {
+                    typeTag.className = "text-[10px] font-mono inline-block bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded mt-1";
+
+                } else {
+                    typeTag.className = "text-[10px] font-mono inline-block bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded mt-1";
+                }
+                
+                // Render line entries
+                const attributesContainer = document.getElementById('graph-node-attributes');
+                attributesContainer.innerHTML = data.attrs.map(attr => `<div>${attr}</div>`).join('');
+            }
+        }
+
+        // Live CPQ Configuration Simulator Logic
+        function runAutomationCheck() {
+            const selectedBrand = document.getElementById('sim-brand').value;
+            const selectedRegion = document.getElementById('sim-region').value;
+            const selectedAsset = document.getElementById('sim-asset').value;
+            const logBox = document.getElementById('automation-terminal');
+            
+            let outputs = [];
+            const timestamp = new Date().toLocaleTimeString();
+
+            
+            outputs.push(`<span class="text-blue-400">[${timestamp}]</span> <span class="text-slate-400">Initializing transaction check for campaign package...</span>`);
+            outputs.push(`<span class="text-blue-400">[${timestamp}]</span> <span class="text-slate-500">→ Interrogating Informatica Multi-Domain IDMC Golden Record for store specifications.</span>`);
+            
+            // Logic assessment sequence 1: Dimension / Footprint physical profile check
+            if (selectedAsset === 'cooler-screen') {
+                outputs.push(`<span class="text-emerald-400">[PASS]</span> <span class="text-slate-300">Informatica MDM Asset Matching: Physical display aspect maps and electrical profiles match store configuration files.</span>`);
+            } else {
+                outputs.push(`<span class="text-emerald-400">[PASS]</span> <span class="text-slate-300">Informatica MDM Structural Verification: Aisle footprint load weights confirm placement feasibility.</span>`);
+            }
+
+            // Logic assessment sequence 2: Geography Policy Compliance Audit
+            if (selectedBrand === 'rival-dairy' && selectedRegion === 'northeast') {
+                outputs.push(`<span class="text-rose-400">[BLOCK]</span> <span class="text-rose-300">OmniStudio Compliance Procedure Violation: Selected region (Northeast) enforces strict minimum pricing floors. Net item incentives cannot fall beneath code floor parameters. Cart configuration suspended.</span>`);
+            } else if (selectedBrand === 'mega-dairy' && selectedRegion === 'northeast') {
+                outputs.push(`<span class="text-amber-400">[WARNING]</span> <span class="text-amber-300">OmniStudio Rule Match: Northeast statutory policy guardrail detected. Price tracking structured automatically to support baseline verification audit limits.</span>`);
+            } else {
+                outputs.push(`<span class="text-emerald-400">[PASS]</span> <span class="text-slate-300">Regional Policy Clearance: Pricing parameter boundaries pass local tax and promotion guidelines.</span>`);
+            }
+
+
+            // Logic assessment sequence 3: Category Protection Exclusivity Audit
+            if (selectedBrand === 'rival-dairy') {
+                outputs.push(`<span class="text-rose-400">[BLOCK]</span> <span class="text-rose-300">Salesforce Inventory Conflict: Alpha Premium Organic Dairy holds exclusive category locking parameters in Aisle 4 for this marketing window. Direct rivals are blocked from active display placement.</span>`);
+            } else if (selectedBrand === 'mega-dairy') {
+                outputs.push(`<span class="text-emerald-400">[PASS]</span> <span class="text-slate-300">Category Protection Clearance: Primary account holds active category tier ownership rights. Exclusivity rule enforced against competing brands.</span>`);
+            } else {
+                outputs.push(`<span class="text-emerald-400">[PASS]</span> <span class="text-slate-300">Category Exclusivity Clearance: No overlapping campaign reservations discovered for Dry Snacks inside chosen cycle.</span>`);
+            }
+
+            // Summary recommendation phase
+            if (selectedBrand === 'rival-dairy' || (selectedBrand === 'mega-dairy' && selectedRegion === 'northeast' && selectedAsset === 'endcap-physical')) {
+                outputs.push(`<span class="text-rose-500 font-bold">[CART LOCKED]</span> <span class="text-slate-400">Salesforce Media Cloud Industry CPQ automatically blocked checkout due to active validation errors. Manual oversight unnecessary.</span>`);
+            } else {
+                // Upsell cross-sell suggestion display trigger
+                outputs.push(`<span class="text-blue-400">[INTELLIGENT UPGRADE SUGGESTION]</span> <span class="text-emerald-400 font-semibold">Salesforce Next Best Action: Surfacing premium unbooked display capacity. High foot-traffic Tier 1 stores have 15% endcap availability. Upgrading adds $12,500 contract value (15% lift).</span>`);
+                outputs.push(`<span class="text-emerald-500 font-bold">[SUCCESS]</span> <span class="text-slate-200">Cart optimized and pushed to contract staging in under 60 seconds.</span>`);
+            }
+            
+            // Write outputs inside log container box
+
+            logBox.innerHTML = outputs.map(line => `<div class="py-0.5 border-b border-slate-900/30">${line}</div>`).join('') + logBox.innerHTML;
+        }
+    </script>
+</body>
+</html>
+
+
