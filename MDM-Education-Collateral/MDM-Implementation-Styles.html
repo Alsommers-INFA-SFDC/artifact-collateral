@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MDM Implementation Styles</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f4f0;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #5a5a5a;
+      --accent1: #4f46e5;
+      --accent2: #0891b2;
+      --accent3: #059669;
+      --accent4: #d97706;
+      --border: #e2e0d8;
+      --tag-bg: #f0eee8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 60px 0;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e40af 100%);
+      color: white;
+      padding: 52px 32px 48px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: clamp(15px, 2vw, 18px);
+      opacity: 0.8;
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* NAV TABS */
+    .nav-bar {
+      background: white;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+    }
+    .nav-tab {
+      padding: 16px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      white-space: nowrap;
+      transition: all 0.2s;
+      color: var(--text-muted);
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    .nav-tab:hover { color: var(--text); }
+    .nav-tab.active { color: var(--accent1); border-bottom-color: var(--accent1); }
+    .nav-tab .tab-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    /* MAIN CONTENT */
+    .main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 0; }
+
+    /* OVERVIEW CARDS */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .overview-card {
+      background: white;
+      border-radius: 14px;
+      padding: 24px 20px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .overview-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    .overview-card.active {
+      border-color: currentColor;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+    .oc-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+    .overview-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .overview-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .oc-badge {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* DETAIL PANEL */
+    .detail-panel {
+      background: white;
+      border-radius: 18px;
+      border: 1.5px solid var(--border);
+      padding: 40px;
+      margin-bottom: 24px;
+      display: none;
+    }
+    .detail-panel.visible { display: block; }
+
+    .detail-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .detail-icon {
+      width: 64px; height: 64px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .detail-title h2 { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+    .detail-title .subtitle { font-size: 15px; color: var(--text-muted); }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* HOW IT WORKS DIAGRAM */
+    .diagram-area {
+      background: #f8f7f4;
+      border-radius: 14px;
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+    .diagram-flow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .flow-box {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 90px;
+    }
+    .flow-arrow {
+      font-size: 20px;
+      color: #aaa;
+      flex-shrink: 0;
+    }
+    .flow-hub {
+      border-width: 2px;
+      padding: 14px 20px;
+      font-size: 14px;
+    }
+
+    /* TWO COL */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* PROS / CONS */
+    .pros-cons {
+      background: #f8f7f4;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .pros-cons h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .pros-cons ul { list-style: none; }
+    .pros-cons li {
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 5px 0;
+      padding-left: 22px;
+      position: relative;
+      color: var(--text-muted);
+    }
+    .pros-cons li::before {
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+    .pros li { color: #166534; }
+    .pros li::before { content: "✓"; color: #16a34a; }
+    .cons li { color: #7f1d1d; }
+    .cons li::before { content: "✗"; color: #dc2626; }
+
+    /* USE CASES */
+    .use-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .use-case-card {
+      background: #f8f7f4;
+      border-radius: 12px;
+      padding: 18px 16px;
+      border-left: 4px solid;
+    }
+    .use-case-card .uc-icon { font-size: 22px; margin-bottom: 8px; }
+    .use-case-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .use-case-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* REAL WORLD EXAMPLE */
+    .example-box {
+      background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+      border: 1.5px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .example-box .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #2563eb;
+      margin-bottom: 10px;
+    }
+    .example-box p { font-size: 15px; line-height: 1.65; color: #1e3a5f; }
+
+    /* WHEN TO USE */
+    .when-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 600px) { .when-grid { grid-template-columns: 1fr; } }
+    .when-box {
+      border-radius: 12px;
+      padding: 18px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .when-yes { background: #f0fdf4; border: 1.5px solid #86efac; color: #14532d; }
+    .when-no { background: #fff7ed; border: 1.5px solid #fed7aa; color: #7c2d12; }
+    .when-box strong { display: block; margin-bottom: 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* COMPARISON TABLE */
+    .comparison-section { margin-top: 20px; }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .compare-table th {
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: #f8f7f4;
+      border-bottom: 2px solid var(--border);
+    }
+    .compare-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: #faf9f7; }
+    .compare-table td:first-child { font-weight: 700; color: var(--text); width: 160px; }
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* PAGE VIEWS */
+    .page { display: none; }
+    .page.visible { display: block; }
+
+    /* HELP TOOLTIP */
+    .tooltip-trigger {
+      display: inline-block;
+      width: 16px; height: 16px;
+      background: #e2e0d8;
+      color: #666;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 16px;
+      cursor: help;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    /* FOOTER */
+    .page-footer {
+      text-align: center;
+      color: #aaa;
+      font-size: 12px;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Master Data Management</div>
+  <h1>The 4 Ways Companies Implement MDM</h1>
+  <p>Every company organizes its data differently. Here's a plain-English guide to the four main approaches — what they do, when to use them, and why it matters.</p>
+</div>
+
+<!-- NAV -->
+<div class="nav-bar">
+  <button class="nav-tab active" onclick="showPage('overview')" id="tab-overview">
+    <span class="tab-dot" style="background:#6366f1"></span>Overview
+  </button>
+  <button class="nav-tab" onclick="showPage('registry')" id="tab-registry">
+    <span class="tab-dot" style="background:#4f46e5"></span>Registry
+  </button>
+  <button class="nav-tab" onclick="showPage('consolidation')" id="tab-consolidation">
+    <span class="tab-dot" style="background:#0891b2"></span>Consolidation
+  </button>
+  <button class="nav-tab" onclick="showPage('coexistence')" id="tab-coexistence">
+    <span class="tab-dot" style="background:#059669"></span>Coexistence
+  </button>
+  <button class="nav-tab" onclick="showPage('centralized')" id="tab-centralized">
+    <span class="tab-dot" style="background:#d97706"></span>Centralized
+  </button>
+  <button class="nav-tab" onclick="showPage('hybrid')" id="tab-hybrid">
+    <span class="tab-dot" style="background:#7c3aed"></span>Hybrid
+  </button>
+  <button class="nav-tab" onclick="showPage('compare')" id="tab-compare">
+    📊 Compare All
+  </button>
+</div>
+
+<!-- ===== OVERVIEW PAGE ===== -->
+<div class="page visible" id="page-overview">
+  <div class="main">
+
+    <p style="font-size:15px;color:var(--text-muted);margin-bottom:28px;line-height:1.65;">
+      MDM (Master Data Management) is how businesses keep a single, trustworthy version of key data — like customers, products, or suppliers — across all their systems. The <strong>implementation style</strong> determines how that golden record is created, where it lives, and how it flows back to other systems. Click any card below to explore each style.
+    </p>
+
+    <div class="overview-grid">
+      <div class="overview-card" onclick="showPage('registry')" style="color:#4f46e5;">
+        <div class="oc-icon" style="background:#ede9fe;">🗂️</div>
+        <h3>Registry Style</h3>
+        <p>A master index that points to records in other systems — without moving the data.</p>
+        <div class="oc-badge" style="background:#ede9fe;color:#4f46e5;">Read-Only Hub</div>
+        <div class="oc-badge" style="background:#fef3c7;color:#92400e;margin-left:4px;">⚠️ Less Common Today</div>
+      </div>
+      <div class="overview-card" onclick="showPage('consolidation')" style="color:#0891b2;">
+        <div class="oc-icon" style="background:#e0f2fe;">🧲</div>
+        <h3>Consolidation Style</h3>
+        <p>Pulls data from all systems into one place to create a "golden record" — but doesn't push it back.</p>
+        <div class="oc-badge" style="background:#e0f2fe;color:#0891b2;">One-Way Flow</div>
+      </div>
+      <div class="overview-card" onclick="showPage('coexistence')" style="color:#059669;">
+        <div class="oc-icon" style="background:#dcfce7;">🔄</div>
+        <h3>Coexistence Style</h3>
+        <p>Creates a master record AND sends it back to other systems. Everyone shares the same truth.</p>
+        <div class="oc-badge" style="background:#dcfce7;color:#059669;">Two-Way Sync</div>
+      </div>
+      <div class="overview-card" onclick="showPage('centralized')" style="color:#d97706;">
+        <div class="oc-icon" style="background:#fef3c7;">👑</div>
+        <h3>Centralized Style</h3>
+        <p>One system owns the data. Everything else reads from it. The most controlled approach.</p>
+        <div class="oc-badge" style="background:#fef3c7;color:#d97706;">Single Source</div>
+      </div>
+      <div class="overview-card" onclick="showPage('hybrid')" style="color:#7c3aed;">
+        <div class="oc-icon" style="background:#ede9fe;">🧩</div>
+        <h3>Hybrid Style</h3>
+        <p>Mix and match styles across domains or phases. Most real-world MDM programs do this.</p>
+        <div class="oc-badge" style="background:#ede9fe;color:#7c3aed;">Real-World Approach</div>
+        <div class="oc-badge" style="background:#f0fdf4;color:#166534;margin-left:4px;">✅ Most Common</div>
+      </div>
+    </div>
+
+
+    <!-- STYLE ROWS: info left, mermaid diagram right -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { fontSize: '13px' } });</script>
+
+    <div style="display:flex;flex-direction:column;gap:24px;margin-bottom:40px;">
+
+      <!-- REGISTRY -->
+      <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:0;background:white;border-radius:16px;border:2px solid #c7d2fe;overflow:hidden;cursor:pointer;" onclick="showPage('registry')">
+        <div style="padding:28px 24px;border-right:1px solid #e0e7ff;">
+          <div style="display:inline-block;background:#ede9fe;color:#4f46e5;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:12px;">🗂️ Registry</div>
+          <div style="display:inline-block;background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:6px;margin-bottom:12px;">⚠️ Less Common</div>
+          <h3 style="font-size:17px;font-weight:800;color:#3730a3;margin-bottom:8px;">Link, don't move</h3>
+          <p style="font-size:13px;color:#5a5a5a;line-height:1.6;margin-bottom:14px;">Creates a cross-reference index that links the same record across source systems. Data never moves — MDM just knows they're the same thing.</p>
+          <div style="font-size:12px;color:#6366f1;font-weight:600;">Click to explore →</div>
+        </div>
+        <div style="padding:24px;background:#f8f7ff;display:flex;align-items:center;">
+          <div class="mermaid" style="width:100%;">
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ede9fe', 'primaryTextColor': '#3730a3', 'primaryBorderColor': '#a5b4fc', 'lineColor': '#818cf8', 'secondaryColor': '#f5f3ff', 'tertiaryColor': '#fff'}}}%%
+flowchart LR
+    CRM["🏢 CRM\nID: CUST-001"]:::src
+    ERP["⚙️ ERP\nID: ACC-XJ42"]:::src
+    LEG["📁 Legacy\nID: DB-9981"]:::src
+    MDM[("🗂️ MDM Registry\n──────────────\nCUST-001 = ACC-XJ42\n= DB-9981")]:::hub
+    CRM -. "reads/links" .-> MDM
+    ERP -. "reads/links" .-> MDM
+    LEG -. "reads/links" .-> MDM
+    classDef src fill:#ede9fe,stroke:#a5b4fc,color:#3730a3,rx:8
+    classDef hub fill:#4f46e5,stroke:#3730a3,color:#fff,rx:10
+          </div>
+        </div>
+      </div>
+
+      <!-- CONSOLIDATION -->
+      <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:0;background:white;border-radius:16px;border:2px solid #7dd3fc;overflow:hidden;cursor:pointer;" onclick="showPage('consolidation')">
+        <div style="padding:28px 24px;border-right:1px solid #bae6fd;">
+          <div style="display:inline-block;background:#e0f2fe;color:#0891b2;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:12px;">🧲 Consolidation</div>
+          <h3 style="font-size:17px;font-weight:800;color:#0c4a6e;margin-bottom:8px;">Pull in, clean up</h3>
+          <p style="font-size:13px;color:#5a5a5a;line-height:1.6;margin-bottom:14px;">Data flows from source systems into MDM to form a clean golden record. Source systems are never updated back — clean data flows only to analytics and reports.</p>
+          <div style="font-size:12px;color:#0891b2;font-weight:600;">Click to explore →</div>
+        </div>
+        <div style="padding:24px;background:#f0f9ff;display:flex;align-items:center;">
+          <div class="mermaid" style="width:100%;">
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#e0f2fe', 'primaryTextColor': '#0c4a6e', 'primaryBorderColor': '#7dd3fc', 'lineColor': '#0891b2', 'secondaryColor': '#f0f9ff', 'tertiaryColor': '#fff'}}}%%
+flowchart LR
+    CRM["🏢 CRM"]:::src
+    ERP["⚙️ ERP"]:::src
+    LEG["📁 Legacy"]:::src
+    MDM[("🧲 MDM Hub\n───────────\nGolden Record ✓")]:::hub
+    ANA["📊 Analytics"]:::out
+    RPT["📋 Reports"]:::out
+    CRM --> MDM
+    ERP --> MDM
+    LEG --> MDM
+    MDM --> ANA
+    MDM --> RPT
+    classDef src fill:#e0f2fe,stroke:#7dd3fc,color:#0c4a6e
+    classDef hub fill:#0891b2,stroke:#0e7490,color:#fff
+    classDef out fill:#f0f9ff,stroke:#7dd3fc,color:#0c4a6e
+          </div>
+        </div>
+      </div>
+
+      <!-- COEXISTENCE -->
+      <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:0;background:white;border-radius:16px;border:2px solid #86efac;overflow:hidden;cursor:pointer;" onclick="showPage('coexistence')">
+        <div style="padding:28px 24px;border-right:1px solid #bbf7d0;">
+          <div style="display:inline-block;background:#dcfce7;color:#059669;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:12px;">🔄 Coexistence</div>
+          <h3 style="font-size:17px;font-weight:800;color:#14532d;margin-bottom:8px;">Two-way sync</h3>
+          <p style="font-size:13px;color:#5a5a5a;line-height:1.6;margin-bottom:14px;">Source systems can still create records, but MDM enriches and publishes the clean master back to all systems. Clean data flows everywhere — operationally.</p>
+          <div style="font-size:12px;color:#059669;font-weight:600;">Click to explore →</div>
+        </div>
+        <div style="padding:24px;background:#f0fdf4;display:flex;align-items:center;">
+          <div class="mermaid" style="width:100%;">
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#dcfce7', 'primaryTextColor': '#14532d', 'primaryBorderColor': '#86efac', 'lineColor': '#059669', 'secondaryColor': '#f0fdf4', 'tertiaryColor': '#fff'}}}%%
+flowchart LR
+    CRM["🏢 CRM"]:::src
+    ERP["⚙️ ERP"]:::src
+    SAP["🔷 SAP"]:::src
+    MDM[("🔄 MDM Hub\n──────────────\nEnriches + Syncs")]:::hub
+    CRM <-->|"sends / receives"| MDM
+    ERP <-->|"sends / receives"| MDM
+    SAP <-->|"sends / receives"| MDM
+    classDef src fill:#dcfce7,stroke:#86efac,color:#14532d
+    classDef hub fill:#059669,stroke:#047857,color:#fff
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTRALIZED -->
+      <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:0;background:white;border-radius:16px;border:2px solid #fcd34d;overflow:hidden;cursor:pointer;" onclick="showPage('centralized')">
+        <div style="padding:28px 24px;border-right:1px solid #fde68a;">
+          <div style="display:inline-block;background:#fef3c7;color:#d97706;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:12px;">👑 Centralized</div>
+          <h3 style="font-size:17px;font-weight:800;color:#78350f;margin-bottom:8px;">One master, everyone reads</h3>
+          <p style="font-size:13px;color:#5a5a5a;line-height:1.6;margin-bottom:14px;">Records are only created in MDM. All other systems consume from it — no one else creates master data. Maximum control, single source of truth.</p>
+          <div style="font-size:12px;color:#d97706;font-weight:600;">Click to explore →</div>
+        </div>
+        <div style="padding:24px;background:#fffbeb;display:flex;align-items:center;">
+          <div class="mermaid" style="width:100%;">
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#fef3c7', 'primaryTextColor': '#78350f', 'primaryBorderColor': '#fcd34d', 'lineColor': '#d97706', 'secondaryColor': '#fffbeb', 'tertiaryColor': '#fff'}}}%%
+flowchart LR
+    MDM[("👑 MDM Hub\n─────────────\nOnly record creator")]:::hub
+    CRM["🏢 CRM\n(reads only)"]:::out
+    ERP["⚙️ ERP\n(reads only)"]:::out
+    WEB["🌐 Website\n(reads only)"]:::out
+    ANA["📊 Analytics\n(reads only)"]:::out
+    MDM --> CRM
+    MDM --> ERP
+    MDM --> WEB
+    MDM --> ANA
+    classDef hub fill:#d97706,stroke:#b45309,color:#fff
+    classDef out fill:#fef3c7,stroke:#fcd34d,color:#78350f
+          </div>
+        </div>
+      </div>
+
+      <!-- HYBRID -->
+      <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:0;background:white;border-radius:16px;border:2px solid #c4b5fd;overflow:hidden;cursor:pointer;" onclick="showPage('hybrid')">
+        <div style="padding:28px 24px;border-right:1px solid #ddd6fe;">
+          <div style="display:inline-block;background:#ede9fe;color:#7c3aed;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:6px;">🧩 Hybrid</div>
+          <div style="display:inline-block;background:#f0fdf4;color:#166534;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:6px;margin-bottom:12px;">✅ Most Common</div>
+          <h3 style="font-size:17px;font-weight:800;color:#4c1d95;margin-bottom:8px;">Mix styles by domain</h3>
+          <p style="font-size:13px;color:#5a5a5a;line-height:1.6;margin-bottom:14px;">Most real programs run multiple styles at once — Centralized for reference data, Coexistence for products, Consolidation for customers. Each domain gets the right approach.</p>
+          <div style="font-size:12px;color:#7c3aed;font-weight:600;">Click to explore →</div>
+        </div>
+        <div style="padding:24px;background:#faf5ff;display:flex;align-items:center;">
+          <div class="mermaid" style="width:100%;">
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ede9fe', 'primaryTextColor': '#4c1d95', 'primaryBorderColor': '#c4b5fd', 'lineColor': '#7c3aed', 'secondaryColor': '#faf5ff', 'tertiaryColor': '#fff'}}}%%
+flowchart TB
+    subgraph REF ["👑 Centralized — Reference Data"]
+        MDM_R[("MDM")] -->|"pushes to all"| SYS["All Systems"]
+    end
+    subgraph CUST ["🧲 Consolidation — Customer Data"]
+        CRM["CRM"] --> MDM_C[("MDM")]
+        ERP["ERP"] --> MDM_C
+        MDM_C --> RPT["Analytics"]
+    end
+    subgraph PROD ["🔄 Coexistence — Product Data"]
+        MDM_P[("MDM")] <-->|"sync"| PIM["PIM/ERP"]
+        MDM_P -->|"publishes"| WEB["Website / Amazon"]
+    end
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">Built from your Obsidian Vault · MDM Implementation Styles Reference</div>
+  </div>
+</div>
+
+<!-- ===== REGISTRY PAGE ===== -->
+<div class="page" id="page-registry">
+  <div class="main">
+    <div class="detail-panel visible">
+      <div class="detail-header">
+        <div class="detail-icon" style="background:#ede9fe;font-size:28px;">🗂️</div>
+        <div class="detail-title">
+          <h2 style="color:#4f46e5;">Registry Style</h2>
+          <div class="subtitle">The "phone book" approach — link records without moving them</div>
+        </div>
+      </div>
+
+      <div style="background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:16px 20px;margin-bottom:28px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">⚠️</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#92400e;margin-bottom:4px;">Less Common in Modern MDM Programs</div>
+          <div style="font-size:13px;color:#78350f;line-height:1.6;">Registry style was popular in early MDM deployments (mid-2000s to early 2010s), when integrating systems was expensive and risky. Today, most organizations skip directly to <strong>Consolidation or Coexistence</strong> because modern integration platforms (iPaaS, APIs, event-driven architectures) have made bi-directional sync much more achievable. Registry still shows up in highly regulated industries or as a stepping stone, but it's rarely the end goal anymore.</div>
+        </div>
+      </div>
+
+      <div class="section-label">How it works</div>
+      <div class="diagram-area">
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:18px;text-align:center;">Data stays in source systems. MDM creates a cross-reference index.</div>
+        <div class="diagram-flow">
+          <div class="flow-box" style="border-color:#6366f1;">CRM<br/><span style="font-size:11px;color:#888;">John Smith (ID: 001)</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box flow-hub" style="border-color:#4f46e5;background:#ede9fe;">
+            🗂️ MDM Registry<br/>
+            <span style="font-size:11px;color:#4f46e5;">Links: CRM-001 = ERP-XJ42 = SAP-9981</span>
+          </div>
+          <div class="flow-arrow">←</div>
+          <div class="flow-box" style="border-color:#6366f1;">ERP<br/><span style="font-size:11px;color:#888;">J. Smith (ID: XJ42)</span></div>
+        </div>
+        <div style="text-align:center;margin-top:14px;font-size:12px;color:#888;">SAP system also linked: SAP-9981 → same person</div>
+      </div>
+
+      <div class="section-label">Plain English Explanation</div>
+      <div class="example-box">
+        <div class="label">📖 Think of it like this…</div>
+        <p>Imagine three filing cabinets for the same customer — one in Sales, one in Finance, one in Shipping. The Registry doesn't move any files. Instead, it creates a <strong>master list</strong> that says: <em>"Sales drawer 12, Finance drawer 7, and Shipping drawer 3 are all the same person."</em> You now know they're connected, even though the files live in different places.</p>
+      </div>
+
+      <div class="section-label">Real-World Use Cases</div>
+      <div class="use-cases-grid">
+        <div class="use-case-card" style="border-color:#4f46e5;">
+          <div class="uc-icon">🏥</div>
+          <h4>Healthcare Patient Matching</h4>
+          <p>A hospital has patient records in 6 different systems. Registry links them so doctors see a unified view without migrating records.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#4f46e5;">
+          <div class="uc-icon">🛒</div>
+          <h4>Retail Customer Identity</h4>
+          <p>Same customer buys in-store, online, and via app. Registry cross-references all three IDs to show you it's the same person.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#4f46e5;">
+          <div class="uc-icon">🏦</div>
+          <h4>M&A Data Consolidation</h4>
+          <p>Company acquires another. Before merging systems, use Registry to map which customers overlap across both companies.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#4f46e5;">
+          <div class="uc-icon">📦</div>
+          <h4>Supplier Cross-Reference</h4>
+          <p>Procurement team needs to know if the "Acme Corp" in ERP and "ACME Inc." in Accounts Payable are the same supplier.</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="pros-cons pros">
+          <h4>✅ Works well when…</h4>
+          <ul>
+            <li>You can't move or change source systems</li>
+            <li>You need a quick win with low disruption</li>
+            <li>Data governance is just starting out</li>
+            <li>Regulatory compliance requires data to stay in-place</li>
+          </ul>
+        </div>
+        <div class="pros-cons cons">
+          <h4>⚠️ Limitations</h4>
+          <ul>
+            <li>No single clean "golden record" is created</li>
+            <li>Source systems still have duplicate/dirty data</li>
+            <li>Can't enforce data quality rules at the source</li>
+            <li>Doesn't help downstream systems get clean data</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-label">When to use vs. avoid</div>
+      <div class="when-grid">
+        <div class="when-box when-yes">
+          <strong>✅ Use Registry when</strong>
+          You're in a heavily regulated industry, you can't change source systems, or you just need to identify duplicates and link records. Great for phase 1 of an MDM program.
+        </div>
+        <div class="when-box when-no">
+          <strong>⛔ Avoid Registry when</strong>
+          You need clean data pushed to other systems, or you want to enforce data standards at the source. Registry is read-only — it won't fix bad data at the origin.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONSOLIDATION PAGE ===== -->
+<div class="page" id="page-consolidation">
+  <div class="main">
+    <div class="detail-panel visible">
+      <div class="detail-header">
+        <div class="detail-icon" style="background:#e0f2fe;">🧲</div>
+        <div class="detail-title">
+          <h2 style="color:#0891b2;">Consolidation Style</h2>
+          <div class="subtitle">Pull everything together into one clean record — for analysis and reporting</div>
+        </div>
+      </div>
+
+      <div class="section-label">How it works</div>
+      <div class="diagram-area">
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:18px;text-align:center;">Data flows IN to MDM and gets cleaned into a golden record. Source systems are not updated.</div>
+        <div class="diagram-flow">
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+            <div class="flow-box" style="border-color:#0891b2;">CRM Data</div>
+            <div class="flow-box" style="border-color:#0891b2;">ERP Data</div>
+            <div class="flow-box" style="border-color:#0891b2;">Legacy System</div>
+          </div>
+          <div class="flow-arrow">⟶</div>
+          <div class="flow-box flow-hub" style="border-color:#0891b2;background:#e0f2fe;">
+            🧲 MDM Hub<br/>
+            <span style="font-size:11px;color:#0891b2;">Golden Record Created ✓</span>
+          </div>
+          <div class="flow-arrow">⟶</div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+            <div class="flow-box" style="border-color:#0891b2;">Reports</div>
+            <div class="flow-box" style="border-color:#0891b2;">Analytics</div>
+            <div class="flow-box" style="border-color:#0891b2;">Data Warehouse</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:14px;font-size:12px;color:#888;">Source systems remain unchanged — clean data flows only to downstream consumers</div>
+      </div>
+
+      <div class="section-label">Plain English Explanation</div>
+      <div class="example-box">
+        <div class="label">📖 Think of it like this…</div>
+        <p>You have three messy desks (your CRM, ERP, and legacy system). A data team <strong>copies the best version of each fact</strong> from each desk, combines them into one perfect record, and puts it in a clean central filing cabinet. When the CFO needs a report, they pull from the clean cabinet — but the messy desks are still messy. Nobody fixes those desks.</p>
+      </div>
+
+      <div class="section-label">Real-World Use Cases</div>
+      <div class="use-cases-grid">
+        <div class="use-case-card" style="border-color:#0891b2;">
+          <div class="uc-icon">📊</div>
+          <h4>Executive Reporting</h4>
+          <p>Consolidate customer data from 5 systems into one clean view for the C-suite dashboard — without disrupting daily operations.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#0891b2;">
+          <div class="uc-icon">🏬</div>
+          <h4>Retail Chain Analytics</h4>
+          <p>A grocery chain with 400 stores pulls product data from every store's POS into one product master for pricing and inventory analytics.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#0891b2;">
+          <div class="uc-icon">🤝</div>
+          <h4>Post-Merger Analysis</h4>
+          <p>After acquiring a company, pull customer records from both companies into a consolidated hub to find overlap and revenue opportunity — before doing a full system migration.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#0891b2;">
+          <div class="uc-icon">🏭</div>
+          <h4>Supplier 360 View</h4>
+          <p>Procurement pulls supplier data from ERP, compliance systems, and risk tools to create a single view for spend analysis and vendor scorecards.</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="pros-cons pros">
+          <h4>✅ Works well when…</h4>
+          <ul>
+            <li>Reporting and analytics are the primary goal</li>
+            <li>Source systems are politically untouchable</li>
+            <li>You want a golden record without disrupting ops</li>
+            <li>Building toward a more mature MDM program</li>
+          </ul>
+        </div>
+        <div class="pros-cons cons">
+          <h4>⚠️ Limitations</h4>
+          <ul>
+            <li>Source systems never get cleaner</li>
+            <li>Operational teams don't benefit from clean data</li>
+            <li>Data can get stale if source systems aren't synced</li>
+            <li>Can't prevent new bad data from being created</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-label">When to use vs. avoid</div>
+      <div class="when-grid">
+        <div class="when-box when-yes">
+          <strong>✅ Use Consolidation when</strong>
+          You need a clean data foundation for BI, analytics, or data lake use cases — and the primary consumer of clean data is a reporting layer, not operational systems.
+        </div>
+        <div class="when-box when-no">
+          <strong>⛔ Avoid Consolidation when</strong>
+          Your sales, operations, or customer service teams also need clean data in their day-to-day systems. If dirty data at the source is causing operational problems, consolidation won't fix that.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COEXISTENCE PAGE ===== -->
+<div class="page" id="page-coexistence">
+  <div class="main">
+    <div class="detail-panel visible">
+      <div class="detail-header">
+        <div class="detail-icon" style="background:#dcfce7;">🔄</div>
+        <div class="detail-title">
+          <h2 style="color:#059669;">Coexistence Style</h2>
+          <div class="subtitle">MDM and source systems share authority — clean data flows both ways</div>
+        </div>
+      </div>
+
+      <div class="section-label">How it works</div>
+      <div class="diagram-area">
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:18px;text-align:center;">Data flows in AND out. Source systems keep creating records, but MDM enriches and syncs back the master.</div>
+        <div class="diagram-flow">
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+            <div class="flow-box" style="border-color:#059669;">CRM</div>
+            <div class="flow-box" style="border-color:#059669;">ERP</div>
+            <div class="flow-box" style="border-color:#059669;">SAP</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div class="flow-arrow">⟶</div>
+            <div style="font-size:11px;color:#059669;font-weight:600;">sends data</div>
+            <div class="flow-arrow">⟵</div>
+            <div style="font-size:11px;color:#059669;font-weight:600;">receives clean data</div>
+          </div>
+          <div class="flow-box flow-hub" style="border-color:#059669;background:#dcfce7;">
+            🔄 MDM Hub<br/>
+            <span style="font-size:11px;color:#059669;">Enriches + publishes<br/>Golden Record ✓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Plain English Explanation</div>
+      <div class="example-box">
+        <div class="label">📖 Think of it like this…</div>
+        <p>Imagine a team editor (MDM) who works alongside multiple writers (your CRM, ERP, etc.). The writers can still create new drafts. But the editor reviews every draft, cleans it up, and <strong>sends the polished version back to everyone</strong>. All writers now have the same clean copy — but the editor and the writers <em>coexist</em>. Nobody owns records exclusively.</p>
+      </div>
+
+      <div class="section-label">Real-World Use Cases</div>
+      <div class="use-cases-grid">
+        <div class="use-case-card" style="border-color:#059669;">
+          <div class="uc-icon">🛍️</div>
+          <h4>Omnichannel Retail</h4>
+          <p>Customer creates an account online. MDM enriches it (adds firmographic data, deduplicates), then syncs back to the in-store POS and loyalty app so all channels see the same customer.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#059669;">
+          <div class="uc-icon">🏗️</div>
+          <h4>Product Data Syndication</h4>
+          <p>A manufacturer's ERP creates product records. MDM enriches with marketing copy, nutritional data, images — then publishes to the website, Amazon, and retail partners. Like PIM + MDM combined.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#059669;">
+          <div class="uc-icon">🧑‍💼</div>
+          <h4>B2B Account Management</h4>
+          <p>Sales creates new accounts in Salesforce. MDM deduplicates and enriches (adds D-U-N-S numbers, hierarchy info), then pushes the clean version back to CRM and ERP simultaneously.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#059669;">
+          <div class="uc-icon">🚚</div>
+          <h4>Supplier Onboarding</h4>
+          <p>New supplier submits data via portal. MDM validates, enriches with compliance data, then publishes the approved supplier record back to Procurement, Finance, and Logistics systems.</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="pros-cons pros">
+          <h4>✅ Works well when…</h4>
+          <ul>
+            <li>Multiple systems need the same clean data operationally</li>
+            <li>Source systems will continue creating their own records</li>
+            <li>You want clean data everywhere, not just in reports</li>
+            <li>PIM / product data syndication use cases</li>
+          </ul>
+        </div>
+        <div class="pros-cons cons">
+          <h4>⚠️ Limitations</h4>
+          <ul>
+            <li>More complex integration than registry or consolidation</li>
+            <li>Source systems may override MDM changes if not governed well</li>
+            <li>Requires clear rules on who owns which fields</li>
+            <li>Integration middleware needed for bi-directional sync</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-label">When to use vs. avoid</div>
+      <div class="when-grid">
+        <div class="when-box when-yes">
+          <strong>✅ Use Coexistence when</strong>
+          You can't fully replace source systems but you need clean data propagated everywhere operationally. Very common in large enterprises with deeply embedded legacy systems.
+        </div>
+        <div class="when-box when-no">
+          <strong>⛔ Avoid Coexistence when</strong>
+          You lack strong data governance to manage field-level ownership conflicts. Without clear rules on "who wins" when MDM and a source system disagree, coexistence becomes chaotic.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CENTRALIZED PAGE ===== -->
+<div class="page" id="page-centralized">
+  <div class="main">
+    <div class="detail-panel visible">
+      <div class="detail-header">
+        <div class="detail-icon" style="background:#fef3c7;">👑</div>
+        <div class="detail-title">
+          <h2 style="color:#d97706;">Centralized Style</h2>
+          <div class="subtitle">One system rules them all — MDM is the only source of truth</div>
+        </div>
+      </div>
+
+      <div class="section-label">How it works</div>
+      <div class="diagram-area">
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:18px;text-align:center;">Records are created in MDM only. Source systems read from MDM — they never create their own masters.</div>
+        <div class="diagram-flow">
+          <div class="flow-box flow-hub" style="border-color:#d97706;background:#fef3c7;">
+            👑 MDM Hub<br/>
+            <span style="font-size:11px;color:#d97706;">Records created here ONLY</span>
+          </div>
+          <div class="flow-arrow">⟶</div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+            <div class="flow-box" style="border-color:#d97706;">CRM (reads)</div>
+            <div class="flow-box" style="border-color:#d97706;">ERP (reads)</div>
+            <div class="flow-box" style="border-color:#d97706;">Website (reads)</div>
+            <div class="flow-box" style="border-color:#d97706;">Analytics (reads)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Plain English Explanation</div>
+      <div class="example-box">
+        <div class="label">📖 Think of it like this…</div>
+        <p>There's one master cookbook (MDM). Every chef in the kitchen must use recipes <em>only</em> from that cookbook. No one writes their own recipes. No one makes changes without going through the head chef (MDM admin). When a recipe changes, <strong>every chef immediately uses the new version</strong>. The cookbook is the law — and that's the point.</p>
+      </div>
+
+      <div class="section-label">Real-World Use Cases</div>
+      <div class="use-cases-grid">
+        <div class="use-case-card" style="border-color:#d97706;">
+          <div class="uc-icon">🏢</div>
+          <h4>New Digital-First Companies</h4>
+          <p>A company building systems from scratch uses MDM as the master for all product and customer data from day one. CRM and ERP are configured to consume from MDM, never create their own.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#d97706;">
+          <div class="uc-icon">⚖️</div>
+          <h4>Regulated Industries (Finance/Pharma)</h4>
+          <p>A bank or pharmaceutical company needs ironclad control over who can create/update data, with full audit trails. MDM as the sole authority ensures compliance.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#d97706;">
+          <div class="uc-icon">🗺️</div>
+          <h4>Location / Asset Management</h4>
+          <p>A utility company centralizes all physical asset and location data in MDM. Every field team app, GIS system, and work order system reads location data from the one master — never creates it locally.</p>
+        </div>
+        <div class="use-case-card" style="border-color:#d97706;">
+          <div class="uc-icon">🌐</div>
+          <h4>Reference Data Control</h4>
+          <p>Country codes, currency types, product categories — all reference data lives in MDM. Applications across the enterprise subscribe to the list and use only approved values.</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="pros-cons pros">
+          <h4>✅ Works well when…</h4>
+          <ul>
+            <li>Maximum control and consistency is the top priority</li>
+            <li>You can change business processes to create in MDM first</li>
+            <li>Regulatory compliance requires a single, auditable source</li>
+            <li>Reference data or hierarchies need to be locked down</li>
+          </ul>
+        </div>
+        <div class="pros-cons cons">
+          <h4>⚠️ Limitations</h4>
+          <ul>
+            <li>Highest change management burden — processes must change</li>
+            <li>MDM becomes a bottleneck if unavailable</li>
+            <li>Requires strong IT + business stakeholder alignment</li>
+            <li>Difficult to retrofit onto existing entrenched systems</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-label">When to use vs. avoid</div>
+      <div class="when-grid">
+        <div class="when-box when-yes">
+          <strong>✅ Use Centralized when</strong>
+          You're building greenfield, you have authority to enforce data creation policies, or your industry mandates strict control. This is the "gold standard" MDM style when achievable.
+        </div>
+        <div class="when-box when-no">
+          <strong>⛔ Avoid Centralized when</strong>
+          You have many legacy systems with deeply embedded record creation workflows that the business won't change. Forcing centralized on a complex legacy landscape often fails due to resistance.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HYBRID PAGE ===== -->
+<div class="page" id="page-hybrid">
+  <div class="main">
+    <div class="detail-panel visible">
+      <div class="detail-header">
+        <div class="detail-icon" style="background:#ede9fe;font-size:28px;">🧩</div>
+        <div class="detail-title">
+          <h2 style="color:#7c3aed;">Hybrid Style</h2>
+          <div class="subtitle">Mix and match — different styles for different domains or phases</div>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#faf5ff,#f0fdf4);border:1.5px solid #c4b5fd;border-radius:14px;padding:24px;margin-bottom:32px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#7c3aed;margin-bottom:10px;">The Reality of Most MDM Programs</div>
+        <p style="font-size:15px;line-height:1.7;color:#3b0764;">
+          Real-world MDM is rarely one pure style. Most mature programs run <strong>multiple styles simultaneously</strong> — different approaches for different data domains, different business units, or different phases of an implementation. This isn't a compromise; it's intentional design. The key is knowing <em>why</em> you're mixing and having clear rules for each domain.
+        </p>
+      </div>
+
+      <div class="section-label">Plain English Explanation</div>
+      <div class="example-box">
+        <div class="label">📖 Think of it like this…</div>
+        <p>A hospital system might use <strong>Registry</strong> to link patient records across 12 acquired clinics (they can't move those records yet), <strong>Consolidation</strong> to build a clean patient 360 for their analytics team, and <strong>Centralized</strong> for all reference data like procedure codes and formulary lists. Three styles, one MDM program — each doing what it does best.</p>
+      </div>
+
+      <div class="section-label">Common Hybrid Combinations</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px;">
+
+        <div style="background:white;border-radius:14px;border:1.5px solid var(--border);padding:22px;">
+          <div style="font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;">Most Common Combo</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <span style="background:#dcfce7;color:#166534;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">🔄 Coexistence</span>
+            <span style="color:#aaa;font-weight:700;">+</span>
+            <span style="background:#fef3c7;color:#92400e;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">👑 Centralized</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">Coexistence for transactional domains (Customer, Product) where source systems still create records — Centralized for reference data (country codes, categories, hierarchies) where one master list is enforced everywhere.</p>
+          <div style="margin-top:12px;font-size:12px;color:#888;">Common in: Retail, CPG, Manufacturing</div>
+        </div>
+
+        <div style="background:white;border-radius:14px;border:1.5px solid var(--border);padding:22px;">
+          <div style="font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;">Phase-Based Hybrid</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <span style="background:#e0f2fe;color:#0c4a6e;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">🧲 Consolidation</span>
+            <span style="color:#aaa;font-weight:700;">→ growing into →</span>
+            <span style="background:#dcfce7;color:#166534;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">🔄 Coexistence</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">Start with Consolidation to prove value and build the golden record. Once stakeholders trust the data and integrations are in place, expand to Coexistence by pushing the clean record back to source systems.</p>
+          <div style="margin-top:12px;font-size:12px;color:#888;">Common in: Large enterprise transformations</div>
+        </div>
+
+        <div style="background:white;border-radius:14px;border:1.5px solid var(--border);padding:22px;">
+          <div style="font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;">Domain-Split Hybrid</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <span style="background:#dcfce7;color:#166534;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">🔄 Coexistence</span>
+            <span style="color:#aaa;font-weight:700;">for products</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <span style="background:#e0f2fe;color:#0c4a6e;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">🧲 Consolidation</span>
+            <span style="color:#aaa;font-weight:700;">for customers</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">Product data needs to sync back to the website, Amazon, and retail partners (Coexistence). Customer data is only needed for analytics and segmentation (Consolidation). Each domain gets the right style.</p>
+          <div style="margin-top:12px;font-size:12px;color:#888;">Common in: CPG brands, distributors with PIM</div>
+        </div>
+
+        <div style="background:white;border-radius:14px;border:1.5px solid var(--border);padding:22px;">
+          <div style="font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;">M&A Transition Hybrid</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <span style="background:#ede9fe;color:#4c1d95;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">🗂️ Registry</span>
+            <span style="color:#aaa;font-weight:700;">→ then →</span>
+            <span style="background:#fef3c7;color:#92400e;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">👑 Centralized</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">After acquiring a company, use Registry first to identify overlaps without disrupting operations. Once systems are integrated, migrate to Centralized so the combined entity operates from a single source of truth.</p>
+          <div style="margin-top:12px;font-size:12px;color:#888;">Common in: Post-merger integrations</div>
+        </div>
+
+      </div>
+
+      <div class="section-label">How to Decide What to Mix</div>
+      <div style="background:white;border-radius:14px;border:1.5px solid var(--border);padding:28px;margin-bottom:32px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+          <div>
+            <div style="font-size:20px;margin-bottom:8px;">🏷️</div>
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:6px;">Ask by Domain</h4>
+            <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">Customer data, product data, supplier data, and reference data often have different needs. Assign a style to each domain independently rather than forcing one style on everything.</p>
+          </div>
+          <div>
+            <div style="font-size:20px;margin-bottom:8px;">📅</div>
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:6px;">Ask by Phase</h4>
+            <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">What style makes sense to start with now — and what's the target state in 2–3 years? Design for the journey, not just the destination. A phased hybrid is often more achievable than jumping to Centralized on day one.</p>
+          </div>
+          <div>
+            <div style="font-size:20px;margin-bottom:8px;">⚖️</div>
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:6px;">Ask by Risk</h4>
+            <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">Which systems are untouchable politically or technically? Start with a lighter style (Registry/Consolidation) there. Where you have more control, move to a stronger style (Coexistence/Centralized).</p>
+          </div>
+          <div>
+            <div style="font-size:20px;margin-bottom:8px;">🎯</div>
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:6px;">Ask by Outcome</h4>
+            <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">If clean data needs to drive operations (CRM workflows, fulfillment, portals) → lean toward Coexistence or Centralized. If it's for insights and reporting only → Consolidation is usually enough.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Common Pitfall</div>
+      <div style="background:#fff1f2;border:1.5px solid #fecdd3;border-radius:12px;padding:20px;margin-bottom:32px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">🚨</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#881337;margin-bottom:4px;">Hybrid Without Governance = Chaos</div>
+          <div style="font-size:13px;color:#9f1239;line-height:1.6;">The most common hybrid failure is mixing styles without clear documentation of <em>which system owns which field</em>. If your CRM, ERP, and MDM can all update the customer's address with no defined winner, you'll end up with three different addresses and no one knows which is right. A hybrid approach requires a <strong>data ownership matrix</strong> — each field, each domain, one authoritative owner.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== COMPARISON PAGE ===== -->
+<div class="page" id="page-compare">
+  <div class="main">
+    <div class="comparison-section">
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Side-by-Side Comparison</h2>
+      <p style="font-size:15px;color:var(--text-muted);margin-bottom:28px;">How all four styles stack up across key dimensions.</p>
+
+      <div style="overflow-x:auto;border-radius:14px;border:1.5px solid var(--border);margin-bottom:32px;">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th style="color:#4f46e5;">🗂️ Registry</th>
+              <th style="color:#0891b2;">🧲 Consolidation</th>
+              <th style="color:#059669;">🔄 Coexistence</th>
+              <th style="color:#d97706;">👑 Centralized</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Where is data stored?</td>
+              <td>In source systems only</td>
+              <td>In source systems + MDM copy</td>
+              <td>In source systems + MDM (both authoritative)</td>
+              <td>MDM only; sources read from it</td>
+            </tr>
+            <tr>
+              <td>Does MDM push back to source systems?</td>
+              <td><span class="pill" style="background:#fee2e2;color:#991b1b;">No</span></td>
+              <td><span class="pill" style="background:#fee2e2;color:#991b1b;">No</span></td>
+              <td><span class="pill" style="background:#dcfce7;color:#166534;">Yes</span></td>
+              <td><span class="pill" style="background:#dcfce7;color:#166534;">Yes (it's the source)</span></td>
+            </tr>
+            <tr>
+              <td>Can source systems create new records?</td>
+              <td><span class="pill" style="background:#dcfce7;color:#166534;">Yes</span></td>
+              <td><span class="pill" style="background:#dcfce7;color:#166534;">Yes</span></td>
+              <td><span class="pill" style="background:#dcfce7;color:#166534;">Yes</span></td>
+              <td><span class="pill" style="background:#fee2e2;color:#991b1b;">No — MDM only</span></td>
+            </tr>
+            <tr>
+              <td>Best for analytics/reporting?</td>
+              <td>Partial</td>
+              <td><span class="pill" style="background:#dcfce7;color:#166534;">Best fit</span></td>
+              <td>Good</td>
+              <td>Good</td>
+            </tr>
+            <tr>
+              <td>Best for operational clean data?</td>
+              <td><span class="pill" style="background:#fee2e2;color:#991b1b;">No</span></td>
+              <td>Partial</td>
+              <td><span class="pill" style="background:#dcfce7;color:#166534;">Yes</span></td>
+              <td><span class="pill" style="background:#dcfce7;color:#166534;">Best fit</span></td>
+            </tr>
+            <tr>
+              <td>Implementation complexity</td>
+              <td><span class="pill" style="background:#d1fae5;color:#065f46;">Low</span></td>
+              <td><span class="pill" style="background:#fef3c7;color:#92400e;">Medium</span></td>
+              <td><span class="pill" style="background:#fed7aa;color:#7c2d12;">High</span></td>
+              <td><span class="pill" style="background:#fee2e2;color:#991b1b;">Very High</span></td>
+            </tr>
+            <tr>
+              <td>Business process change required?</td>
+              <td>Minimal</td>
+              <td>Some</td>
+              <td>Moderate</td>
+              <td>Significant</td>
+            </tr>
+            <tr>
+              <td>Time to first value</td>
+              <td><span class="pill" style="background:#d1fae5;color:#065f46;">Fast</span></td>
+              <td><span class="pill" style="background:#d1fae5;color:#065f46;">Fast</span></td>
+              <td>Moderate</td>
+              <td>Longer</td>
+            </tr>
+            <tr>
+              <td>Common domains</td>
+              <td>Customer, Supplier (link only)</td>
+              <td>Customer 360, Supplier 360</td>
+              <td>Product/PIM, Customer, Supplier</td>
+              <td>Reference Data, Location, Asset</td>
+            </tr>
+            <tr>
+              <td>Typical MDM maturity stage</td>
+              <td>Phase 1 / Starting Out</td>
+              <td>Phase 1–2</td>
+              <td>Phase 2–3</td>
+              <td>Phase 3 / Mature</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- MATURITY LADDER -->
+      <div style="background:white;border-radius:16px;border:1.5px solid var(--border);padding:32px;margin-bottom:32px;">
+        <div class="section-label">MDM Maturity Journey</div>
+        <h3 style="font-size:18px;font-weight:700;margin-bottom:20px;">Most organizations evolve through these styles over time</h3>
+        <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;">
+          <div style="text-align:center;padding:16px 20px;">
+            <div style="font-size:28px;margin-bottom:6px;">🗂️</div>
+            <div style="font-size:13px;font-weight:700;color:#4f46e5;">Registry</div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">Start here<br/>Quick wins</div>
+          </div>
+          <div style="font-size:24px;color:#d1d5db;">→</div>
+          <div style="text-align:center;padding:16px 20px;">
+            <div style="font-size:28px;margin-bottom:6px;">🧲</div>
+            <div style="font-size:13px;font-weight:700;color:#0891b2;">Consolidation</div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">Add golden records<br/>for analytics</div>
+          </div>
+          <div style="font-size:24px;color:#d1d5db;">→</div>
+          <div style="text-align:center;padding:16px 20px;">
+            <div style="font-size:28px;margin-bottom:6px;">🔄</div>
+            <div style="font-size:13px;font-weight:700;color:#059669;">Coexistence</div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">Sync clean data<br/>back to systems</div>
+          </div>
+          <div style="font-size:24px;color:#d1d5db;">→</div>
+          <div style="text-align:center;padding:16px 20px;">
+            <div style="font-size:28px;margin-bottom:6px;">👑</div>
+            <div style="font-size:13px;font-weight:700;color:#d97706;">Centralized</div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">Full control<br/>single source</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:20px;text-align:center;">
+          <span style="font-size:22px;">🧩</span>
+          <p style="font-size:13px;color:var(--text-muted);margin-top:6px;">
+            <strong>Most mature programs are Hybrid</strong> — running multiple styles in parallel for different data domains. The maturity ladder above shows a common journey, but in practice you'll likely combine approaches rather than ever being purely one style.
+            <button onclick="showPage('hybrid')" style="background:none;border:none;color:#7c3aed;font-weight:700;cursor:pointer;font-size:13px;text-decoration:underline;margin-left:4px;">Explore Hybrid →</button>
+          </p>
+        </div>
+      </div>
+
+      <div class="page-footer">Built from your Obsidian Vault · MDM Implementation Styles Reference</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('visible'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('visible');
+    document.getElementById('tab-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
